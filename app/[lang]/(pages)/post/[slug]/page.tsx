@@ -8,50 +8,50 @@ import { RichText } from '@/components/RichText/RichText';
 import { Locale } from '@/i18n.config';
 import { Metadata } from 'next';
 
-// export async function generateMetadata({
-//   params: {lang, slug}
-// }: {
-//   params: {lang: Locale, slug: Props}
-// }, parent:any) {
+export async function generateMetadata({
+  params: {lang, slug}
+}: {
+  params: {lang: Locale, slug: Props}
+}, parent:any) {
 
-//   const query = groq`*[_type == 'post' && slug.current == $slug][0]{
-//     ...,
-//     body,
-//     author->
-//   }`
-//   const post:Post = await client.fetch(query,{slug})
+  const query = groq`*[_type == 'post' && slug.current == $slug][0]{
+    ...,
+    body,
+    author->
+  }`
+  const post:Post = await client.fetch(query,{slug})
 
-//   let keywordsEn: any[] = [];
-//   let keywordsAr: any[] = [];
+  let keywordsEn: any[] = [];
+  let keywordsAr: any[] = [];
 
-//   post.keywords[0].en?.map((data:any) => {
-//     keywordsEn.push(data)
-//   })
-//   post.keywords[0].ar?.map((data:any) => {
-//     keywordsAr.push(data)
-//   })
+  post.keywords[0].en?.map((data:any) => {
+    keywordsEn.push(data)
+  })
+  post.keywords[0].ar?.map((data:any) => {
+    keywordsAr.push(data)
+  })
 
-//   return{
-//     title: lang === "en" ? post?.title.en : post?.title.ar,
-//     description: lang === "en" ? post?.description.en : post?.description.ar,
-//     keywords: lang === "en" ? keywordsEn : keywordsAr,
-//     alternates: {
-//       canonical: `/post/${slug}`,
-//       languages: {
-//         'en': `/en/post/${slug}`,
-//         'ar': `/ar/post/${slug}`,
-//       },
-//     },
-//     openGraph: {
-//       title: lang === "en" ? post?.title.en : post?.title.ar,
-//       description: lang === "en" ? post?.description.en : post?.description.ar,
-//       images: `${urlFor(post?.mainImage).url()}`,
-//       url: `/post/${slug}`,
-//       siteName: "Aqraaz.com"
-//     }
-//   }
+  return{
+    title: lang === "en" ? post?.title.en : post?.title.ar,
+    description: lang === "en" ? post?.description.en : post?.description.ar,
+    keywords: lang === "en" ? keywordsEn : keywordsAr,
+    alternates: {
+      canonical: `/post/${slug}`,
+      languages: {
+        'en': `/en/post/${slug}`,
+        'ar': `/ar/post/${slug}`,
+      },
+    },
+    openGraph: {
+      title: lang === "en" ? post?.title.en : post?.title.ar,
+      description: lang === "en" ? post?.description.en : post?.description.ar,
+      images: `${urlFor(post?.mainImage).url()}`,
+      url: `/post/${slug}`,
+      siteName: "Aqraaz.com"
+    }
+  }
 
-// }
+}
 
 interface Props {
   params: {

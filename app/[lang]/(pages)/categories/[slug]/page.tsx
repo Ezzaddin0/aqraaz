@@ -48,7 +48,7 @@ interface Props {
 //       title: lang === "en" ? post.title : post.titleAr,
 //       description: lang === "en" ? post.descriptionEn : post.descriptionAr,
 //       alternates: {
-//         canonical: `/categories/${slug}`,
+//         canonical: `${lang}/categories/${slug}`,
 //         languages: {
 //           'en': `/en/categories/${slug}`,
 //           'ar': `/ar/categories/${slug}`,
@@ -58,7 +58,7 @@ interface Props {
 //       openGraph: {
 //         title: `${slug}`,
 //         description: `${lang === "en" ? "Welcome to Aqraaz's Categories Page, your gateway to a world of diverse content. Explore an array of topics, from tech and business to lifestyle and wellness. Find insightful articles, tips, and resources curated to cater to your interests. Dive into our categorized content and embark on a journey of discovery tailored to enrich your knowledge and spark inspiration" : "مرحبًا بكم في صفحة فئات Aqraaz، بوابتكم إلى عالم محتوى متنوع. استكشاف مجموعة من المواضيع، من التكنولوجيا والأعمال إلى نمط الحياة والصحة والعافية. اعثر على مقالات مفيدة، نصائح، وموارد مختارة لتلبية اهتماماتكم. اغمر في محتوىنا المصنَّف وابدأ رحلة اكتشاف مصممة لإثراء معرفتكم وإشعال الإلهام."}`,
-//         url: `/categories/${slug}`,
+//         url: `${lang}/categories/${slug}`,
 //         siteName: "Aqraaz.com"
 //       }
 //     }
