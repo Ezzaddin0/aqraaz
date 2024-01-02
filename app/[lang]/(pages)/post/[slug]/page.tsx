@@ -36,7 +36,7 @@ export async function generateMetadata({
     description: lang === "en" ? post?.description.en : post?.description.ar,
     keywords: lang === "en" ? keywordsEn : keywordsAr,
     alternates: {
-      canonical: `/post/${slug}`,
+      canonical: `${lang}/post/${slug}`,
       languages: {
         'en': `/en/post/${slug}`,
         'ar': `/ar/post/${slug}`,
@@ -46,7 +46,7 @@ export async function generateMetadata({
       title: lang === "en" ? post?.title.en : post?.title.ar,
       description: lang === "en" ? post?.description.en : post?.description.ar,
       images: `${urlFor(post?.mainImage).url()}`,
-      url: `/post/${slug}`,
+      url: `${lang}/post/${slug}`,
       siteName: "Aqraaz.com"
     }
   }
