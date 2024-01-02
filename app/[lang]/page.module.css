@@ -1,0 +1,44 @@
+.textTruncate2 {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+}
+
+.textTruncate3 {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+}
+
+.textTruncate4 {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+}
+
+.fs7 {
+    font-size: 0.75rem!important;
+}
+
+.loginSection {
+    width: 50%!important;
+}
+
+
+@media (max-width: 992px) {
+    .loginSection {
+        width: 75%!important;
+    }
+}
+
+@media (max-width: 768px) {
+    .loginSection {
+        width: 100%!important;
+    }
+}
