@@ -21,20 +21,20 @@ export async function generateMetadata({
   }`
   const post:Post = await client.fetch(query,{slug})
 
-  let keywordsEn: any[] = [];
-  let keywordsAr: any[] = [];
+  // let keywordsEn: any[] = [];
+  // let keywordsAr: any[] = [];
 
-  post.keywords[0].en?.map((data:any) => {
-    keywordsEn.push(data)
-  })
-  post.keywords[0].ar?.map((data:any) => {
-    keywordsAr.push(data)
-  })
+  // post.keywords[0].en?.map((data:any) => {
+  //   keywordsEn.push(data)
+  // })
+  // post.keywords[0].ar?.map((data:any) => {
+  //   keywordsAr.push(data)
+  // })
 
   return{
     title: lang === "en" ? post?.title.en : post?.title.ar,
     description: lang === "en" ? post?.description.en : post?.description.ar,
-    keywords: lang === "en" ? keywordsEn : keywordsAr,
+    // keywords: lang === "en" ? keywordsEn : keywordsAr,
     alternates: {
       canonical: `/post/${slug}`,
       languages: {
