@@ -23,21 +23,23 @@ export async function generateMetadata({
   const categories = await client.fetch(query);
   const { page } = await getDictionary(lang);
 
-  let titleEn: any[] = [];
-  let titleAr: any[] = [];
+  let KeywordsEn: any[] = [];
+  let KeywordsAr: any[] = [];
 
   categories.map((data:any) => {
-    titleEn.push(data.title)
-    titleAr.push(data.titleAr)
+      KeywordsEn.push(data.title)
+  })
+  categories.map((data:any) => {
+      KeywordsAr.push(data.titleAr)
   })
   
 
   return{
     title: `${lang === "en" ? page.categories.title : "الفئات"}`,
     description: `${lang === "en" ? "Welcome to Aqraaz's Categories Page, your gateway to a world of diverse content. Explore an array of topics, from tech and business to lifestyle and wellness. Find insightful articles, tips, and resources curated to cater to your interests. Dive into our categorized content and embark on a journey of discovery tailored to enrich your knowledge and spark inspiration" : "مرحبًا بكم في صفحة فئات Aqraaz، بوابتكم إلى عالم محتوى متنوع. استكشاف مجموعة من المواضيع، من التكنولوجيا والأعمال إلى نمط الحياة والصحة والعافية. اعثر على مقالات مفيدة، نصائح، وموارد مختارة لتلبية اهتماماتكم. اغمر في محتوىنا المصنَّف وابدأ رحلة اكتشاف مصممة لإثراء معرفتكم وإشعال الإلهام."}`,
-    keywords: lang === "en" ? titleEn : titleAr,
+    keywords: lang === "en" ? KeywordsEn : KeywordsAr,
     alternates: {
-      canonical: "/categories",
+      canonical: `/${lang}/categories`,
       languages: {
         'en': '/en/categories',
         'ar': '/ar/categories',
@@ -46,7 +48,7 @@ export async function generateMetadata({
     openGraph: {
       title: "categories",
       description: `${lang === "en" ? "Welcome to Aqraaz's Categories Page, your gateway to a world of diverse content. Explore an array of topics, from tech and business to lifestyle and wellness. Find insightful articles, tips, and resources curated to cater to your interests. Dive into our categorized content and embark on a journey of discovery tailored to enrich your knowledge and spark inspiration" : "مرحبًا بكم في صفحة فئات Aqraaz، بوابتكم إلى عالم محتوى متنوع. استكشاف مجموعة من المواضيع، من التكنولوجيا والأعمال إلى نمط الحياة والصحة والعافية. اعثر على مقالات مفيدة، نصائح، وموارد مختارة لتلبية اهتماماتكم. اغمر في محتوىنا المصنَّف وابدأ رحلة اكتشاف مصممة لإثراء معرفتكم وإشعال الإلهام."}`,
-      url: "/categories",
+      url: `/${lang}/categories`,
       siteName: "Aqraaz.com"
     }
   }
