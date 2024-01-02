@@ -3,7 +3,7 @@ import React from 'react'
 import icon from "@/assets/images/icon.svg"
 import { Kalam } from 'next/font/google'
 import Link from 'next/link'
-import styles from "@/app/page.module.css"
+import styles from "@/app/[lang]/page.module.css"
 
 const kalam = Kalam({
     weight: '400',
