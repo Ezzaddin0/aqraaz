@@ -3,7 +3,6 @@ import React from 'react'
 import icon from "@/assets/images/icon.svg"
 import { Kalam } from 'next/font/google'
 import Link from 'next/link'
-import styles from "@/app/[lang]/page.module.css"
 
 const kalam = Kalam({
     weight: '400',
@@ -12,7 +11,7 @@ const kalam = Kalam({
 
 const Login = () => {
   return (
-    <div className={`login-section ${styles.loginSection} container py-1 `}>
+    <div className={`login-section container py-1 `}>
         <Link href={"/"} className='d-flex align-items-center justify-content-center link-underline link-underline-opacity-0 text-body'>
             <Image src={icon} alt='Logo' className='mb-2' width={64}></Image>
             <p className={`h3 m-0 ${kalam.className}`}>Aqraaz</p>
