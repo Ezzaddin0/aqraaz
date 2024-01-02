@@ -3,6 +3,7 @@ import React from 'react'
 import styles  from "@/app/[lang]/page.module.css"
 import { urlFor } from '@/lib/createClient';
 import { Locale } from '@/i18n.config';
+import Image from 'next/image';
 
 interface Props {
     id: any;
@@ -21,11 +22,12 @@ const CardHorizontal = ({ id, title, description, imageUrl, categories, createdA
         <div className="row g-0">
         <div className="col-md-5">
             <Link href={{pathname:`/${lang}/post/${slug?.current}`,query: {slug:slug?.current}}} aria-label={title.en} key={id}>
-            <img
+            <Image
             src={urlFor(imageUrl).url()}
             alt=""
             className="img-fluid object-fit-cover w-100 rounded-start"
-            height={"250px"}
+            height="250"
+            width="400"
             style={{height: "250px"}}
             />
             </Link>

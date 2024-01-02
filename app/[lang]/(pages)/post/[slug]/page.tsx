@@ -21,20 +21,20 @@ export async function generateMetadata({
   }`
   const post:Post = await client.fetch(query,{slug})
 
-  // let keywordsEn: any[] = [];
-  // let keywordsAr: any[] = [];
+  let keywordsEn: any[] = [];
+  let keywordsAr: any[] = [];
 
-  // post.keywords[0].en?.map((data:any) => {
-  //   keywordsEn.push(data)
-  // })
-  // post.keywords[0].ar?.map((data:any) => {
-  //   keywordsAr.push(data)
-  // })
+  post.keywords[0].en?.map((data:any) => {
+    keywordsEn.push(data)
+  })
+  post.keywords[0].ar?.map((data:any) => {
+    keywordsAr.push(data)
+  })
 
   return{
     title: lang === "en" ? post?.title.en : post?.title.ar,
     description: lang === "en" ? post?.description.en : post?.description.ar,
-    // keywords: lang === "en" ? keywordsEn : keywordsAr,
+    keywords: lang === "en" ? keywordsEn : keywordsAr,
     alternates: {
       canonical: `/post/${slug}`,
       languages: {
@@ -88,7 +88,7 @@ const SlugPage = async ({
   return (
     <div>
       <div className='mb-5'>
-        <h1 className='pt-3 pb-1'>{lang === "en" ? post.title.en : post.title.ar}</h1>
+        <h1 className='pt-3 pb-1'>{lang === "en" ? post?.title?.en : post?.title?.ar}</h1>
         <Image src={urlFor(post?.mainImage).url()} alt='main Image' className='w-100 object-fit-cover' width={500} height={500}></Image>
       </div>
       <PortableText value={lang === "en" ? post?.body[0].en : post?.body[0].ar} components={RichText}/>

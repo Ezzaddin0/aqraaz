@@ -32,16 +32,16 @@ export async function generateMetadata({
     const post:any = await client.fetch(query,{slug})
     const { page } = await getDictionary(lang);
   
-    // let keywordsEn: any[] = [];
-    // let keywordsAr: any[] = [];
+    let keywordsEn: any[] = [];
+    let keywordsAr: any[] = [];
   
-    // post.keywords?.en.map((data:any) => {
-    //     keywordsEn.push(data)
-    // })
+    post.keywords?.en.map((data:any) => {
+        keywordsEn.push(data)
+    })
   
-    // post.keywords?.ar.map((data:any) => {
-    //     keywordsAr.push(data)
-    // })
+    post.keywords?.ar.map((data:any) => {
+        keywordsAr.push(data)
+    })
     
   
     return{
@@ -54,7 +54,7 @@ export async function generateMetadata({
           'ar': `/ar/categories/${slug}`,
         },
       },
-      // keywords: lang === "en" ? keywordsEn : keywordsAr,
+      keywords: lang === "en" ? keywordsEn : keywordsAr,
       openGraph: {
         title: `${slug}`,
         description: `${lang === "en" ? "Welcome to Aqraaz's Categories Page, your gateway to a world of diverse content. Explore an array of topics, from tech and business to lifestyle and wellness. Find insightful articles, tips, and resources curated to cater to your interests. Dive into our categorized content and embark on a journey of discovery tailored to enrich your knowledge and spark inspiration" : "مرحبًا بكم في صفحة فئات Aqraaz، بوابتكم إلى عالم محتوى متنوع. استكشاف مجموعة من المواضيع، من التكنولوجيا والأعمال إلى نمط الحياة والصحة والعافية. اعثر على مقالات مفيدة، نصائح، وموارد مختارة لتلبية اهتماماتكم. اغمر في محتوىنا المصنَّف وابدأ رحلة اكتشاف مصممة لإثراء معرفتكم وإشعال الإلهام."}`,
@@ -83,6 +83,7 @@ const page = async ({
 }:{
     params: {slug:any, lang:Locale}
 }) => {
+  
 
     const query = groq`*[_type == 'category' && slug.current == $slug][0]{
         ...,

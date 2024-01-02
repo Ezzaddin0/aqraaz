@@ -21,6 +21,8 @@ const Card = ({ id, title, description, imageUrl, categories, createdAt, slug, l
   //   console.log(item);
     
   // })    
+  // console.log(imageUrl);
+  
   
   
   return (
