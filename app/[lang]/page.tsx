@@ -44,6 +44,9 @@ export async function generateMetadata({
         'ar': '/ar',
       },
     },
+    other: {
+      'google-adsense-account': `${process.env.NEXT_PUBLIC_GOOGLE_ADSENSE}`,
+    },
     openGraph: {
       title: `${lang === "en" ? "Home" : "الصفحة الرئيسية"}`,
       description: `${lang === "en" ? 'Discover boundless insights across diverse domains on the Aqraaz blog. Delve into a wealth of specialized content covering technology, business strategies, lifestyle trends, health advice, and more. Our curated collection of articles and resources caters to every interest and expertise level, ensuring a rewarding reading experience for all. Explore the Aqraaz blog today for expert perspectives, valuable tips, and in-depth analyses across a myriad of categories' : 'اكتشف رؤى لا حدود لها عبر مجالات متنوعة على مدونة أقراز. تعمق في مجموعة كبيرة من المحتوى المتخصص الذي يغطي التكنولوجيا واستراتيجيات الأعمال واتجاهات نمط الحياة والنصائح الصحية والمزيد. تلبي مجموعتنا المنسقة من المقالات والموارد جميع مستويات الاهتمام والخبرة، مما يضمن تجربة قراءة مجزية للجميع. استكشف مدونة أقراز اليوم للحصول على وجهات نظر الخبراء والنصائح القيمة والتحليلات المتعمقة عبر عدد لا يحصى من الفئات.'}`,

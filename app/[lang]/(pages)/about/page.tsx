@@ -21,6 +21,9 @@ export const metadata: Metadata = {
     index: false,
     nocache: true
   },
+  other: {
+    'google-adsense-account': `${process.env.NEXT_PUBLIC_GOOGLE_ADSENSE}`,
+  },
   openGraph: {
     title: "About",
     description: 'I have a specialized website called "Aqraaz" which is a comprehensive blog covering various topics, specializations, and categories. Aqraaz aims to provide diverse and comprehensive content that meets the needs and interests of a diverse readership.',

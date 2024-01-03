@@ -16,6 +16,9 @@ export const metadata: Metadata = {
       'ar': '/ar/connect_us',
     },
   },
+  other: {
+    'google-adsense-account': `${process.env.NEXT_PUBLIC_GOOGLE_ADSENSE}`,
+  },
   robots: {
     index: false,
     nocache: true

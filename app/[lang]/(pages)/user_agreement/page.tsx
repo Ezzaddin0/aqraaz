@@ -21,6 +21,9 @@ export const metadata: Metadata = {
       index: false,
       nocache: true
     },
+    other: {
+      'google-adsense-account': `${process.env.NEXT_PUBLIC_GOOGLE_ADSENSE}`,
+    },
     openGraph: {
       title: "user agreement",
       description: "Welcome to Aqraaz's User Agreement page, outlining the terms and conditions for accessing and utilizing our services. By accessing or using our platform, you agree to adhere to these Terms of Service, which govern your interaction with our website. Explore a wealth of diverse content, safeguarded by intellectual property rights, including articles, images, videos, and more, available for personal, non-commercial use. Creating an account grants access to exclusive features, and your privacy is our priority; our Privacy Policy details how your information is handled. While we strive to maintain the quality of our service, Aqraaz holds no liability for indirect or consequential damages resulting from your use of our platform. We may update these terms periodically, and your continued use constitutes acceptance of any revisions. For inquiries regarding these terms, reach out to us at aqraazsite@gmail.com. Thank you for being a part of Aqraaz",

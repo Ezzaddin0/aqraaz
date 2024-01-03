@@ -43,6 +43,9 @@ export async function generateMetadata({
         'ar': `/ar/post/${slug}`,
       },
     },
+    other: {
+      'google-adsense-account': `${process.env.NEXT_PUBLIC_GOOGLE_ADSENSE}`,
+    },
     openGraph: {
       title: lang === "en" ? post?.title.en : post?.title.ar,
       description: lang === "en" ? post?.description.en : post?.description.ar,

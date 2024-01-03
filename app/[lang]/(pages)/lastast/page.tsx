@@ -34,6 +34,9 @@ export async function generateMetadata({
         'ar': '/ar/lastast',
       },
     },
+    other: {
+      'google-adsense-account': `${process.env.NEXT_PUBLIC_GOOGLE_ADSENSE}`,
+    },
     openGraph: {
       title: "lastast",
       description: `${lang === "en" ? "Discover the freshest insights and updates in Aqraaz's Latest Posts. Stay ahead with the most recent articles, trends, and informative content across a spectrum of topics. Engage with our newest offerings, curated to keep you informed and inspired. Dive into our latest contributions and explore the forefront of knowledge and innovation" : "اكتشف أحدث الرؤى والتحديثات في أحدث المقالات في Aqraaz. تبقَ على رأس الأمور مع أحدث المقالات والاتجاهات والمحتوى المفيد عبر مجموعة من المواضيع. تفاعل مع آخر ما نقدمه، مختارًا خصيصًا ليبقيك على اطلاع دائم وملهم. اغمر في أحدث مساهماتنا واستكشف الرائد في المعرفة والابتكار."}`,
