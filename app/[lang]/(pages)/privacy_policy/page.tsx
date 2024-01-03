@@ -1,6 +1,7 @@
 import { Locale } from '@/i18n.config'
 import { getDictionary } from '@/lib/dictionary'
 import { Metadata } from 'next'
+import Script from 'next/script'
 import React from 'react'
 
 export const metadata: Metadata = {
@@ -33,7 +34,8 @@ const privacy_policy = async ({
 }) => {
   const { page } = await getDictionary(lang)
   return (
-    <div>
+  <>
+  <div>
       <h1 className='my-3'>{page.PrivacyPolicy.title}</h1>
       <p>{page.PrivacyPolicy.description}</p>
       <div className='my-2'>
@@ -78,6 +80,18 @@ const privacy_policy = async ({
         </div>
       </div>
     </div>
+    {/* Google tag (gtag.js) */}
+    <Script async strategy="afterInteractive" src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GOOGLE_ID}`}></Script>
+    <Script>
+    {`
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', '${process.env.NEXT_PUBLIC_GOOGLE_ID}');
+    `}
+    </Script>
+  </>
   )
 }
 

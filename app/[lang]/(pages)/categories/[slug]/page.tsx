@@ -7,6 +7,7 @@ import { client } from '@/lib/createClient'
 import { getDictionary } from '@/lib/dictionary'
 import { Post } from '@/types'
 import { groq } from 'next-sanity'
+import Script from 'next/script'
 import React from 'react'
 
 export async function generateMetadata({
@@ -88,6 +89,7 @@ const page = async ({
     
 
   return (
+  <>
     <div>
         <div className="row py-4">
             <TitleSeciton text={`Result of ${post?.title}`} />
@@ -111,6 +113,18 @@ const page = async ({
             </div>
         </div>
     </div>
+    {/* Google tag (gtag.js) */}
+    <Script async strategy="afterInteractive" src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GOOGLE_ID}`}></Script>
+    <Script>
+    {`
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', '${process.env.NEXT_PUBLIC_GOOGLE_ID}');
+    `}
+    </Script>
+  </>
   )
 }
 

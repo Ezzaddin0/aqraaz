@@ -2,6 +2,7 @@ import { Locale } from '@/i18n.config'
 import { getDictionary } from '@/lib/dictionary'
 import { Metadata } from 'next'
 import Link from 'next/link'
+import Script from 'next/script'
 import React from 'react'
 
 
@@ -36,7 +37,8 @@ const user_agreement = async ({
   }) => {
     const { page } = await getDictionary(lang)
   return (
-    <div>
+  <>
+  <div>
         <h1 className='mt-3 mb-2'>{page.user_agreement.title}</h1>
         <div className='mt-4'>
             <div className='my-5'>
@@ -85,8 +87,19 @@ const user_agreement = async ({
                 <p>{page.user_agreement.content.ContactUs.description} <Link className='h5 link-underline link-underline-opacity-0' href="mailto:aqraazsite@gmail.com">aqraazsite@gmail.com</Link></p>
             </div>
         </div>
-
     </div>
+    {/* Google tag (gtag.js) */}
+    <Script async strategy="afterInteractive" src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GOOGLE_ID}`}></Script>
+    <Script>
+    {`
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', '${process.env.NEXT_PUBLIC_GOOGLE_ID}');
+    `}
+    </Script>
+  </>
   )
 }
 

@@ -6,6 +6,7 @@ import { client, urlFor } from '@/lib/createClient';
 import { getDictionary } from '@/lib/dictionary';
 import { Metadata } from 'next';
 import { groq } from 'next-sanity';
+import Script from 'next/script';
 import React from 'react'
 
 export const revalidate = 30;
@@ -73,6 +74,7 @@ const categories = async ({
     const { page } = await getDictionary(lang)
     
   return (
+  <>
     <div>
         <h1 className='text-center pt-3'>{page.categories.title}</h1>
         
@@ -90,6 +92,18 @@ const categories = async ({
         </>
       ))}
     </div>
+    {/* Google tag (gtag.js) */}
+    <Script async strategy="afterInteractive" src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GOOGLE_ID}`}></Script>
+    <Script>
+    {`
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', '${process.env.NEXT_PUBLIC_GOOGLE_ID}');
+    `}
+    </Script>
+  </>
   )
 }
 

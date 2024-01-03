@@ -6,6 +6,7 @@ import { Locale } from '@/i18n.config'
 import { client } from '@/lib/createClient'
 import { getDictionary } from '@/lib/dictionary'
 import { groq } from 'next-sanity'
+import Script from 'next/script'
 import React from 'react'
 
 export const revalidate = 30;
@@ -30,7 +31,8 @@ const serach = async ({
     
     
   return (
-    <div>
+  <>
+  <div>
         <div className="row py-4">
             <TitleSeciton text={`${page.search.description} ${decodedString}`} />
             <div className="col-md-8">
@@ -53,6 +55,18 @@ const serach = async ({
             </div>
         </div>
     </div>
+    {/* Google tag (gtag.js) */}
+    <Script async strategy="afterInteractive" src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GOOGLE_ID}`}></Script>
+    <Script>
+    {`
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', '${process.env.NEXT_PUBLIC_GOOGLE_ID}');
+    `}
+    </Script>
+  </>
   )
 }
 

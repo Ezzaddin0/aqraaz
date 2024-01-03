@@ -4,6 +4,7 @@ import heroImage from "@/assets/images/image-home.svg"
 import { getDictionary } from '@/lib/dictionary'
 import { Locale } from '@/i18n.config'
 import { Metadata } from 'next'
+import Script from 'next/script'
 
 export const metadata: Metadata = {
   title: 'About',
@@ -35,6 +36,7 @@ const About = async ({
 }) => {
   const { page } = await getDictionary(lang)
   return (
+  <>
     <div>
       <h1 className='mt-3'>{page.about.title}</h1>
       <div className='row flex-lg-row-reverse align-items-center justify-content-center g-5 py-0'>
@@ -50,6 +52,18 @@ const About = async ({
         <h4 className='mt-2 mb-5'>{page.about.description.paragraphFive}</h4>
       </div>
     </div>
+    {/* Google tag (gtag.js) */}
+    <Script async strategy="afterInteractive" src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GOOGLE_ID}`}></Script>
+    <Script>
+    {`
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', '${process.env.NEXT_PUBLIC_GOOGLE_ID}');
+    `}
+    </Script>
+  </>
   )
 }
 

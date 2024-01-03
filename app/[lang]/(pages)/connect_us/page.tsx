@@ -2,6 +2,7 @@ import { Locale } from '@/i18n.config'
 import { getDictionary } from '@/lib/dictionary'
 import { Metadata } from 'next'
 import Link from 'next/link'
+import Script from 'next/script'
 import React from 'react'
 
 export const metadata: Metadata = {
@@ -35,6 +36,7 @@ const connect_us = async ({
   const { page } = await getDictionary(lang)
 
   return (
+  <>
     <div className='row flex-lg-row-reverse align-items-center justify-content-center g-5 py-0' style={{height: "70vh"}}>
       <div className='col-lg-4'>
         <h1 className='mt-3'>{page.connect_us.title}</h1>
@@ -43,6 +45,18 @@ const connect_us = async ({
         <Link className='btn btn-primary btn-lg mx-5' href="mailto:aqraazsite@gmail.com">aqraazsite@gmail.com</Link>
       </div>
     </div>
+    {/* Google tag (gtag.js) */}
+    <Script async strategy="afterInteractive" src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GOOGLE_ID}`}></Script>
+    <Script>
+    {`
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', '${process.env.NEXT_PUBLIC_GOOGLE_ID}');
+    `}
+    </Script>
+  </>
   )
 }
 

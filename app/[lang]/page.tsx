@@ -15,6 +15,8 @@ import PopularPostSection from '@/components/PopularPostSection/PopularPostSecti
 import { Locale } from '@/i18n.config'
 import { getDictionary } from '@/lib/dictionary'
 import Link from 'next/link'
+import Script from 'next/script'
+import GoogleAnalytics from '@/components/GoogleAnalytics/GoogleAnalytics'
 
 
 interface Props {
@@ -81,6 +83,7 @@ export default async function Home({
 
   
   return (
+    <>
     <div>
       <section className='Heroes container col-xxl-8 py-4 justify-content-center'>
         <div className="row flex-lg-row-reverse align-items-center justify-content-center g-5 py-0">
@@ -127,5 +130,17 @@ export default async function Home({
         </div>
       </section>
     </div>
+    {/* Google tag (gtag.js) */}
+    <Script async strategy="afterInteractive" src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GOOGLE_ID}`}></Script>
+    <Script>
+    {`
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', '${process.env.NEXT_PUBLIC_GOOGLE_ID}');
+    `}
+    </Script>
+    </>
   )
 }

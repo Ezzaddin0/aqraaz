@@ -7,6 +7,7 @@ import {PortableText} from '@portabletext/react'
 import { RichText } from '@/components/RichText/RichText';
 import { Locale } from '@/i18n.config';
 import { Metadata } from 'next';
+import Script from 'next/script';
 
 export async function generateMetadata({
   params: {lang, slug}
@@ -86,6 +87,7 @@ const SlugPage = async ({
   const post:Post = await client.fetch(query,{slug})
   
   return (
+  <>
     <div>
       <div className='mb-5'>
         <h1 className='pt-3 pb-1'>{lang === "en" ? post?.title?.en : post?.title?.ar}</h1>
@@ -93,6 +95,18 @@ const SlugPage = async ({
       </div>
       <PortableText value={lang === "en" ? post?.body[0].en : post?.body[0].ar} components={RichText}/>
     </div>
+    {/* Google tag (gtag.js) */}
+    <Script async strategy="afterInteractive" src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GOOGLE_ID}`}></Script>
+    <Script>
+    {`
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', '${process.env.NEXT_PUBLIC_GOOGLE_ID}');
+    `}
+    </Script>
+  </>
   )
 }
 

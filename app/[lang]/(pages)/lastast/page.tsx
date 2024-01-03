@@ -6,6 +6,7 @@ import { client } from '@/lib/createClient';
 import { getDictionary } from '@/lib/dictionary';
 import { Post } from '@/types';
 import { groq } from 'next-sanity';
+import Script from 'next/script';
 import React from 'react'
 
 interface Props {
@@ -61,10 +62,23 @@ const Category = async ({
   const { page } = await getDictionary(lang)
 
   return (
+  <>
     <div className='py-4'>
       <TitleSeciton text={page.lastest.title} />
       <InfiniteCard post={posts} lang={lang} />
     </div>
+    {/* Google tag (gtag.js) */}
+    <Script async strategy="afterInteractive" src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GOOGLE_ID}`}></Script>
+    <Script>
+    {`
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', '${process.env.NEXT_PUBLIC_GOOGLE_ID}');
+    `}
+    </Script>
+  </>
   )
 }
 

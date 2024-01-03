@@ -3,6 +3,7 @@ import React from 'react'
 import icon from "@/assets/images/icon.svg"
 import { Kalam } from 'next/font/google'
 import Link from 'next/link'
+import Script from 'next/script'
 
 const kalam = Kalam({
     weight: '400',
@@ -11,7 +12,8 @@ const kalam = Kalam({
 
 const Signup = () => {
   return (
-    <div className={`login-section container py-1 `}>
+  <>
+  <div className={`login-section container py-1 `}>
         <Link href={"/"} className='d-flex align-items-center justify-content-center link-underline link-underline-opacity-0 text-body'>
             <Image src={icon} alt='Logo' className='mb-2' width={64}></Image>
             <p className={`h3 m-0 ${kalam.className}`}>Aqraaz</p>
@@ -58,6 +60,18 @@ const Signup = () => {
             </button>
         </div>
     </div>
+    {/* Google tag (gtag.js) */}
+    <Script async strategy="afterInteractive" src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GOOGLE_ID}`}></Script>
+    <Script>
+    {`
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', '${process.env.NEXT_PUBLIC_GOOGLE_ID}');
+    `}
+    </Script>
+  </>
   )
 }
 
