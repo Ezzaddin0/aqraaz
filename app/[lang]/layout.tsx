@@ -8,6 +8,7 @@ import CheckPage from '@/components/checkPage/CheckPage'
 import Script from 'next/script'
 import { Locale, i18n } from '@/i18n.config'
 import Provider from '@/components/Provider/Provider'
+import { Analytics } from '@vercel/analytics/react';
 
 const inter = Inter({ subsets: ['latin'] })
 const cairo = Cairo({weight: "400", subsets: ['arabic']})
@@ -58,6 +59,7 @@ export default function RootLayout({
           </div>
         </Provider>
         <Script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossOrigin="anonymous"></Script>
+        <Analytics />
       </body>
     </html>
   )
