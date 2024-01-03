@@ -76,7 +76,6 @@ export default async function Home({
 }) {
   const posts = await client.fetch(query);
   const mostPopular = await client.fetch(queryMost);
-  // console.log(mostPopular);
 
   const { page } = await getDictionary(lang)
 
