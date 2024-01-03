@@ -16,7 +16,6 @@ import { Locale } from '@/i18n.config'
 import { getDictionary } from '@/lib/dictionary'
 import Link from 'next/link'
 import Script from 'next/script'
-import GoogleAnalytics from '@/components/GoogleAnalytics/GoogleAnalytics'
 
 
 interface Props {
