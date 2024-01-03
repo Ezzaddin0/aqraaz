@@ -5,8 +5,8 @@ import { groq } from "next-sanity";
 export const revalidate = 30;
 
 export default async function sitemap() {
-    const BaseUrlEn = "http://localhost:3000/en";
-    const BaseUrlAr = "http://localhost:3000/ar";
+    const BaseUrlEn = "https://www.aqraaz.com/en";
+    const BaseUrlAr = "https://www.aqraaz.com/ar";
 
 
     const query = groq`
