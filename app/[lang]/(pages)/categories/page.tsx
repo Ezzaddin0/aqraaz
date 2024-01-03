@@ -92,6 +92,7 @@ const categories = async ({
         </>
       ))}
     </div>
+    
     {/* Google tag (gtag.js) */}
     <Script async strategy="afterInteractive" src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GOOGLE_ID}`}></Script>
     <Script>
