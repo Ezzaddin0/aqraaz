@@ -8,6 +8,49 @@ import { getDictionary } from '@/lib/dictionary'
 import { Post } from '@/types'
 import { groq } from 'next-sanity'
 import React from 'react'
+
+export async function generateMetadata({
+  params: {lang, slug}
+}: {
+  params: {lang: Locale, slug: Props}
+}, parent:any) {
+
+  const query = groq`*[_type == 'category' && slug.current == $slug][0]{
+    ...,
+  }`
+  const post:any = await client.fetch(query,{slug})
+
+  // let keywordsEn: any[] = [];
+  // let keywordsAr: any[] = [];
+
+  // post.keywords.en?.map((data:any) => {
+  //   keywordsEn.push(data)
+  // })
+  // post.keywords.ar?.map((data:any) => {
+  //   keywordsAr.push(data)
+  // })
+
+  return{
+    title: lang === "en" ? post?.title : post?.titleAr,
+    description: lang === "en" ? post?.descriptionEn : post?.descriptionAr,
+    // keywords: lang === "en" ? keywordsEn : keywordsAr,
+    alternates: {
+      canonical: `${lang}/post/${slug}`,
+      languages: {
+        'en': `/en/post/${slug}`,
+        'ar': `/ar/post/${slug}`,
+      },
+    },
+    openGraph: {
+      title: lang === "en" ? post?.title : post?.titleAr,
+      description: lang === "en" ? post?.descriptionEn : post?.descriptionAr,
+      url: `${lang}/post/${slug}`,
+      siteName: "Aqraaz.com"
+    }
+  }
+
+}
+
 export const revalidate = 30;
 
 interface Props {
@@ -16,71 +59,17 @@ interface Props {
     }
 }
 
-export async function generateMetadata({
-    params: {lang, slug}
-  }: {
-    params: {lang: Locale, slug: any}
-  }, parent:any) {
-    
-    
-  
-    const query = groq`*[_type == 'category' && slug.current == $slug][0]{
-        ...,
-          posts[]->{
-            ...,
-            categories[]->,
-          }
-      }`
-    const post:any = await client.fetch(query,{slug})
-    const { page } = await getDictionary(lang);
-    console.log(post);
-  
-    // let keywordsEn: any[] = [];
-    // let keywordsAr: any[] = [];
-  
-    // post.keywords?.en.map((data:any) => {
-    //     keywordsEn.push(data)
-    // })
-  
-    // post.keywords?.ar.map((data:any) => {
-    //     keywordsAr.push(data)
-    // })
-    
-  
-    return{
-      title: lang === "en" ? post?.title : post?.titleAr,
-      description: `${lang === "en" ? post?.descriptionEn : post?.descriptionAr}`,
-      alternates: {
-        canonical: `${lang}/categories/${post?.slug}`,
-        languages: {
-          'en': `/en/categories/${post?.slug}`,
-          'ar': `/ar/categories/${post?.slug}`,
-        },
-      },
-      // keywords: lang === "en" ? keywordsEn : keywordsAr,
-      openGraph: {
-        title: `${lang === "en" ? post?.title : post?.titleAr}`,
-        description: `${lang === "en" ? post?.descriptionEn : post?.descriptionAr}`,
-        url: `${lang}/categories/${post?.slug}`,
-        siteName: "Aqraaz.com"
-      }
-    }
-  
-}
-
-
 export const generateStaticParams = async () => {
-    const query = groq`*[_type == 'post']{
-    slug
-    }`;
-    const slugs: Post[] = await client.fetch(query)
-    const slugRoutes = slugs.map((slug) => slug?.slug?.current)
-    return slugRoutes.map((slug) => ({
-    slug,
-    }))
+  const query = groq`*[_type == 'post']{
+  slug
+  }`;
+  const slugs: Post[] = await client.fetch(query)
+  const slugRoutes = slugs.map((slug) => slug?.slug?.current)
+  return slugRoutes.map((slug) => ({
+  slug,
+  }))
 }
-
-  
+ 
 const page = async ({
     params:{slug, lang}
 }:{

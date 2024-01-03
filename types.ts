@@ -57,7 +57,6 @@ interface Span {
 }
 
 interface Category extends Base {
-  titleAr: any;
   description: string;
   title: string;
 }
