@@ -16,23 +16,23 @@ const inter = Inter({ subsets: ['latin'] })
 const cairo = Cairo({weight: "400", subsets: ['arabic']})
 
 export const metadata: Metadata = {
-  title: 'Aqraaz',
-  description: 'Discover boundless insights across diverse domains on the Aqraaz blog. Delve into a wealth of specialized content covering technology, business strategies, lifestyle trends, health advice, and more. Our curated collection of articles and resources caters to every interest and expertise level, ensuring a rewarding reading experience for all. Explore the Aqraaz blog today for expert perspectives, valuable tips, and in-depth analyses across a myriad of categories',
-  keywords: ['aqraaz','Aqraaz','aqra','aqraa','seo','digital marketing','technology','business','lifestyle','health','entrepreneurship','content creation','social media','career','finance','innovation','self-improvement','e-commerce','design','data analytics','cybersecurity','remote work','sustainability','travel','sports','news','programming','blogging','web development','online presence',],
+  // title: 'Aqraaz',
+  // description: 'Discover boundless insights across diverse domains on the Aqraaz blog. Delve into a wealth of specialized content covering technology, business strategies, lifestyle trends, health advice, and more. Our curated collection of articles and resources caters to every interest and expertise level, ensuring a rewarding reading experience for all. Explore the Aqraaz blog today for expert perspectives, valuable tips, and in-depth analyses across a myriad of categories',
+  // keywords: ['aqraaz','Aqraaz','aqra','aqraa','seo','digital marketing','technology','business','lifestyle','health','entrepreneurship','content creation','social media','career','finance','innovation','self-improvement','e-commerce','design','data analytics','cybersecurity','remote work','sustainability','travel','sports','news','programming','blogging','web development','online presence',],
   metadataBase: new URL("https://www.aqraaz.com/"),
-  alternates: {
-    canonical: "/",
-    languages: {
-      'en': '/en',
-      'ar': '/ar',
-    },
-  },
-  openGraph: {
-    title: "Aqraaz",
-    description: "Discover boundless insights across diverse domains on the Aqraaz blog. Delve into a wealth of specialized content covering technology, business strategies, lifestyle trends, health advice, and more. Our curated collection of articles and resources caters to every interest and expertise level, ensuring a rewarding reading experience for all. Explore the Aqraaz blog today for expert perspectives, valuable tips, and in-depth analyses across a myriad of categories",
-    url: "https://www.aqraaz.com/",
-    siteName: "Aqraaz.com"
-  }
+  // alternates: {
+  //   canonical: "/",
+  //   languages: {
+  //     'en': '/en',
+  //     'ar': '/ar',
+  //   },
+  // },
+  // openGraph: {
+  //   title: "Aqraaz",
+  //   description: "Discover boundless insights across diverse domains on the Aqraaz blog. Delve into a wealth of specialized content covering technology, business strategies, lifestyle trends, health advice, and more. Our curated collection of articles and resources caters to every interest and expertise level, ensuring a rewarding reading experience for all. Explore the Aqraaz blog today for expert perspectives, valuable tips, and in-depth analyses across a myriad of categories",
+  //   url: "https://www.aqraaz.com/",
+  //   siteName: "Aqraaz.com"
+  // }
 }
 
 export async function generateStaticParams() {
