@@ -26,14 +26,14 @@ export default async function sitemap() {
         url: `${BaseUrlAr}/post/${post.slug.current}?slug=${post.slug.current}`,
         lastModified: post?._createdAt,
     }))
-    const postUrlsEn = posts.map((post:any) => ({
-        url: `${BaseUrlEn}/post/${post.slug.current}`,
-        lastModified: post?._createdAt,
-    }))
-    const postUrlsAr = posts.map((post:any) => ({
-        url: `${BaseUrlAr}/post/${post.slug.current}`,
-        lastModified: post?._createdAt,
-    }))
+    // const postUrlsEn = posts.map((post:any) => ({
+    //     url: `${BaseUrlEn}/post/${post.slug.current}`,
+    //     lastModified: post?._createdAt,
+    // }))
+    // const postUrlsAr = posts.map((post:any) => ({
+    //     url: `${BaseUrlAr}/post/${post.slug.current}`,
+    //     lastModified: post?._createdAt,
+    // }))
 
     const queryCategory = groq`
     *[_type == 'category']{
@@ -69,10 +69,10 @@ export default async function sitemap() {
 
 
 
-        ...postUrlsEn,
+        // ...postUrlsEn,
         ...postUrlsEnSlug,
         ...postUrlsArSlug,
-        ...postUrlsAr,
+        // ...postUrlsAr,
         ...CategoryUrlsEn,
         ...CategoryUrlsAr,
     ]
