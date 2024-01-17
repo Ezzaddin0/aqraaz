@@ -35,7 +35,7 @@ export async function generateMetadata({
 
   return{
     title: lang === "en" ? post?.title : post?.titleAr,
-    description: lang === "en" ? post.descriptionEn : post.descriptionAr,
+    // description: lang === "en" ? post.descriptionEn : post.descriptionAr,
     // keywords: lang === "en" ? post?.title : post?.titleAr,
     alternates: {
       canonical: `${lang}/post/${slug}`,
