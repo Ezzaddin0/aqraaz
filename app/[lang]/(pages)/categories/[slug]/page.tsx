@@ -36,7 +36,7 @@ export async function generateMetadata({
   return{
     title: lang === "en" ? post?.title : post?.titleAr,
     description: lang === "en" ? post.descriptionEn : post.descriptionAr,
-    keywords: lang === "en" ? post?.title : post?.titleAr,
+    // keywords: lang === "en" ? post?.title : post?.titleAr,
     alternates: {
       canonical: `${lang}/post/${slug}`,
       languages: {
@@ -105,7 +105,7 @@ const page = async ({
                     // <div >hhhh</div>
                 <CardHorizontal lang={lang} id={post?._id} title={post?.title} description={post?.description} imageUrl={post?.mainImage} categories={post?.categories} createdAt={post?._createdAt} slug={post?.slug}/>
                 ))} */}
-                <InfiniteCard post={post.posts} number={5} lang={lang} />
+                <InfiniteCard post={post?.posts} number={5} lang={lang} />
                 </div>
             </div>
             <div className="col-md-4 py-3 d-none d-md-block">
