@@ -10,6 +10,7 @@ import { Locale, i18n } from '@/i18n.config'
 import Provider from '@/components/Provider/Provider'
 import { Analytics } from '@vercel/analytics/react';
 import { SpeedInsights } from '@vercel/speed-insights/next';
+import iconWeb from "@/assets/images/white-icon.svg"
 
 
 const inter = Inter({ subsets: ['latin'] })
@@ -19,6 +20,9 @@ export const metadata: Metadata = {
   // title: 'Aqraaz',
   // description: 'Discover boundless insights across diverse domains on the Aqraaz blog. Delve into a wealth of specialized content covering technology, business strategies, lifestyle trends, health advice, and more. Our curated collection of articles and resources caters to every interest and expertise level, ensuring a rewarding reading experience for all. Explore the Aqraaz blog today for expert perspectives, valuable tips, and in-depth analyses across a myriad of categories',
   // keywords: ['aqraaz','Aqraaz','aqra','aqraa','seo','digital marketing','technology','business','lifestyle','health','entrepreneurship','content creation','social media','career','finance','innovation','self-improvement','e-commerce','design','data analytics','cybersecurity','remote work','sustainability','travel','sports','news','programming','blogging','web development','online presence',],
+  icons: {
+    icon: `${iconWeb.src}`
+  },
   metadataBase: new URL("https://www.aqraaz.com/"),
   // alternates: {
   //   canonical: "/",

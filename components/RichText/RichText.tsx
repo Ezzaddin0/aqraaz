@@ -1,6 +1,7 @@
 import { urlFor } from "@/lib/createClient";
 import Image from "next/image";
 import Link from "next/link";
+import styles from "@/app/[lang]/page.module.css";
 
 export const RichText = {
   types: {
@@ -12,7 +13,7 @@ export const RichText = {
             alt="Post image"
             width={600}
             height={450}
-            className="object-fit-cover w-100"
+            className={`object-fit-fill w-100 ${styles.imagePost}`}
           />
         </div>
       );
@@ -20,7 +21,7 @@ export const RichText = {
   },
   list: {
     bullet: ({ children }: any) => (
-      <ul className="ms-2 py-5 list-disc space-y-5">{children}</ul>
+      <ul className="ms-2 py-3 px-3 list-disc space-y-5">{children}</ul>
     ),
   },
   number: ({ children }: any) => (
@@ -31,7 +32,7 @@ export const RichText = {
       <h1 className="text-4xl py-4 font-bold">{children}</h1>
     ),
     h2: ({ children }: any) => (
-      <h2 className="text-3xl py-4 font-bold">{children}</h2>
+      <h2 className="text-3xl py-2 font-bold">{children}</h2>
     ),
     h3: ({ children }: any) => (
       <h3 className="text-2xl py-4 font-bold">{children}</h3>

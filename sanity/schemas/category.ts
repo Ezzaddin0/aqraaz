@@ -5,23 +5,6 @@ export default defineType({
   title: 'Category',
   type: 'document',
   fields: [
-    // {
-    //   title: 'Title',
-    //   name: 'title',
-    //   type: 'object',
-    //   fields: [
-    //     {
-    //       title: 'English',
-    //       name: 'en',
-    //       type: 'string',
-    //     },
-    //     {
-    //       title: 'Arabic',
-    //       name: 'ar',
-    //       type: 'string', 
-    //     },
-    //   ]
-    // },
     defineField({
       name: 'title',
       title: 'Title',

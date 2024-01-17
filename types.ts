@@ -57,6 +57,7 @@ interface Span {
 }
 
 interface Category extends Base {
+  posts: any;
   description: string;
   title: string;
 }

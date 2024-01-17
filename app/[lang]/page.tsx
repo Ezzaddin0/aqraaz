@@ -72,6 +72,12 @@ const query = groq`
     categories[]->,
 } | order(_createdAt desc)`
 
+
+const articleQ = groq`
+*[_type == 'article']{
+  ...,
+} | order(_createdAt desc)`
+
 export default async function Home({
   params: {lang}
 }: {
@@ -80,15 +86,16 @@ export default async function Home({
   const posts = await client.fetch(query);
   const mostPopular = await client.fetch(queryMost);
 
-  const { page } = await getDictionary(lang)
+  const { page } = await getDictionary(lang);
+  const article = await client.fetch(articleQ);
 
   
   return (
     <>
     <div>
-      <section className='Heroes container col-xxl-8 py-4 justify-content-center'>
+      <section className='Heroes container py-4 justify-content-center'>
         <div className="row flex-lg-row-reverse align-items-center justify-content-center g-5 py-0">
-          <div className="col-10 col-sm-8 col-lg-6">
+          <div className="col-10 col-sm-8 col-lg-6 d-none d-md-block">
             <Image src={heroImage} alt='Image Hero' className='w-100' width={600} height={400}></Image>
           </div>
           <div className="col-lg-6">
@@ -121,7 +128,7 @@ export default async function Home({
             </div>
           </div>
           <div className="col-md-5 py-3">
-            <CardText lang={lang}/>
+            <CardText title={lang === "en" ? article[0]?.titleEn : article[0]?.titleAr} description={lang === "en" ? article[0]?.descriptionEn : article[0]?.descriptionAr} lang={lang}/>
             <CardSide posts={posts} lang={lang} />
             <TitleSeciton text={page.home.categoriesList.title} />
             <div className='py-3'>

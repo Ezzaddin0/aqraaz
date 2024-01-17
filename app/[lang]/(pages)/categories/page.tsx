@@ -60,13 +60,14 @@ export async function generateMetadata({
 }
 
 const query = groq`
-*[_type == 'category']{
+*[_type == 'category'] {
   ...,
-      posts[]->{
+  "posts": *[_type == 'post' && references(^._id)]{
         ...,
         categories[]->,
-      },
-} | order(_createdAt asc)`
+      }
+}
+`
 
 const categories = async ({
   params: {lang}

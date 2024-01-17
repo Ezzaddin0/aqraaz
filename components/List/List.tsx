@@ -19,7 +19,7 @@ const List = async ({lang}:Props) => {
   const categories = await client.fetch(query);
   return (
     <ul className="list-group list-group-flush p-0">
-      {categories.map((category:any) => (
+      {categories.slice(0,6).map((category:any) => (
         <li className="list-group-item">
           <Link className='link-underline link-underline-opacity-0 text-body' href={{pathname:`/${lang}/categories/${category.slug.current}`}}>{lang === "en" ? category?.title : category?.titleAr}
           {lang === "en" ? 

@@ -21,7 +21,7 @@ const kalam = Kalam({
 const Navbar = async ({lang}: { lang: Locale}) => {
     const { navigation } = await getDictionary(lang)
   return (
-    <nav className="navbar navbar-expand-lg border-body border-bottom p-3">
+    <nav className="navbar navbar-expand-lg border-body border-bottom py-3 px-2 px-md-3">
         <Link className={`navbar-brand d-flex align-items-center ${kalam.className}`} href={`/${lang}`}>
             <IconBtn/> {navigation.title}
         </Link>
@@ -40,14 +40,13 @@ const Navbar = async ({lang}: { lang: Locale}) => {
                     <Link href={`/${lang}/about`} className="nav-link" aria-disabled="true">{navigation.about}</Link>
                 </li>
             </ul>
+            <div>
             <div className='d-flex gap-2 '>
             <SearchInput lang={lang}/>
-
-            {/* <Link href={`/${lang}/login`} className="btn btn-outline-success">{navigation.login}</Link>
-            <Link href={`/${lang}/signup`} className="btn btn-outline-secondary" type="submit">{navigation.signup}</Link> */}
             <SwitchLang/>
             <div className='mx-2 d-flex align-items-center'>
                 <ThemeMode/>
+            </div>
             </div>
             </div>
         </div>

@@ -8,21 +8,23 @@ import { groq } from 'next-sanity'
 
 interface Props {
     lang: Locale,
-    post: any
+    post: any,
+    number?: number
 }
 
 
 
 const InfiniteCard = ({
     lang,
-    post
+    post,
+    number
 }:Props) => {
 
     const [posts, setPosts] = useState(post)
-    const [index, setIndex] = useState(3)
+    const [index, setIndex] = useState(number || 3)
 
     async function loadMoreCard() {
-        const next = index + 3
+        const next = index + (number || 3)
         if (posts?.length) {
             setIndex(next)
         }
@@ -34,7 +36,7 @@ const InfiniteCard = ({
         <CardHorizontal lang={lang} id={post?._id} imageUrl={post?.mainImage} title={post?.title} description={post?.description} categories={post?.categories} createdAt={post?._createdAt} slug={post?.slug}/>
         ))}
         <div className='py-3 d-flex align-items-center justify-content-center'>
-            <button type="button" onClick={loadMoreCard} className="btn btn-primary">load more</button>
+            {index >= posts.length ? "finshed" : <button type="button" onClick={loadMoreCard} className="btn btn-primary">load more</button>}
         </div>
     </div>
   )

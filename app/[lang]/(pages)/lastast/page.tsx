@@ -68,7 +68,7 @@ const Category = async ({
   <>
     <div className='py-4'>
       <TitleSeciton text={page.lastest.title} />
-      <InfiniteCard post={posts} lang={lang} />
+      <InfiniteCard post={posts} number={5} lang={lang} />
     </div>
     {/* Google tag (gtag.js) */}
     <Script async strategy="afterInteractive" src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GOOGLE_ID}`}></Script>

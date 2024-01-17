@@ -36,6 +36,11 @@
                 "discription": "Customize this section to tell your visitors a little bit about your publication, writers, content, or something else entirely. Totally up to you."
             }
         },
+        "postsPage": {
+            "sectionLikeYou": {
+                "title": "You may like it"
+            }
+        },
         "categories": {
             "title": "categories"
         },

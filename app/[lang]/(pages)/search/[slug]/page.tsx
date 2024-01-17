@@ -19,7 +19,7 @@ const serach = async ({
   }) => {
     const decodedString = decodeURIComponent(slug);
 
-    const query = groq`*[_type == 'post' && (title.en match $decodedString || title.ar match $decodedString)] {
+    const query = groq`*[_type == 'post' && (title.en match $decodedString + "*" || title.ar match $decodedString + "*")] {
       ...,
         categories[]->,
     } | order(_createdAt asc)

@@ -5,16 +5,6 @@ export default defineType({
   title: "Post",
   type: "document",
   fields: [
-    // defineField({
-    //   name: "title",
-    //   title: "Title",
-    //   type: "string",
-    // }),
-    // defineField({
-    //   name: 'titleAr',
-    //   title: 'Title Arabic',
-    //   type: 'string',
-    // }),
     {
       title: "Title",
       name: "title",
@@ -135,11 +125,6 @@ export default defineType({
         }
       ]
     }    
-    // defineField({
-    //   name: "body",
-    //   title: "Body",
-    //   type: "blockContent",
-    // }),
   ],
 
   preview: {

@@ -1,7 +1,9 @@
 import CardHorizontal from '@/components/Card-Horizontal/CardHorizontal'
+import CardText from '@/components/CardText/CardText'
 import FilterSection from '@/components/FilterSection/FilterSection'
 import List from '@/components/List/List'
 import TitleSeciton from '@/components/Title-Seciton/TitleSeciton'
+import InfiniteCard from '@/components/infiniteCard/infiniteCard'
 import { Locale } from '@/i18n.config'
 import { client } from '@/lib/createClient'
 import { getDictionary } from '@/lib/dictionary'
@@ -21,20 +23,20 @@ export async function generateMetadata({
   }`
   const post:any = await client.fetch(query,{slug})
 
-  // let keywordsEn: any[] = [];
-  // let keywordsAr: any[] = [];
+  let keywordsEn: any[] = [];
+  let keywordsAr: any[] = [];
 
-  // post.keywords.en?.map((data:any) => {
-  //   keywordsEn.push(data)
-  // })
-  // post.keywords.ar?.map((data:any) => {
-  //   keywordsAr.push(data)
-  // })
+  post.keywords.en?.map((data:any) => {
+    keywordsEn.push(data)
+  })
+  post.keywords.ar?.map((data:any) => {
+    keywordsAr.push(data)
+  })
 
   return{
     title: lang === "en" ? post?.title : post?.titleAr,
-    description: lang === "en" ? post?.descriptionEn : post?.descriptionAr,
-    // keywords: lang === "en" ? keywordsEn : keywordsAr,
+    description: lang === "en" ? post.descriptionEn : post.descriptionAr,
+    keywords: lang === "en" ? keywordsEn : keywordsAr,
     alternates: {
       canonical: `${lang}/post/${slug}`,
       languages: {
@@ -98,14 +100,16 @@ const page = async ({
             <TitleSeciton text={`Result of ${post?.title}`} />
             <div className="col-md-8">
                 <div className='py-3'>
-                { post?.posts && 
+                {/* { post?.posts && 
                 post?.posts.map((post:any) => (
                     // <div >hhhh</div>
                 <CardHorizontal lang={lang} id={post?._id} title={post?.title} description={post?.description} imageUrl={post?.mainImage} categories={post?.categories} createdAt={post?._createdAt} slug={post?.slug}/>
-                ))}
+                ))} */}
+                <InfiniteCard post={post.posts} number={5} lang={lang} />
                 </div>
             </div>
-            <div className="col-md-4 d-none d-md-block">
+            <div className="col-md-4 py-3 d-none d-md-block">
+                <CardText lang={lang} title={lang == "en" ? post?.title : post?.titleAr} description={lang == "en" ? post?.descriptionEn : post?.descriptionAr}/>
                 <TitleSeciton text='Filter' />
                 <FilterSection/>
                 <hr />

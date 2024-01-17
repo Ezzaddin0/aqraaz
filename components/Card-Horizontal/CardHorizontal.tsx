@@ -27,7 +27,7 @@ const CardHorizontal = ({ id, title, description, imageUrl, categories, createdA
             alt=""
             className="img-fluid object-fit-cover w-100 rounded-start"
             height="250"
-            width="400"
+            width="1000"
             style={{height: "250px"}}
             />
             </Link>

@@ -28,7 +28,7 @@ const Card = ({ id, title, description, imageUrl, categories, createdAt, slug, l
   return (
     <div className="card border border-0 shadow-sm mb-3">
       <Link href={{pathname:`/${lang}/post/${slug?.current}`,query: {slug:slug?.current}}} aria-label={"title"} key={id}>
-        <Image src={urlFor(imageUrl).url()} alt='' height="220" width="100" style={{maxHeight: "276px"}} className='w-100 img-fluid object-fit-cover' ></Image>
+        <Image src={urlFor(imageUrl).url()} alt='' height="220" width="1000" style={{maxHeight: "240px", minHeight: "240px"}} className='w-100 img-fluid object-fit-cover' ></Image>
       </Link>
       <div className="card-body">
         <div className="d-flex gap-2 text-cneter align-items-center text-body-secondary mb-1">
