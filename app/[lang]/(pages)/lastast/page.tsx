@@ -51,7 +51,7 @@ export async function generateMetadata({
 const query = groq`
 *[_type == 'post']{
   ...,
-  author->,
+  // author->,
     categories[]->,
 } | order(_createdAt desc)`
 
@@ -63,6 +63,9 @@ const Category = async ({
 }) => {
   const posts = await client.fetch(query);
   const { page } = await getDictionary(lang)
+
+  // console.log(posts);
+  
 
   return (
   <>

@@ -23,12 +23,15 @@ const InfiniteCard = ({
     const [posts, setPosts] = useState(post)
     const [index, setIndex] = useState(number || 3)
 
+    // console.log(posts);
+    
+
     async function loadMoreCard() {
         const next = index + (number || 3)
-        if (posts?.length) {
+        if (post?.length) {
             setIndex(next)
         }
-    }
+    }    
 
   return (
     <div className="mt-3">

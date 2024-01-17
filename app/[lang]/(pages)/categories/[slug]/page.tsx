@@ -84,13 +84,16 @@ const page = async ({
   
 
     const query = groq`*[_type == 'category' && slug.current == $slug][0]{
-        ...,
-          posts[]->{
-            ...,
-            categories[]->,
-          }
+      ...,
+        posts[]->{
+          ...,
+          categories[]->,
+        }
       }`
     const post:any = await client.fetch(query,{slug})
+
+    // console.log(post.posts);
+    
     
 
   return (
@@ -100,12 +103,12 @@ const page = async ({
             <TitleSeciton text={`Result of ${post?.title}`} />
             <div className="col-md-8">
                 <div className='py-3'>
-                {/* { post?.posts && 
+                { post?.posts && 
                 post?.posts.map((post:any) => (
                     // <div >hhhh</div>
                 <CardHorizontal lang={lang} id={post?._id} title={post?.title} description={post?.description} imageUrl={post?.mainImage} categories={post?.categories} createdAt={post?._createdAt} slug={post?.slug}/>
-                ))} */}
-                <InfiniteCard post={post?.posts} number={5} lang={lang} />
+                ))}
+                {/* <InfiniteCard post={post.posts} number={5} lang={lang} /> */}
                 </div>
             </div>
             <div className="col-md-4 py-3 d-none d-md-block">
