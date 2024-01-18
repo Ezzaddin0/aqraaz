@@ -83,9 +83,9 @@ const page = async ({
 }) => {
   
 
-    const query = groq`*[_type == 'category' && slug.current == $slug][0]{
+    const query = groq`*[_type == 'category' && slug.current == "most-popular-posts"][0]{
       ...,
-        posts[]->{
+        "posts": *[_type == 'post' && references(^._id)]{
           ...,
           categories[]->,
         }

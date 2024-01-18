@@ -33,7 +33,8 @@ export async function GET() {
             description: post.description.en,
             guid: `https://www.aqraaz.com/en/post/${post.slug.current}`,
             url: `https://www.aqraaz.com/en/post/${post.slug.current}`,
-            date: new Date(post._createdAt)
+            date: new Date(post._createdAt),
+            
         })
         
     });
