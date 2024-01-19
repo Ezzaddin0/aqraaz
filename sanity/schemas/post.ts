@@ -1,4 +1,3 @@
-import { languageFilter } from "@sanity/language-filter";
 import { defineField, defineType } from "sanity";
 
 export default defineType({

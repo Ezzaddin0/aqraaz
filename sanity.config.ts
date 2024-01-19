@@ -3,10 +3,6 @@ import {deskTool} from 'sanity/desk'
 import {visionTool} from '@sanity/vision'
 import {schemaTypes} from './sanity/schemas'
 import { unsplashImageAsset } from 'sanity-plugin-asset-source-unsplash';
-import {languageFilter} from '@sanity/language-filter'
-import {googleTranslate} from 'sanity-plugin-google-translate'
-import { documentInternationalization } from '@sanity/document-internationalization';
-import { internationalizedArray } from 'sanity-plugin-internationalized-array';
 import { pexelsImageAsset } from 'sanity-plugin-asset-source-pexels';
 
 
