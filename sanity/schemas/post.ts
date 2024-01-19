@@ -35,12 +35,12 @@ export default defineType({
         {
           title: "English",
           name: "en",
-          type: "string"
+          type: "text"
         },
         {
           title: "Arabic",
           name: "ar",
-          type: "string"
+          type: "text"
         }
       ]
     },
