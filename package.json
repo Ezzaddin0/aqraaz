@@ -28,7 +28,8 @@
     "sanity-plugin-asset-source-unsplash": "^1.1.2",
     "sanity-plugin-google-translate": "^3.0.0",
     "sanity-plugin-internationalized-array": "^1.10.5",
-    "styled-components": "^6.0.7"
+    "styled-components": "^6.0.7",
+    "styled-components-5": "npm:styled-components@^5.3.11"
   },
   "devDependencies": {
     "@sanity/eslint-config-studio": "^3.0.1",
