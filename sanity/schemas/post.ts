@@ -1,9 +1,14 @@
+import { languageFilter } from "@sanity/language-filter";
 import { defineField, defineType } from "sanity";
 
 export default defineType({
   name: "post",
   title: "Post",
   type: "document",
+  options: {
+    // show language filter for this document type, regardless of how documentTypes for the plugin is configured
+    languageFilter: true,
+  },
   fields: [
     {
       title: "Title",

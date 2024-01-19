@@ -10,7 +10,9 @@
   },
   "dependencies": {
     "@formatjs/intl-localematcher": "^0.5.2",
+    "@sanity/document-internationalization": "^2.0.3",
     "@sanity/image-url": "^1.0.2",
+    "@sanity/language-filter": "^3.2.1",
     "@sanity/vision": "^3.23.2",
     "@vercel/analytics": "^1.1.1",
     "@vercel/speed-insights": "^1.0.2",
@@ -23,6 +25,10 @@
     "react-dom": "^18",
     "rss": "^1.2.2",
     "sanity": "^3.23.2",
+    "sanity-plugin-asset-source-pexels": "^3.0.2",
+    "sanity-plugin-asset-source-unsplash": "^1.1.2",
+    "sanity-plugin-google-translate": "^3.0.0",
+    "sanity-plugin-internationalized-array": "^1.10.5",
     "styled-components": "^6.0.7"
   },
   "devDependencies": {
