@@ -24,7 +24,6 @@
     "react-dom": "^18",
     "rss": "^1.2.2",
     "sanity": "^3.23.2",
-    "sanity-plugin-asset-source-pexels": "^3.0.2",
     "sanity-plugin-asset-source-unsplash": "^1.1.2",
     "sanity-plugin-google-translate": "^3.0.0",
     "sanity-plugin-internationalized-array": "^1.10.5",
