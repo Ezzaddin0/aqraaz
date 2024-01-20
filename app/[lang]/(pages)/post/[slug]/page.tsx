@@ -108,7 +108,7 @@ const SlugPage = async ({
         <Image src={urlFor(post?.mainImage).url()} alt='main Image' className={`w-100 object-fit-fill ${styles.imagePost}`} width={500} height={500}></Image>
       </div>
       <PortableText value={lang === "en" ? post?.body[0].en : post?.body[0].ar} components={RichText}/>
-
+      {post.categories[0].posts &&
       <section className='popular-post'>
         <TitleSeciton text={page.postsPage.sectionLikeYou.title}/>
         <div className='row row-cols-1 row-cols-sm-2 row-cols-md-3 justify-content-center py-3'>
@@ -119,6 +119,7 @@ const SlugPage = async ({
           ))}
         </div>
       </section>
+      }
     </div>
     {/* Google tag (gtag.js) */}
     <Script async strategy="afterInteractive" src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GOOGLE_ID}`}></Script>
