@@ -46,6 +46,9 @@
     }
 }
 
+.test {
+    color: red;
+}
 
 @media (max-width: 400px) {
     .imagePost {
