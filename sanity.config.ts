@@ -3,7 +3,7 @@ import {deskTool} from 'sanity/desk'
 import {visionTool} from '@sanity/vision'
 import {schemaTypes} from './sanity/schemas'
 import { unsplashImageAsset } from 'sanity-plugin-asset-source-unsplash';
-import { pexelsImageAsset } from 'sanity-plugin-asset-source-pexels';
+// import { pexelsImageAsset } from 'sanity-plugin-asset-source-pexels';
 
 
 
@@ -21,9 +21,9 @@ export default defineConfig({
   plugins: [deskTool(), 
     visionTool(), 
     unsplashImageAsset(),
-    pexelsImageAsset({
-      API_KEY: 'NsaORkLPknUYRkhAjONASqhT7IzTmcmTb5b601tJn9CsAbUahwJpbdwp',
-    }),
+    // pexelsImageAsset({
+    //   API_KEY: 'NsaORkLPknUYRkhAjONASqhT7IzTmcmTb5b601tJn9CsAbUahwJpbdwp',
+    // }),
     // languageFilter({
     //   supportedLanguages: [
     //     {id: 'en', title: 'English'},
