@@ -112,7 +112,7 @@ const SlugPage = async ({
       <section className='popular-post'>
         <TitleSeciton text={page.postsPage.sectionLikeYou.title}/>
         <div className='row row-cols-1 row-cols-sm-2 row-cols-md-3 justify-content-center py-3'>
-          {post.categories && post.categories[0].posts.slice(0,3).map((post:any) => (
+          {post.categories[0].posts.slice(0,3).map((post:any) => (
           <div className="col mb-2">
             <Card lang={lang} id={post?._id} imageUrl={post?.mainImage} title={post?.title} description={post?.description} categories={post?.categories} createdAt={post?._createdAt} slug={post?.slug} />
           </div>
