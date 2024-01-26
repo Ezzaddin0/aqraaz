@@ -10,11 +10,7 @@ export default async function sitemap() {
 
 
     const query = groq`
-    *[_type == 'post']{
-    ...,
-    author->,
-        categories[]->,
-    } | order(_createdAt desc)`
+    *[_type == "post"]`
 
     const posts = await client.fetch(query);
 
@@ -36,9 +32,7 @@ export default async function sitemap() {
     // }))
 
     const queryCategory = groq`
-    *[_type == 'category']{
-    ...,
-    } | order(_createdAt asc)`
+    *[_type == 'category']`
     const categories = await client.fetch(queryCategory);
 
     const CategoryUrlsEn = categories.map((post:any) => ({
