@@ -1,0 +1,80 @@
+// 'use client'
+// import React, { useState } from 'react'
+import { fetchAllPosts } from '../../../../data/data'
+import CardColumn from '../../../../components/CardColumn'
+import Filter from '../../../../components/Filter';
+import InfiniteCards from '../../../../components/InfiniteCards'
+import { getDictionary } from '../../../../lib/dictionary';
+import Script from 'next/script';
+
+
+export const revalidate = 30;
+
+export async function generateMetadata({params: {locale}}) {  
+
+  return{
+    title: locale == "en" ? "Latest posts" : "اخر المنشورات",
+    description: locale == "en" ? "Discover the freshest insights and updates in Aqraaz's Latest Posts. Stay ahead with the most recent articles, trends, and informative content across a spectrum of topics. Engage with our newest offerings, curated to keep you informed and inspired. Dive into our latest contributions and explore the forefront of knowledge and innovation" : "اكتشف أحدث الرؤى والتحديثات في أحدث المقالات في Aqraaz. تبقَ على رأس الأمور مع أحدث المقالات والاتجاهات والمحتوى المفيد عبر مجموعة من المواضيع. تفاعل مع آخر ما نقدمه، مختارًا خصيصًا ليبقيك على اطلاع دائم وملهم. اغمر في أحدث مساهماتنا واستكشف الرائد في المعرفة والابتكار.",
+    keywords: locale == "en" ? ["Latest articles, Trending topics, Fresh insights, Up-to-date content, Current trends, Recent updates, Newest information, Timely articles, Current events, Contemporary discussions, Cutting-edge knowledge, Recent developments, Modern perspectives, Contemporary analysis, Latest news, Recent discoveries, Fresh perspectives, Current perspectives, Emerging trends, Recent insights"] : ["أحدث المقالات، المواضيع الرائجة، رؤى جديدة، محتوى محدّث، الاتجاهات الحالية، التحديثات الأخيرة، أحدث المعلومات، مقالات موجهة، الأحداث الحالية، المناقشات المعاصرة، المعرفة الحديثة، التحليل المعاصر، آخر الأخبار، الاكتشافات الأخيرة، رؤى جديدة، منظورات حالية، الاتجاهات الناشئة، رؤى حديثة، منظورات حالية، الرؤى الأخيرة"],
+    alternates: {
+      canonical: "/lastast",
+      languages: {
+        'en': '/en/lastast',
+        'ar': '/ar/lastast',
+      },
+    },
+    other: {
+      'google-adsense-account': `${process.env.NEXT_PUBLIC_GOOGLE_ADSENSE}`,
+    },
+    openGraph: {
+      title: "lastast",
+      description: locale === "en" ? "Discover the freshest insights and updates in Aqraaz's Latest Posts. Stay ahead with the most recent articles, trends, and informative content across a spectrum of topics. Engage with our newest offerings, curated to keep you informed and inspired. Dive into our latest contributions and explore the forefront of knowledge and innovation" : "اكتشف أحدث الرؤى والتحديثات في أحدث المقالات في Aqraaz. تبقَ على رأس الأمور مع أحدث المقالات والاتجاهات والمحتوى المفيد عبر مجموعة من المواضيع. تفاعل مع آخر ما نقدمه، مختارًا خصيصًا ليبقيك على اطلاع دائم وملهم. اغمر في أحدث مساهماتنا واستكشف الرائد في المعرفة والابتكار.",
+      url: "/lastast",
+      siteName: "Aqraaz.com"
+    }
+  }
+
+}
+
+export default async function page({ params: {locale}}) {
+    const postsAll = await fetchAllPosts();
+
+    const { page } = await getDictionary(locale);
+
+    // const [posts, setPosts] = useState(postsAll)
+    // const [index, setIndex] = useState(number || 3);
+
+    // async function loadMoreCard() {
+    //   const next = index + (number || 3)
+    //   if (postsAll.length) {
+    //       setIndex(next)
+    //   }
+  // } 
+  return (
+    <>
+    <div className='px-4 py-6 sm:px-4 sm:py-12 lg:px-6 flex flex-col gap-6'>
+        <div className="pb-2 flex justify-end mb-4 mr-4 border-b border-gray-200/10">
+        {/* <Filter title={page.lastest.title} lang={locale} /> */}
+        </div>
+        {/* {posts.slice(0,index).map(post => (
+            <CardColumn post={post} />
+        ))}
+
+      {index >= posts.length ? <p>Finshed</p> : <button onClick={loadMoreCard} className="rounded-md w-max self-center bg-indigo-50 dark:bg-gray-800 px-3.5 py-2.5 text-sm font-semibold text-indigo-600 dark:text-gray-100 shadow-sm hover:bg-indigo-100 dark:hover:bg-gray-950">load more</button>
+      } */}
+      <InfiniteCards postsAll={postsAll} number={5} lang={locale} />
+    </div>
+    {/* Google tag (gtag.js) */}
+    <Script async strategy="afterInteractive" src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GOOGLE_ID}`}></Script>
+    <Script>
+    {`
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', '${process.env.NEXT_PUBLIC_GOOGLE_ID}');
+    `}
+    </Script>
+  </>
+  )
+}

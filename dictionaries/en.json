@@ -1,0 +1,201 @@
+{
+    "navigation": {
+        "title": "Aqraaz",
+        "home": "home",
+        "categories": "categories",
+        "lastest": "lastest",
+        "about": "about",
+        "login": "login",
+        "signup": "sign-up",
+        "langBtn": "Language"
+    },
+    "page": {
+        "home": {
+            "heroes": {
+                "title": "Aqraaz",
+                "description": "Your Ticket to a World Beyond Ordinary.",
+                "subtitle": {
+                    "first": "Explore everything at",
+                    "second": "News, articles, and all topics in one place. Stay informed, curious, and connected with us"
+                },
+                "btn": "Explore"
+            },
+            "popular": {
+                "title": "Most popular posts"
+            },
+            "lastest": {
+                "title": "Latest posts",
+                "more": "see more post"
+            },
+            "categoriesList": {
+                "title": "List of categories"
+            },
+            "randomPosts": {
+                "title": "Random posts"
+            },
+            "about": {
+                "title": "about",
+                "discription": "Customize this section to tell your visitors a little bit about your publication, writers, content, or something else entirely. Totally up to you."
+            }
+        },
+        "postsPage": {
+            "sectionLikeYou": {
+                "title": "You may like it"
+            }
+        },
+        "categories": {
+            "title": "categories"
+        },
+        "lastest": {
+            "title": "Latest posts"
+        },
+        "about": {
+            "title": "about",
+            "description": {
+                "paragraphOne": "I have a specialized website called 'Aqraaz' which is a comprehensive blog covering various topics, specializations, and categories. Aqraaz aims to provide diverse and comprehensive content that meets the needs and interests of a diverse readership.",
+                "paragraphTwo": "Aqraaz is considered a trusted source of information in multiple fields. Whether you're looking for technical articles, health tips, creative ideas, book and movie reviews, or any other topic, we strive to provide high-quality content that meets readers' expectations.",
+                "paragraphThree": "Our website stands out due to a specialized team of writers and editors dedicated to delivering creative articles and valuable information. We are continually striving to keep pace with the latest developments and innovations in the various fields we cover.",
+                "paragraphFour": "Whether you're interested in entertainment, culture, technology, science, health, or any other area, Aqraaz is the perfect place to acquire knowledge and enjoy reading high-quality articles.",
+                "paragraphFive": "We would be delighted to contribute outstanding and helpful content to enrich your website for your targeted audience."
+            }
+        },
+        "connect_us": {
+            "title": "connect us.",
+            "description": "Contact us via email",
+            "btn": "Send",
+            "list": {
+                "first": {
+                    "title": "Response speed",
+                    "description": "Response within less than a day"
+                }
+            }
+        },
+        "user_agreement": {
+            "title": "user agreement",
+            "content": {
+                "TermsofService": {
+                    "title": "Terms of Service",
+                    "paragraphOne": "These Terms of Service ('Terms') govern your access to and use of the Aqraaz website (the 'Service') operated by Aqraaz (our).",
+                    "paragraphTwo": "Please read these Terms carefully before using our Service. By accessing or using the Service, you agree to be bound by these Terms. If you disagree with any part of the terms, then you may not access the Service."
+                },
+                "content": {
+                    "title": "content",
+                    "description": "Our Service allows you to access a variety of content, including but not limited to articles, images, videos, and other materials. You may use this content for personal, non-commercial use only. Any other use requires explicit permission from us or the respective content owners."
+                },
+                "UserAccounts": {
+                    "title": "User Accounts",
+                    "description": "To access certain features of the Service, you may be required to create an account. You are responsible for maintaining the confidentiality of your account and password. You agree to accept responsibility for all activities that occur under your account."
+                },
+                "Privacy": {
+                    "title": "Privacy",
+                    "description": "Your privacy is important to us. Our Privacy Policy outlines how we collect, use, and disclose information when you use our Service. By using our Service, you agree to the terms of our Privacy Policy."
+                },
+                "IntellectualProperty": {
+                    "title": "Intellectual Property",
+                    "description": "The Service and its original content, features, and functionality are and will remain the exclusive property of Aqraaz. Our content is protected by copyright, trademark, and other laws."
+                },
+                "LimitationOfLiability": {
+                    "title": "Limitation Of Liability",
+                    "description": "In no event shall Aqraaz, nor its directors, employees, partners, agents, suppliers, or affiliates, be liable for any indirect, incidental, special, consequential or punitive damages, including without limitation, loss of profits, data, use, goodwill, or other intangible losses, resulting from:",
+                    "list": {
+                        "first": "Your access to or use of or inability to access or use the Service.",
+                        "second": "Any conduct or content of any third party on the Service.",
+                        "third": "Any content obtained from the Service."
+                    }
+                },
+                "Changes": {
+                    "title": "Changes",
+                    "description": "We reserve the right, at our sole discretion, to modify or replace these Terms at any time. By continuing to access or use our Service after those revisions become effective, you agree to be bound by the revised terms."
+                },
+                "ContactUs": {
+                    "title": "Contact Us",
+                    "description": "If you have any questions about these Terms, please contact us at "
+                }
+            }
+        },
+        "PrivacyPolicy": {
+            "title": "Privacy Policy",
+            "description": "This Privacy Policy governs the manner in which Aqraaz collects, uses, maintains, and discloses information collected from users (each, a 'User') of the Aqraaz website (Site).",
+            "PersonalIdentificationInformation": {
+                "title": "Personal Identification Information",
+                "description": "We may collect personal identification information from Users in various ways, including, but not limited to, when Users visit our site, register on the site, subscribe to the newsletter, respond to a survey, fill out a form, and in connection with other activities, services, features, or resources we make available on our Site. Users may be asked for their name, email address, mailing address, and phone number. Users may, however, visit our Site anonymously. We will collect personal identification information from Users only if they voluntarily submit such information to us. Users can always refuse to supply personal identification information, except that it may prevent them from engaging in certain Site-related activities."
+            },
+            "NonPersonalIdentificationInformation": {
+                "title": "Non-personal Identification Information",
+                "description": "We may collect non-personal identification information about Users whenever they interact with our Site. Non-personal identification information may include the browser name, the type of computer, and technical information about Users' means of connection to our Site, such as the operating system and the Internet service providers utilized, and other similar information."
+            },
+            "WebBrowserCookies": {
+                "title": "Web Browser Cookies",
+                "description": "Our Site may use 'cookies' to enhance User experience. Users' web browsers place cookies on their hard drive for record-keeping purposes and sometimes to track information about them. Users may choose to set their web browser to refuse cookies or to alert them when cookies are being sent. If they do so, note that some parts of the Site may not function properly."
+            },
+            "HowWeUseCollectedInformation": {
+                "title": "How We Use Collected Information",
+                "description": "Aqraaz may collect and use Users' personal information for the following purposes:",
+                "list": {
+                    "first": "To personalize user experience: We may use information in the aggregate to understand how our Users as a group use the services and resources provided on our Site.",
+                    "second": "To improve our Site: We continually strive to improve our website offerings based on the information and feedback we receive from Users.",
+                    "third": "To send periodic emails: We may use the email address to respond to inquiries, questions, and/or other requests."
+                }
+            },
+            "ProtectionOfInformation": {
+                "title": "Protection of Information",
+                "description": "We adopt appropriate data collection, storage, and processing practices and security measures to protect against unauthorized access, alteration, disclosure, or destruction of Users' personal information and data stored on our Site."
+            },
+            "SharingPersonalInformation": {
+                "title": "Sharing Personal Information",
+                "description": "We do not sell, trade, or rent Users' personal identification information to others. We may share generic aggregated demographic information not linked to any personal identification information regarding visitors and users with our business partners, trusted affiliates, and advertisers for the purposes outlined above."
+            },
+            "ChangesTothisPrivacyPolicy": {
+                "title": "Changes to this Privacy Policy",
+                "description": "Aqraaz has the discretion to update this privacy policy at any time. When we do, we will revise the updated date at the bottom of this page. We encourage Users to frequently check this page for any changes to stay informed about how we are helping to protect the personal information we collect. You acknowledge and agree that it is your responsibility to review this privacy policy periodically and become aware of modifications."
+            }
+        },
+        "search": {
+            "description": "Result of"
+        }
+    },
+    "ui": {
+        "filter": {
+            "title": "Filter",
+            "option": {
+                "mostPopular": "Most popular post",
+                "latestPost": "Latest Post"
+            }
+        },
+        "categories": {
+            "title": "Categories"
+        }
+    },
+    "footer": {
+        "pages": {
+            "title": "page",
+            "home": "home",
+            "categories": "categories",
+            "lastest": "lastest"
+        },
+        "categories": {
+            "title": "categories",
+            "history": "history",
+            "travel": "travel",
+            "technology": "technology",
+            "countries": "countries",
+            "news": "news"
+        },
+        "info": {
+            "title": "info",
+            "about": "about",
+            "privacy_policy": "privacy policy",
+            "connect_with_us": "Connect with us",
+            "user_agreement": "User Agreement"
+        },
+        "login": {
+            "title": "Login to our website",
+            "login": "login",
+            "signup": "sign-up"
+        },
+        "copyright": {
+            "icon": "©",
+            "title": "Aqraaz, Inc. All rights reserved."
+        }
+    }
+  }

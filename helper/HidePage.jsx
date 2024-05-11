@@ -1,0 +1,1 @@
+export const hidePage = ['/login', '/signup', '/en/studio', 'studio'];
