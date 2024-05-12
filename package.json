@@ -15,7 +15,7 @@
     "@sanity/image-url": "^1.0.2",
     "@sanity/react-loader": "^1.9.17",
     "@sanity/ui": "^2.1.7",
-    "@sanity/vision": "3.41.1",
+    "@sanity/vision": "^3.41.1",
     "@vercel/analytics": "^1.2.2",
     "@vercel/speed-insights": "^1.0.10",
     "negotiator": "^0.6.3",
