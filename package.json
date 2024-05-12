@@ -27,7 +27,7 @@
     "sanity": "^3.23.2",
     "sanity-plugin-asset-source-openai": "^1.1.2",
     "sanity-plugin-asset-source-pexels": "^3.0.2",
-    "sanity-plugin-asset-source-unsplash": "^3.0.1",
+    "sanity-plugin-asset-source-unsplash": "^1.1.2",
     "sanity-plugin-i18n-fields": "^1.0.0",
     "styled-components": "^5.3.11"
   },
