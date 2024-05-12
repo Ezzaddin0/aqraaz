@@ -14,7 +14,6 @@
     "@portabletext/react": "^3.0.18",
     "@sanity/image-url": "^1.0.2",
     "@sanity/react-loader": "^1.9.17",
-    "@sanity/table": "^1.1.2",
     "@sanity/ui": "^2.1.7",
     "@sanity/vision": "^3.41.1",
     "@vercel/analytics": "^1.2.2",

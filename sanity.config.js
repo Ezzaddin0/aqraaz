@@ -6,7 +6,6 @@ import { unsplashImageAsset } from 'sanity-plugin-asset-source-unsplash';
 // import { pexelsImageAsset } from 'sanity-plugin-asset-source-pexels';
 import {I18nFields} from 'sanity-plugin-i18n-fields'
 import {openaiImageAsset} from 'sanity-plugin-asset-source-openai'
-import { table } from '@sanity/table';
 import { pexelsImageAsset } from 'sanity-plugin-asset-source-pexels';
 // import {googleTranslate} from 'sanity-plugin-google-translate'
 
