@@ -31,7 +31,7 @@
     "sanity-plugin-asset-source-pexels": "^3.0.2",
     "sanity-plugin-asset-source-unsplash": "^3.0.1",
     "sanity-plugin-i18n-fields": "^1.0.0",
-    "styled-components": "^6.1.8"
+    "styled-components": "^5.3.11"
   },
   "devDependencies": {
     "postcss": "^8",
