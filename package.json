@@ -19,7 +19,7 @@
     "@vercel/speed-insights": "^1.0.10",
     "negotiator": "^0.6.3",
     "next": "14.2.3",
-    "next-sanity": "^7.0.4",
+    "next-sanity": "^7.1.4",
     "next-themes": "^0.3.0",
     "react": "^18",
     "react-dom": "^18",
