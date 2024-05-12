@@ -31,7 +31,7 @@ export default defineType({
         {title: 'H5', value: 'h5'},
         {title: 'H6', value: 'h6'},
         {title: 'Quote', value: 'blockquote'},
-        { title: 'Hidden', value: 'blockComment' }
+        // { title: 'Hidden', value: 'blockComment' }
       ],
       lists: [
         {title: 'Bullet', value: 'bullet'},
