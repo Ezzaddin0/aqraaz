@@ -1,3 +1,4 @@
+import { title } from 'process'
 import {defineType, defineArrayMember} from 'sanity'
 
 /**
@@ -31,12 +32,8 @@ export default defineType({
         {title: 'H5', value: 'h5'},
         {title: 'H6', value: 'h6'},
         {title: 'Quote', value: 'blockquote'},
-        // { title: 'Hidden', value: 'blockComment' }
       ],
-      lists: [
-        {title: 'Bullet', value: 'bullet'},
-        {title: 'Numbered', value: 'number'}
-      ],
+      lists: [{title: 'Bullet', value: 'bullet'}, {title: 'Numbered', value: 'number'}],
       // Marks let you mark up inline text in the block editor.
       marks: {
         // Decorators usually describe a single property – e.g. a typographic
@@ -44,7 +41,7 @@ export default defineType({
         decorators: [
           {title: 'Strong', value: 'strong'},
           {title: 'Emphasis', value: 'em'},
-          {title: 'Code', value: 'code'}
+          {title: 'Code', value: 'code'},
         ],
         // Annotations can be any object structure – e.g. a link or a footnote.
         annotations: [
@@ -60,35 +57,25 @@ export default defineType({
               },
             ],
           },
+          {
+            name: 'internalLink',
+            type: 'object',
+            title: 'Internal link',
+            fields: [
+              {
+                name: 'reference',
+                type: 'reference',
+                title: 'Reference',
+                to: [
+                  { type: 'post' },
+                  // other types you may want to link to
+                ]
+              }
+            ]
+          }
         ],
       },
     }),
-    // defineArrayMember({
-    //     type: 'block',
-    //     marks: {
-    //       decorators: [
-    //         // ...
-    //       ],
-    //       annotations: [
-    //         {
-    //           name: 'internalLink',
-    //           type: 'object',
-    //           title: 'Internal link',
-    //           fields: [
-    //             {
-    //               name: 'reference',
-    //               type: 'reference',
-    //               title: 'Reference',
-    //               to: [
-    //                 { type: 'post' },
-    //                 // other types you may want to link to
-    //               ]
-    //             }
-    //           ]
-    //         }
-    //       ]
-    //     }
-    // }),
     // You can add additional types here. Note that you can't use
     // primitive types such as 'string' and 'number' in the same array
     // as a block type.
