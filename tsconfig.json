@@ -27,7 +27,7 @@
     ".next/types/**/*.ts",
     "**/*.ts",
     "**/*.tsx"
-, "sanity/schemas/blockContent.jsx", "sanity/schemas/category.jsx"  ],
+, "sanity/schemas/blockContent.jsx", "sanity/schemas/category.jsx", "sanity/schemas/post.jsx"  ],
   "exclude": [
     "node_modules"
   ]
