@@ -33,7 +33,7 @@ export default function CardColumn({ post, lang }) {
                 {lang == 'en' ? post.title.en : post.title.ar}
                 </Link>
             </h3>
-            <p className="mt-5 text-sm leading-6 text-gray-600 dark:text-gray-300 line-clamp-3">{lang == 'en' ? post.description.en : post.description.ar}</p>
+            <p className="mt-5 text-sm leading-6 text-gray-600 dark:text-gray-300 line-clamp-3">{lang == 'en' ? post.description.en && post.description.en : post.description.ar && post.description.ar}</p>
             </div>
             <div className="mt-6 flex border-t border-gray-900/5 dark:border-gray-100/5 pt-6">
             <div className="relative flex items-center gap-x-4">

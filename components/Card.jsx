@@ -38,7 +38,7 @@ export default function Card({ post, lang }) {
             </div>
             <div className="group relative">
             <h3 className="mt-3 text-lg font-semibold leading-6 text-gray-900 dark:text-gray-100 group-hover:text-gray-600 dark:group-hover:text-gray-300">
-                <Link href={`/${lang}/post/${post.slug.current}`}>
+                <Link className='line-clamp-2' href={`/${lang}/post/${post.slug.current}`}>
                 <span className="absolute inset-0" />
                 {lang == 'en' ? post.title.en : post.title.ar}
                 </Link>
