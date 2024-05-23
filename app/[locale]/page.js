@@ -116,7 +116,7 @@ export default async function  Home({ params: { locale } }) {
               <ul role="list" className="-mx-2 abo">
                 {allCategories.slice(0,5).map(category => (
                 <li>
-                  <Link href={`${locale}/${category.slug.current}`} className=" text-gray-700 hover:text-indigo-600 hover:bg-gray-50 dark:text-gray-300 dark:hover:bg-gray-950 bqe flex aaf adu p-2 pl-3 text-sm leading-6 font-semibold">{locale == 'en' ? category.title.en : category.title.ar}{category.posts && <span className="mx-4 w-9 min-w-max whitespace-nowrap rounded-full bg-gray-100 dark:bg-gray-800 px-2.5 py-0.5 text-center text-xs font-medium leading-5 text-gray-600 dark:text-gray-200 ring-1 ring-inset ring-gray-200 dark:ring-gray-900" aria-hidden="true">{category.posts.length}{category.posts.length > 99 ? '+' : ''}</span>}
+                  <Link href={`${locale}/categories/${category.slug.current}`} className=" text-gray-700 hover:text-indigo-600 hover:bg-gray-50 dark:text-gray-300 dark:hover:bg-gray-950 bqe flex aaf adu p-2 pl-3 text-sm leading-6 font-semibold">{locale == 'en' ? category.title.en : category.title.ar}{category.posts && <span className="mx-4 w-9 min-w-max whitespace-nowrap rounded-full bg-gray-100 dark:bg-gray-800 px-2.5 py-0.5 text-center text-xs font-medium leading-5 text-gray-600 dark:text-gray-200 ring-1 ring-inset ring-gray-200 dark:ring-gray-900" aria-hidden="true">{category.posts.length}{category.posts.length > 99 ? '+' : ''}</span>}
                   </Link>
                 </li>
                 ))}

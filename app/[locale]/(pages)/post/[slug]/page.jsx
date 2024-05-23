@@ -10,7 +10,6 @@ import Script from 'next/script';
 
 export const revalidate = 30;
 
-
 export async function generateMetadata({params: {locale, slug}}) {
 
   const query = groq`*[_type == 'post' && slug.current == $slug][0]{

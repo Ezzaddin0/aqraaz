@@ -16,7 +16,7 @@ function InfiniteCards({postsAll, number, lang}) {
     <div className='flex flex-col gap-8'>
         {posts.slice(0,index).map(post => (
             <>
-            <CardColumn post={post} lang={lang} />
+            <CardColumn key={post.id} post={post} lang={lang} />
             <div className='w-full border border-gray-900/10 dark:border-gray-200/10'></div>
             </>
         ))}

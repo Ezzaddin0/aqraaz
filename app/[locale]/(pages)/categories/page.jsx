@@ -48,10 +48,10 @@ export default async function page({params: {locale}}) {
             {categories.map((category) => (
                 <div>
                     <Link href={`categories/${category.slug.current}`}>
-                    <h2 className="text-2xl flex items-center py-1 my-4 font-bold tracking-tight text-gray-900 dark:text-gray-100 border-b border-gray-200 dark:border-gray-800">{locale == 'en' ? category.title.en : category.title.ar} {category.posts.length > 3 && <svg className={`w-5 h-5 ${locale == 'en' ? '' : 'rotate-180'} ml-1 -mb-1 dark:fill-gray-300`} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z"/></svg>}</h2>
+                    <h2 className="text-2xl flex items-center py-1 my-4 font-bold tracking-tight text-gray-900 dark:text-gray-100 border-b border-gray-200 dark:border-gray-800">{locale == 'en' ? category.title.en : category.title.ar} {category?.posts?.length > 3 && <svg className={`w-5 h-5 ${locale == 'en' ? '' : 'rotate-180'} ml-1 -mb-1 dark:fill-gray-300`} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z"/></svg>}</h2>
                     </Link>
                     <div className="grid max-w-2xl grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-16 lg:max-w-none lg:grid-cols-3">
-                        {category.posts.slice(0,3).map(cate => (
+                        {category.posts && category.posts.slice(0,3).map(cate => (
                             <Card post={cate} lang={locale} />
                         ))}
                     </div>

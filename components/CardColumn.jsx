@@ -4,10 +4,10 @@ import { urlFor } from '../lib/createClient'
 import Link from 'next/link'
 import Image from 'next/image'
 
-export default function CardColumn({ post, lang }) {
+export default function CardColumn({ post, lang, key }) {
     const datePost = formatDate(post._createdAt)
   return (
-    <article ml-autoy={post._id} className="relative isolate flex flex-col gap-8 lg:flex-row">
+    <article key={key} ml-autoy={post._id} className="relative isolate flex flex-col gap-8 lg:flex-row">
         <div className="relative aspect-video sm:aspect-[2/1] lg:aspect-square lg:w-64 lg:flex-shrink-0">
             <Image width={256} height={256} src={urlFor(post.mainImage).url()} alt={lang == 'en' ? post.title.en : post.title.ar} className=" absolute inset-0 h-full w-full rounded-2xl bg-gray-100 dark:bg-gray-800 object-cover" />
             <div className="absolute inset-0 rounded-2xl ring-1 ring-inset ring-gray-900/10"></div>
@@ -28,7 +28,7 @@ export default function CardColumn({ post, lang }) {
             </div>
             <div className="group relative ">
             <h3 className="mt-3 text-lg font-semibold leading-6 text-gray-900 dark:text-gray-100 group-hover:text-gray-600 dark:group-hover:text-gray-300">
-                <Link href={`/${lang}/post/${post.slug.current}`}>
+                <Link className='line-clamp-2' href={`/${lang}/post/${post.slug.current}`}>
                 <span className="absolute inset-0" />
                 {lang == 'en' ? post.title.en : post.title.ar}
                 </Link>
