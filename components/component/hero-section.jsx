@@ -24,7 +24,7 @@ import Link from "next/link"
 
 // const getData = async (page, cat) => {
 //   const res = await fetch(
-//     `https://aqraaz.com/api/posts?page=${page}&cat=${cat || ""}`,
+//     `http://localhost:3000/api/posts?page=${page}&cat=${cat || ""}`,
 //     {
 //       cache: "no-store",
 //     }

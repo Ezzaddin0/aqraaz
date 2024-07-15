@@ -7,7 +7,7 @@ import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, Di
 
 async function deletePost(postId) {
   try {
-    const response = await fetch('https://aqraaz.com/api/posts', {
+    const response = await fetch('http://localhost:3000/api/posts', {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',

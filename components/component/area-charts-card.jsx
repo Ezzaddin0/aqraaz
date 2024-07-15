@@ -44,7 +44,7 @@ const fetcher = async (url) => {
 };
 
 export default function AreaChartsCard() {
-  const { data, isLoading, error } = useSWR(`https://aqraaz.com/api/posts`, fetcher);
+  const { data, isLoading, error } = useSWR(`http://localhost:3000/api/posts`, fetcher);
 
   const [timeRange, setTimeRange] = useState("90d")
   const filteredData = data?.posts?.filter((item) => {

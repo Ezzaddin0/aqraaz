@@ -43,7 +43,7 @@ export async function generateMetadata({params: {locale}}) {
 
 // const getPosts = async () => {
 //   const res = await fetch(
-//     `https://aqraaz.com/api/posts`,
+//     `http://localhost:3000/api/posts`,
 //     {
 //       cache: "no-store",
 //     }

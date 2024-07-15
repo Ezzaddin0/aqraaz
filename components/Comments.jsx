@@ -27,7 +27,7 @@ export default function Comments({ postSlug, avatar }) {
     const { status, data } = useSession();
 
   const { data: dataComments, mutate, isLoading } = useSWR(
-    `https://aqraaz.com/api/comments?postSlug=${postSlug}`,
+    `http://localhost:3000/api/comments?postSlug=${postSlug}`,
     fetcher
   );
 

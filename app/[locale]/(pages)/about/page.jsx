@@ -34,7 +34,7 @@ export const metadata = {
 }
 
 const getPosts = async () => {
-  const res = await fetch("https://aqraaz.com/api/posts", {
+  const res = await fetch("http://localhost:3000/api/posts", {
     cache: "no-store",
   });
 
@@ -46,7 +46,7 @@ const getPosts = async () => {
 };
 
 const getCategories = async () => {
-  const res = await fetch("https://aqraaz.com/api/categories", {
+  const res = await fetch("http://localhost:3000/api/categories", {
     cache: "no-store",
   });
 

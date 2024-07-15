@@ -13,7 +13,7 @@ export const sortByMostViewed = (posts) => {
 };
 
 export const getData = async (cat, sort) => {
-  const res = await fetch(`https://aqraaz.com/api/categories?slug=${cat}`, {
+  const res = await fetch(`http://localhost:3000/api/categories?slug=${cat}`, {
     cache: "no-store",
   });
 
@@ -38,7 +38,7 @@ export const getData = async (cat, sort) => {
 };
 
 export const getPosts = async (sort) => {
-  const res = await fetch(`https://aqraaz.com/api/posts`, {
+  const res = await fetch(`http://localhost:3000/api/posts`, {
     cache: "no-store",
   });
 

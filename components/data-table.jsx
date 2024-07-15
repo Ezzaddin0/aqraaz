@@ -47,14 +47,14 @@ export default function DataTable({ data, columns, addPost }) {
   const [rowSelection, setRowSelection] = useState({});
 
   const { data: dataPost, isLoading } = useSWR(
-    `https://aqraaz.com/api/posts?page=1&cat=`,
+    `http://localhost:3000/api/posts?page=1&cat=`,
     fetcher
   );
 
   const [selectedStatus, setSelectedStatus] = useState('');
 
   const { data: postData, isLoading: LoadingPost } = useSWR(
-    selectedStatus ? `https://aqraaz.com/api/posts/${selectedStatus}` : null,
+    selectedStatus ? `http://localhost:3000/api/posts/${selectedStatus}` : null,
     fetcher
   );
 
@@ -69,7 +69,7 @@ export default function DataTable({ data, columns, addPost }) {
       body.id = postData.id;
     }
 
-    const res = await fetch("https://aqraaz.com/api/posts", {
+    const res = await fetch("http://localhost:3000/api/posts", {
       method,
       headers: {
         "Content-Type": "application/json"

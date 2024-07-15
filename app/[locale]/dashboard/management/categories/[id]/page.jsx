@@ -60,8 +60,8 @@ export default function Page({ params }) {
   const router = useRouter();
 
   const { data: categoryData, isLoading } = useSWR(
-    params.id ? `https://aqraaz.com/api/categories?slug=${params.id}` : null,
-    // `https://aqraaz.com/api/categories?slug=${params.id}`,
+    params.id ? `http://localhost:3000/api/categories?slug=${params.id}` : null,
+    // `http://localhost:3000/api/categories?slug=${params.id}`,
     fetcher
   );
 
@@ -177,7 +177,7 @@ export default function Page({ params }) {
       body.id = categoryData[0].id;
     }
 
-    const res = await fetch("https://aqraaz.com/api/categories", {
+    const res = await fetch("http://localhost:3000/api/categories", {
       method,
       headers: {
         "Content-Type": "application/json"

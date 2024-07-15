@@ -24,7 +24,7 @@ const fetcher = async (url) => {
 
 export default function Page({ params: { locale } }) {
   const { data, isLoading } = useSWR(
-    `https://aqraaz.com/api/users`,
+    `http://localhost:3000/api/users`,
     fetcher
   );
 

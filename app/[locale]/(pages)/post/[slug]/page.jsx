@@ -63,7 +63,7 @@ export const revalidate = 30;
 // }
 
 const getData = async (slug) => {
-  const res = await fetch(`https://aqraaz.com/api/posts/${slug}`, {
+  const res = await fetch(`http://localhost:3000/api/posts/${slug}`, {
     cache: "no-store",
   });
 
@@ -75,7 +75,7 @@ const getData = async (slug) => {
 };
 
 const getPosts = async (slug) => {
-  const res = await fetch(`https://aqraaz.com/api/categories?slug=${slug}`, {
+  const res = await fetch(`http://localhost:3000/api/categories?slug=${slug}`, {
     cache: "no-store",
   });
 

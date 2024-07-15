@@ -15,7 +15,7 @@ import Link from 'next/link';
 export const revalidate = 30;
 
 const getCategory = async (slug) => {
-  const res = await fetch(`https://aqraaz.com/api/categories?slug=${slug}`, {
+  const res = await fetch(`http://localhost:3000/api/categories?slug=${slug}`, {
     cache: "no-store",
   });
 
@@ -60,7 +60,7 @@ export async function generateMetadata({params: {locale, slug}}) {
 
 // const getData = async (cat) => {
 //   const res = await fetch(
-//     `https://aqraaz.com/api/categories?slug=${cat}`,
+//     `http://localhost:3000/api/categories?slug=${cat}`,
 //     {
 //       cache: "no-store",
 //     }

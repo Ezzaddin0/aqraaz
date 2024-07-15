@@ -32,7 +32,7 @@ const fetcher = async (url) => {
 
 export default function Page({ params }) {
   const router = useRouter();
-  const { data, isLoading } = useSWR(`https://aqraaz.com/api/users/${params.id}`, fetcher);
+  const { data, isLoading } = useSWR(`http://localhost:3000/api/users/${params.id}`, fetcher);
 
   const [id, setId] = useState(null);
   const [name, setName] = useState("");
@@ -62,7 +62,7 @@ export default function Page({ params }) {
       createdAt: date,
     };
 
-    const res = await fetch(`https://aqraaz.com/api/users/${params.id}`, {
+    const res = await fetch(`http://localhost:3000/api/users/${params.id}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
