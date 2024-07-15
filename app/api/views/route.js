@@ -32,6 +32,11 @@ import { NextResponse } from "next/server";
 // };
 
 export const GET = async (req, { params }) => {
+  // التحقق من وجود params وslug
+  if (!params || !params.slug) {
+    return NextResponse.json({ message: "Missing slug parameter!" }, { status: 400 });
+  }
+
   const { slug } = params;
 
   try {
