@@ -1,17 +1,14 @@
 import { Cairo, Inter } from "next/font/google";
 import "./globals.css";
-import Provider from "../../components/Provider";
-import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
-import { Locale, i18n } from '../../i18n.config'
+import Header from "../../components/component/header"
 import iconWeb from '../../assets/images/white-icon.svg'
 import { Analytics } from '@vercel/analytics/react'
 import { SpeedInsights } from '@vercel/speed-insights/next';
-
-
+import AuthProvider from '../../lib/AuthProvider';
+import Script from "next/script";
 
 export const revalidate = 30;
-
 
 const inter = Inter({ subsets: ['latin'] })
 const cairo = Cairo({weight: "400", subsets: ['arabic']})
@@ -28,15 +25,29 @@ export const metadata = {
 export default function RootLayout({ children, params }) {
   return (
     <html lang={params.locale} dir={params.locale === "ar" ? "rtl" : "ltr"}>
-      <body className={` dark:bg-gray-900 ${params.locale === "ar" ? cairo.className : inter.className}`}>
-        <Provider>
-          <Navbar lang={params} />
-          {children}
-          <Footer lang={params} />
-        </Provider>
-
+      <body className={`dark:bg-gray-900 ${params.locale === "ar" ? cairo.className : inter.className}`}>
+          <AuthProvider>
+            <div className="md:container px-2 mx-auto ">
+              <Header lang={params.locale} />
+              {children}
+              <Footer lang={params.locale} />
+            </div>
+          </AuthProvider>
         <Analytics />
         <SpeedInsights />
+        <Script
+          async
+          strategy="afterInteractive"
+          src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GOOGLE_ID}`}
+        ></Script>
+        <Script>
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', '${process.env.NEXT_PUBLIC_GOOGLE_ID}');
+          `}
+        </Script>
       </body>
     </html>
   );

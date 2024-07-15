@@ -3,16 +3,33 @@ import RSS from 'rss';
 import { client } from "../../../../lib/createClient";
 import { groq } from "next-sanity";
 
+const getPosts = async () => {
+  const res = await fetch(
+    `https://aqraaz.com/api/posts`,
+    {
+      cache: "no-store",
+    }
+  );
+
+  if (!res.ok) {
+    throw new Error("Failed");
+  }
+
+  return res.json();
+};
+
 export async function GET() {
 
-    const query = groq`
-    *[_type == 'post']{
-    ...,
-    author->,
-        categories[]->,
-    } | order(_createdAt desc)`
+    // const query = groq`
+    // *[_type == 'post']{
+    // ...,
+    // author->,
+    //     categories[]->,
+    // } | order(_createdAt desc)`
 
-    const posts = await client.fetch(query);
+    // const posts = await client.fetch(query);
+
+    const posts = await getPosts();
 
 
     const feed = new RSS({
@@ -27,24 +44,24 @@ export async function GET() {
         copyright: `All right reserved ${new Date().getFullYear()}`
     })
 
-    posts.forEach(post => {
+    posts.posts.forEach(post => {
         feed.item({
             title: post.title.en,
-            description: post.description.en,
-            guid: `https://www.aqraaz.com/en/post/${post.slug.current}`,
-            url: `https://www.aqraaz.com/en/post/${post.slug.current}`,
-            date: new Date(post._createdAt),
+            description: post.desc.en,
+            guid: `https://www.aqraaz.com/en/post/${post.slug}`,
+            url: `https://www.aqraaz.com/en/post/${post.slug}`,
+            date: new Date(post.createdAt),
             
         })
         
     });
-    posts.forEach(post => {
+    posts.posts.forEach(post => {
         feed.item({
             title: post.title.ar,
-            description: post.description.ar,
-            guid: `https://www.aqraaz.com/ar/post/${post.slug.current}`,
-            url: `https://www.aqraaz.com/ar/post/${post.slug.current}`,
-            date: new Date(post._createdAt)
+            description: post.desc.ar,
+            guid: `https://www.aqraaz.com/ar/post/${post.slug}`,
+            url: `https://www.aqraaz.com/ar/post/${post.slug}`,
+            date: new Date(post.createdAt)
         })
         
     });

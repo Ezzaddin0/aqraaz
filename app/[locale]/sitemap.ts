@@ -4,23 +4,56 @@ import { groq } from "next-sanity";
 
 export const revalidate = 30;
 
+const getPosts = async () => {
+  const res = await fetch(
+    `https://www.aqraaz.com/api/posts`,
+    {
+      cache: "no-store",
+    }
+  );
+
+  if (!res.ok) {
+    throw new Error("Failed");
+  }
+
+  return res.json();
+};
+
+const getCategories = async () => {
+  const res = await fetch(
+    `https://www.aqraaz.com/api/categories`,
+    {
+      cache: "no-store",
+    }
+  );
+
+  if (!res.ok) {
+    throw new Error("Failed");
+  }
+
+  return res.json();
+};
+
 export default async function sitemap() {
     const BaseUrlEn = "https://www.aqraaz.com/en";
     const BaseUrlAr = "https://www.aqraaz.com/ar";
 
 
-    const query = groq`
-    *[_type == "post"]`
+    // const query = groq`
+    // *[_type == "post"]`
 
-    const posts = await client.fetch(query);
+    // const posts = await client.fetch(query);
 
-    const postUrlsEnSlug = posts.map((post:any) => ({
-        url: `${BaseUrlEn}/post/${post.slug.current}?slug=${post.slug.current}`,
-        lastModified: post?._createdAt,
+    const posts = await getPosts();
+    const categories = await getCategories();
+
+    const postUrlsEnSlug = posts.posts.map((post:any) => ({
+        url: `${BaseUrlEn}/post/${post.slug}`,
+        lastModified: post?.createdAt,
     }))
     const postUrlsArSlug = posts.map((post:any) => ({
-        url: `${BaseUrlAr}/post/${post.slug.current}?slug=${post.slug.current}`,
-        lastModified: post?._createdAt,
+        url: `${BaseUrlAr}/post/${post.slug}`,
+        lastModified: post?.createdAt,
     }))
     // const postUrlsEn = posts.map((post:any) => ({
     //     url: `${BaseUrlEn}/post/${post.slug.current}`,
@@ -31,17 +64,17 @@ export default async function sitemap() {
     //     lastModified: post?._createdAt,
     // }))
 
-    const queryCategory = groq`
-    *[_type == 'category']`
-    const categories = await client.fetch(queryCategory);
+    // const queryCategory = groq`
+    // *[_type == 'category']`
+    // const categories = await client.fetch(queryCategory);
 
     const CategoryUrlsEn = categories.map((post:any) => ({
-        url: `${BaseUrlEn}/categories/${post.slug.current}`,
-        lastModified: post?._createdAt,
+        url: `${BaseUrlEn}/categories/${post.slug}`,
+        lastModified: post?.createdAt,
     }))
     const CategoryUrlsAr = categories.map((post:any) => ({
-        url: `${BaseUrlAr}/categories/${post.slug.current}`,
-        lastModified: post?._createdAt,
+        url: `${BaseUrlAr}/categories/${post.slug}`,
+        lastModified: post?.createdAt,
     }))
 
 
@@ -50,6 +83,8 @@ export default async function sitemap() {
         {url: BaseUrlAr, lastModified: new Date()},
         {url: `${BaseUrlEn}/categories`, lastModified: new Date()},
         {url: `${BaseUrlAr}/categories`, lastModified: new Date()},
+        {url: `${BaseUrlEn}/latest`, lastModified: new Date()},
+        {url: `${BaseUrlAr}/latest`, lastModified: new Date()},
         // {url: `${BaseUrlEn}/about`, lastModified: new Date()},
         // {url: `${BaseUrlAr}/about`, lastModified: new Date()},
         // {url: `${BaseUrlEn}/connect_us`, lastModified: new Date()},

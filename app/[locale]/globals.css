@@ -2,6 +2,270 @@
 @tailwind components;
 @tailwind utilities;
 
-.test {
-    color: palevioletred;
+  @layer base {
+    :root {
+      --background: 0 0% 100%;
+      --foreground: 222.2 84% 4.9%;
+
+      --card: 0 0% 100%;
+      --card-foreground: 222.2 84% 4.9%;
+
+      --popover: 0 0% 100%;
+      --popover-foreground: 222.2 84% 4.9%;
+
+      --primary: 222.2 47.4% 11.2%;
+      --primary-foreground: 210 40% 98%;
+
+      --secondary: 210 40% 96.1%;
+      --secondary-foreground: 222.2 47.4% 11.2%;
+
+      --muted: 210 40% 96.1%;
+      --muted-foreground: 215.4 16.3% 46.9%;
+
+      --accent: 210 40% 96.1%;
+      --accent-foreground: 222.2 47.4% 11.2%;
+
+      --destructive: 0 84.2% 60.2%;
+      --destructive-foreground: 210 40% 98%;
+
+      --border: 214.3 31.8% 91.4%;
+      --input: 214.3 31.8% 91.4%;
+      --ring: 222.2 84% 4.9%;
+
+      --radius: 0.5rem;
+    }
+
+    .dark {
+      --background: 222.2 84% 4.9%;
+      --foreground: 210 40% 98%;
+
+      --card: 222.2 84% 4.9%;
+      --card-foreground: 210 40% 98%;
+
+      --popover: 222.2 84% 4.9%;
+      --popover-foreground: 210 40% 98%;
+
+      --primary: 210 40% 98%;
+      --primary-foreground: 222.2 47.4% 11.2%;
+
+      --secondary: 217.2 32.6% 17.5%;
+      --secondary-foreground: 210 40% 98%;
+
+      --muted: 217.2 32.6% 17.5%;
+      --muted-foreground: 215 20.2% 65.1%;
+
+      --accent: 217.2 32.6% 17.5%;
+      --accent-foreground: 210 40% 98%;
+
+      --destructive: 0 62.8% 30.6%;
+      --destructive-foreground: 210 40% 98%;
+
+      --border: 217.2 32.6% 17.5%;
+      --input: 217.2 32.6% 17.5%;
+      --ring: 212.7 26.8% 83.9%;
+    }
+  }
+
+  @layer base {
+    * {
+      @apply border-border;
+    }
+    body {
+      @apply bg-background text-foreground;
+    }
+  }
+
+
+  .tiptap + .ProseMirror {
+  height: 100%!important;
+  width: 100%!important;
+  padding: 16px;
+}
+
+.tiptap >  *:not(img)  {
+  all: revert;
+}
+
+.tiptap > blockquote {
+  padding-right: 16px;
+  border-right: 1px;
+  border-color: rgb(66, 71, 78);
+}
+
+/* Placeholder (at the top) */
+.tiptap .is-editor-empty:first-child::before {
+  color: #adb5bd;
+  content: attr(data-placeholder);
+  float: left;
+  height: 0;
+  pointer-events: none;
+}
+
+.tiptap table {
+  border-collapse: collapse;
+  margin: 0;
+  overflow: hidden;
+  table-layout: fixed;
+  width: 100%;
+}
+
+.tiptap td + th {
+  border: 2px solid #ced4da;
+  box-sizing: border-box;
+  min-width: 1em;
+  padding: 3px 5px;
+  position: relative;
+  vertical-align: top;
+}
+
+.tiptap td + th > * {
+  margin-bottom: 0;
+}
+
+.tiptap th {
+  background-color: #f1f3f5;
+  font-weight: bold;
+  text-align: left;
+}
+
+.tiptap table .selectedCell:after {
+  background: rgba(200, 200, 255, 0.4);
+  content: "";
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  pointer-events: none;
+  position: absolute;
+  z-index: 2;
+}
+
+.tiptap table .column-resize-handle {
+  background-color: #adf;
+  bottom: -2px;
+  position: absolute;
+  right: -2px;
+  pointer-events: none;
+  top: 0;
+  width: 4px;
+}
+
+.tiptap table p {
+  margin: 0;
+}
+
+.tableWrapper {
+  padding: 1rem 0;
+  overflow-x: auto;
+}
+
+.resize-cursor {
+  cursor: ew-resize;
+  cursor: col-resize;
+}
+
+/* ----------- */
+
+.singlePost >  h4, h5, h6 {
+  all: revert;
+}
+
+.singlePost h1 {
+  margin-top: 0.5rem;
+  font-size: 1.875rem;
+  line-height: 2.25rem;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  --tw-text-opacity: 1;
+  color: rgb(17 24 39 / var(--tw-text-opacity)) /* #111827 */;
+
+}
+
+@media (min-width: 640px) {
+  .singlePost h1 {
+      font-size: 2.25rem;
+      line-height: 2.5rem;
+    }
+}
+
+.singlePost h2 {
+  margin-top: 4rem;
+  font-size: 1.5rem;
+  line-height: 2rem;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  --tw-text-opacity: 1;
+  color: rgb(17 24 39 / var(--tw-text-opacity)) /* #111827 */;
+}
+
+.singlePost h3 {
+  font-size: 1.5rem;
+  line-height: 2rem;
+  padding: 1rem 0;
+  font-weight: 700;
+}
+
+.singlePost img {
+  width: 100%;
+  height: 450px;
+}
+
+.singlePost blockquote {
+  border-left-width: 1px;
+  --tw-border-opacity: 1;
+  border-color: rgb(79 70 229 / var(--tw-border-opacity)) /* #4f46e5 */;
+  padding-left: 2.25rem;
+  margin: 1rem 0;
+  font-weight: 600;
+  --tw-text-opacity: 1;
+  color: rgb(17 24 39 / var(--tw-text-opacity)) /* #111827 */;
+}
+
+.singlePost > ul {
+  margin-top: 2rem;
+  --tw-text-opacity: 1;
+  color: rgb(75, 85, 99 / var(--tw-text-opacity));
+  margin-inline-start: 0.5rem;
+  padding: 0.75rem 0rem;
+  padding: 0 2rem;
+  list-style-type: disc;
+  --tw-space-y-reverse: 0;
+  margin-top: calc(1.25rem /* 20px */ * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(1.25rem /* 20px */ * var(--tw-space-y-reverse));
+}
+
+.singlePost > ol {
+  margin-top: 2rem;
+  --tw-text-opacity: 1;
+  color: rgb(75, 85, 99 / var(--tw-text-opacity));
+  list-style-type: decimal;
+}
+
+.singlePost > table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 25px 0;
+  font-size: 0.9em;
+  font-family: sans-serif;
+  /* min-width: 400px; */
+  text-align: center;
+  /* box-shadow: 0 0 20px rgba(0, 0, 0, 0.15); */
+}
+
+.singlePost  th {
+  background-color: #009879;
+  color: #ffffff;
+  /* text-align: left; */
+}
+
+.singlePost tbody tr {
+  border-bottom: 1px solid #dddddd;
+}
+
+.singlePost tbody tr:nth-of-type(even) {
+  background-color: #f3f3f3;
+}
+
+.singlePost tbody tr:last-of-type {
+  border-bottom: 2px solid #009879;
 }

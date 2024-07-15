@@ -40,12 +40,13 @@ export async function fetchCategories() {
     return mostPopular;
 }
 
-export async function fetchPost({slug}) {
+export async function fetchPost() {
     const queryMost = groq`*[_type == 'post' && slug.current == 'cristiano-ronaldo'][0]{
       ...,
       body,
       author->,
       categories[]->{
+        ...,
         posts[]->{
           ...,
           categories[]->,
@@ -53,7 +54,7 @@ export async function fetchPost({slug}) {
       }
     }`;
   
-    const mostPopular = await client.fetch(queryMost, {slug});
+    const mostPopular = await client.fetch(queryMost);
     return mostPopular;
 }
 

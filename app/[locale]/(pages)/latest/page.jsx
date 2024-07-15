@@ -1,11 +1,16 @@
 // 'use client'
 // import React, { useState } from 'react'
-import { fetchAllPosts } from '../../../../data/data'
-import CardColumn from '../../../../components/CardColumn'
-import Filter from '../../../../components/Filter';
-import InfiniteCards from '../../../../components/InfiniteCards'
-import { getDictionary } from '../../../../lib/dictionary';
-import Script from 'next/script';
+// import { fetchAllPosts } from '../../../../data/data'
+// import CardColumn from '../../../../components/CardColumn'
+// import Filter from '../../../../components/Filter';
+// import InfiniteCards from '../../../../components/InfiniteCards'
+// import { getDictionary } from '../../../../lib/dictionary';
+// import Script from 'next/script';
+// import PopularArticles from '../../../../components/component/popular-articles';
+import CardCustom from '../../../../components/component/Card';
+// import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../../../../components/ui/select';
+import SelectComponent from '../../../../components/SelectComponent';
+import { getPosts } from '../../../../lib/posts';
 
 
 export const revalidate = 30;
@@ -36,36 +41,43 @@ export async function generateMetadata({params: {locale}}) {
 
 }
 
-export default async function page({ params: {locale}}) {
-    const postsAll = await fetchAllPosts();
+// const getPosts = async () => {
+//   const res = await fetch(
+//     `https://aqraaz.com/api/posts`,
+//     {
+//       cache: "no-store",
+//     }
+//   );
 
-    const { page } = await getDictionary(locale);
+//   if (!res.ok) {
+//     throw new Error("Failed");
+//   }
 
-    // const [posts, setPosts] = useState(postsAll)
-    // const [index, setIndex] = useState(number || 3);
+//   return res.json();
+// };
 
-    // async function loadMoreCard() {
-    //   const next = index + (number || 3)
-    //   if (postsAll.length) {
-    //       setIndex(next)
-    //   }
-  // } 
+export default async function page({ searchParams, params: {locale}}) {
+  // const allPosts = await fetchAllPosts();
+
+    // const { page } = await getDictionary(locale);
+
+    // const data = await getPosts();
+
+    const sort = searchParams.sort || "";
+    const posts = await getPosts(sort);  
+    
   return (
-    <>
-    <div className='px-4 py-6 sm:px-4 sm:py-12 lg:px-6 flex flex-col gap-6'>
-        <div className="pb-2 flex justify-end mb-4 mr-4 border-b border-gray-200/10">
-        {/* <Filter title={page.lastest.title} lang={locale} /> */}
-        </div>
-        {/* {posts.slice(0,index).map(post => (
-            <CardColumn post={post} />
-        ))}
-
-      {index >= posts.length ? <p>Finshed</p> : <button onClick={loadMoreCard} className="rounded-md w-max self-center bg-indigo-50 dark:bg-gray-800 px-3.5 py-2.5 text-sm font-semibold text-indigo-600 dark:text-gray-100 shadow-sm hover:bg-indigo-100 dark:hover:bg-gray-950">load more</button>
-      } */}
-      <InfiniteCards postsAll={postsAll} number={5} lang={locale} />
+    <div className='px-4 py-6 sm:px-4 sm:py-12 lg:px-6 '>
+    <SelectComponent defaultSort={sort} />
+    <div className='mt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4'>
+      {posts.map((post, index) => (
+        <CardCustom key={index} article={post} lang={locale} views time />
+      ))}
+      {/* <PopularArticles Posts={allPosts} num={9} lang={locale} /> */}
+      {/* <InfiniteCards postsAll={postsAll} number={5} lang={locale} /> */}
     </div>
     {/* Google tag (gtag.js) */}
-    <Script async strategy="afterInteractive" src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GOOGLE_ID}`}></Script>
+    {/* <Script async strategy="afterInteractive" src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GOOGLE_ID}`}></Script>
     <Script>
     {`
       window.dataLayer = window.dataLayer || [];
@@ -74,7 +86,7 @@ export default async function page({ params: {locale}}) {
 
       gtag('config', '${process.env.NEXT_PUBLIC_GOOGLE_ID}');
     `}
-    </Script>
-  </>
+    </Script> */}
+  </div>
   )
 }

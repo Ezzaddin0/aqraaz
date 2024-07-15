@@ -1,6 +1,6 @@
-import React from 'react'
+// import React from 'react'
 import { getDictionary } from '../../../../lib/dictionary'
-import Script from 'next/script'
+// import Script from 'next/script'
 
 
 export const metadata = {
@@ -34,38 +34,38 @@ export default async function page({ params: { locale }}) {
   const { page } = await getDictionary(locale)
   return (
     <>
-    <div className='mx-auto max-w-7xl px-2 py-4 sm:px-6 lg:px-8 flex flex-col gap-6'>
-      <h2 className='text-3xl font-semibold'>{page.user_agreement.title}</h2>
+    <div className='mx-auto max-w-6xl px-2 py-4 sm:px-6 lg:px-8 flex flex-col gap-6'>
+      <h1 className='text-4xl text-gray-700 font-bold'>{page.user_agreement.title}</h1>
 
       <div className="flex flex-col gap-3">
-        <h3 className='text-lg font-semibold'>{page.user_agreement.content.TermsofService.title}</h3>
+        <h2 className='text-xl text-gray-700 font-bold'>{page.user_agreement.content.TermsofService.title}</h2>
         <p>{page.user_agreement.content.TermsofService.paragraphOne}</p>
         
         <p>{page.user_agreement.content.TermsofService.paragraphTwo}</p>
       </div>
 
       <div className="flex flex-col gap-3">
-        <h3 className='text-lg font-semibold'>{page.user_agreement.content.content.title}</h3>
+        <h2 className='text-xl text-gray-700 font-bold'>{page.user_agreement.content.content.title}</h2>
         <p>{page.user_agreement.content.content.description}</p>
       </div>
 
       <div className="flex flex-col gap-3">
-        <h3 className='text-lg font-semibold'>{page.user_agreement.content.UserAccounts.title}</h3>
+        <h2 className='text-xl text-gray-700 font-bold'>{page.user_agreement.content.UserAccounts.title}</h2>
         <p>{page.user_agreement.content.UserAccounts.description}</p>
       </div>
 
       <div className="flex flex-col gap-3">
-        <h3 className='text-lg font-semibold'>{page.user_agreement.content.Privacy.title}</h3>
+        <h2 className='text-xl text-gray-700 font-bold'>{page.user_agreement.content.Privacy.title}</h2>
         <p>{page.user_agreement.content.Privacy.description}</p>
       </div>
 
       <div className="flex flex-col gap-3">
-        <h3 className='text-lg font-semibold'>{page.user_agreement.content.IntellectualProperty.title}</h3>
+        <h3 className='text-xl text-gray-700 font-bold'>{page.user_agreement.content.IntellectualProperty.title}</h3>
         <p>{page.user_agreement.content.IntellectualProperty.description}</p>
       </div>
 
       <div className="flex flex-col gap-3">
-        <h3 className='text-lg font-semibold'>{page.user_agreement.content.LimitationOfLiability.title}</h3>
+        <h2 className='text-xl text-gray-700 font-bold'>{page.user_agreement.content.LimitationOfLiability.title}</h2>
         <p>{page.user_agreement.content.LimitationOfLiability.description}</p>
 
         <ul className='list-disc mx-4'>
@@ -76,18 +76,18 @@ export default async function page({ params: { locale }}) {
       </div>
 
       <div className="flex flex-col gap-3">
-        <h3 className='text-lg font-semibold'>{page.user_agreement.content.Changes.title}</h3>
+        <h2 className='text-xl text-gray-700 font-bold'>{page.user_agreement.content.Changes.title}</h2>
         <p>{page.user_agreement.content.Changes.description}</p>
       </div>
 
       <div className="flex flex-col gap-3">
-        <h3 className='text-lg font-semibold'>{page.user_agreement.content.ContactUs.title}</h3>
+        <h2 className='text-xl text-gray-700 font-bold'>{page.user_agreement.content.ContactUs.title}</h2>
         <p>{page.user_agreement.content.ContactUs.description} <a href="mailto:aqraazsite@gmail.com">aqraazsite@gmail.com</a></p>
       </div>
     </div>
 
     {/* Google tag (gtag.js) */}
-    <Script async strategy="afterInteractive" src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GOOGLE_ID}`}></Script>
+    {/* <Script async strategy="afterInteractive" src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GOOGLE_ID}`}></Script>
     <Script>
     {`
       window.dataLayer = window.dataLayer || [];
@@ -96,7 +96,7 @@ export default async function page({ params: { locale }}) {
 
       gtag('config', '${process.env.NEXT_PUBLIC_GOOGLE_ID}');
     `}
-    </Script>
+    </Script> */}
   </>
   )
 }

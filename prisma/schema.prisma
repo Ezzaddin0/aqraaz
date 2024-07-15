@@ -1,0 +1,117 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["fullTextSearch"]
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model Account {
+  id                String  @id @default(cuid()) @map("_id")
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid()) @map("_id")
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+enum Role {
+  USER
+  ADMIN
+  PUBLISHER
+}
+
+model User {
+  id            String    @id @default(cuid()) @map("_id")
+  name          String?
+  createdAt     DateTime  @default(now())
+  email         String    @unique
+  emailVerified DateTime?
+  image         String?
+  role          Role      @default(USER)
+  accounts      Account[]
+  sessions      Session[]
+  Post          Post[]
+  // Category      Category[]
+  Comment       Comment[]
+}
+
+model VerificationToken {
+  identifier String   @id @map("_id")
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+model Category {
+  id        String   @id @default(cuid()) @map("_id")
+  createdAt DateTime @default(now())
+  slug      String   @unique
+  title     Json // before string
+  desc      Json // before string
+  keywords  Json // متعدد اللغات, new
+  img       String?
+  updatedAt DateTime @updatedAt // new 
+  userEmail String
+  // user      User     @relation(fields: [userEmail], references: [email])
+  posts     Post[]
+}
+
+model Post {
+  id        String    @id @default(cuid()) @map("_id")
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  slug      String    @unique
+  title     Json
+  desc      Json
+  body      Json
+  keywords  Json
+  img       String?
+  catSlug   String
+  cat       Category  @relation(fields: [catSlug], references: [slug])
+  userEmail String
+  user      User      @relation(fields: [userEmail], references: [email])
+  comments  Comment[]
+  views     View[] // New relation to View model
+}
+
+model View {
+  id        String   @id @default(cuid()) @map("_id")
+  createdAt DateTime @default(now())
+  postId    String
+  post      Post     @relation(fields: [postId], references: [id])
+}
+
+model Comment {
+  id        String   @id @default(cuid()) @map("_id")
+  createdAt DateTime @default(now())
+  desc      String
+  userEmail String
+  user      User     @relation(fields: [userEmail], references: [email])
+  postSlug  String
+  post      Post     @relation(fields: [postSlug], references: [slug])
+}
