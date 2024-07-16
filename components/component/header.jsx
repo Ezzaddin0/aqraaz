@@ -6,11 +6,9 @@
 */
 import { DropdownMenuTrigger, DropdownMenuItem, DropdownMenuContent, DropdownMenu } from "../ui/dropdown-menu"
 import Link from "next/link"
-import { cn } from "../../lib/utils"
 import { Input } from "../ui/input"
 import { Button } from "../ui/button"
 import { NavigationMenu, NavigationMenuContent, NavigationMenuItem, NavigationMenuLink, NavigationMenuList, NavigationMenuTrigger } from "../ui/navigation-menu";
-import * as React from "react"
 import { Sheet, SheetContent, SheetTrigger } from "../ui/sheet"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "../ui/accordion"
 import { BookOpen, CalendarIcon, CheckIcon, ChevronDownIcon, MenuIcon, SearchIcon, SunIcon } from "lucide-react"
@@ -19,6 +17,7 @@ import { signOut, useSession } from "next-auth/react"
 import { format } from "date-fns"
 import useSWR from "swr"
 import Image from "next/image"
+import { forwardRef } from "react"
 // import { useTheme } from "next-themes"
 
 const ganeral = [
@@ -105,7 +104,7 @@ export default function Header({lang}) {
   const router = useRouter();
 
   const { data: dataCategories, isLoading } = useSWR(
-    `http://localhost:3000/api/categories`,
+    `${process.env.NEXTAUTH_URL}/api/categories`,
     fetcher
   );
 
@@ -369,10 +368,10 @@ export default function Header({lang}) {
   );
 }
 
-const ListItem = React.forwardRef(({ className, title, children, ...props }, ref) => (
+const ListItem = forwardRef(({ className, title, children, ...props }, ref) => (
   <li>
     <NavigationMenuLink asChild>
-      <Link ref={ref} className={cn("block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground",className)}{...props}>
+      <Link ref={ref} className={`block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground ${className}`}{...props}>
         <div className="text-sm font-medium leading-none">{title}</div>
         <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">{children}</p>
       </Link>
