@@ -103,10 +103,10 @@ export default function Header({lang}) {
   // const theme = 'sun'
   const router = useRouter();
 
-  const { data: dataCategories, isLoading } = useSWR(
-    `${process.env.NEXTAUTH_URL}/api/categories`,
-    fetcher
-  );
+  // const { data: dataCategories, isLoading } = useSWR(
+  //   `${process.env.NEXTAUTH_URL}/api/categories`,
+  //   fetcher
+  // );
 
   const pathName = usePathname();
   console.log(pathName);
@@ -217,13 +217,13 @@ export default function Header({lang}) {
                 <NavigationMenuItem>
                   <NavigationMenuTrigger>{lang == "en" ? "Categories" : "الفئات"}</NavigationMenuTrigger>
                   <NavigationMenuContent>
-                    <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] ">
+                    {/* <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] ">
                       {isLoading ? "Waiting for data..." : dataCategories.slice(0, 6).map((category) => (
                         <ListItem key={lang == 'en' ? category.title.en : category.title.ar} title={lang == 'en' ? category.title.en : category.title.ar} href={`/${lang}/categories/${category.slug}`}>
                           {lang == "en" ? category.desc.en : category.desc.ar}
                         </ListItem>
                       ))}
-                    </ul>
+                    </ul> */}
                   </NavigationMenuContent>
                 </NavigationMenuItem>
               </NavigationMenuList>
@@ -351,11 +351,11 @@ export default function Header({lang}) {
             <AccordionItem value="item-3">
               <AccordionTrigger>{lang == "en" ? "Categories" : "الفئات"}</AccordionTrigger>
               <AccordionContent>
-              {isLoading ? "Waiting for data..." : dataCategories.slice(0, 6).map((category) => (
+              {/* {isLoading ? "Waiting for data..." : dataCategories.slice(0, 6).map((category) => (
                 <Link key={category.title.en} className=" block rounded-sm bg-gray-50 hover:bg-gray-100 ps-2 py-3 no-underline outline-none focus:shadow-md text-lg font-medium" href={`/${lang}/categories/${category.slug}`}>
                   {lang == 'en' ? category.title.en : category.title.ar}
                 </Link>
-              ))}
+              ))} */}
               </AccordionContent>
             </AccordionItem>
           </Accordion>
