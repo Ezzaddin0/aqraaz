@@ -1,4 +1,3 @@
-
 const pathName = process.env.NEXTAUTH_URL;
 
 export const getPost = async (slug) => {
