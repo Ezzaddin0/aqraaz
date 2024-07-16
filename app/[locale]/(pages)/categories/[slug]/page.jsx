@@ -12,19 +12,8 @@ import CardCustom from '../../../../../components/component/Card'
 import { getData } from '../../../../../lib/posts'
 import SelectComponent from '../../../../../components/SelectComponent'
 import Link from 'next/link';
+import { getCategory } from '../../../../../data/dataApi';
 export const revalidate = 30;
-
-const getCategory = async (slug) => {
-  const res = await fetch(`${process.env.NEXTAUTH_URL}/api/categories?slug=${slug}`, {
-    cache: "no-store",
-  });
-
-  if (!res.ok) {
-    throw new Error("Failed");
-  }
-
-  return res.json();
-};
 
 export async function generateMetadata({params: {locale, slug}}) {
   const post = await getCategory(slug);
@@ -57,22 +46,6 @@ export async function generateMetadata({params: {locale, slug}}) {
 }
 
 // Sorting functions
-
-// const getData = async (cat) => {
-//   const res = await fetch(
-//     `http://localhost:3000/api/categories?slug=${cat}`,
-//     {
-//       cache: "no-store",
-//     }
-//   );
-
-//   if (!res.ok) {
-//     throw new Error("Failed");
-//   }
-
-//   return res.json();
-// };
-
 export default async function Page({ params, searchParams }) {
   const sort = searchParams.sort || "";
   const posts = await getData(params.slug, sort);

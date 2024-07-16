@@ -11,8 +11,6 @@ import CardCustom from '../../../../components/component/Card';
 // import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../../../../components/ui/select';
 import SelectComponent from '../../../../components/SelectComponent';
 import { getPosts } from '../../../../lib/posts';
-
-
 export const revalidate = 30;
 
 export async function generateMetadata({params: {locale}}) {  
@@ -40,21 +38,6 @@ export async function generateMetadata({params: {locale}}) {
   }
 
 }
-
-// const getPosts = async () => {
-//   const res = await fetch(
-//     `http://localhost:3000/api/posts`,
-//     {
-//       cache: "no-store",
-//     }
-//   );
-
-//   if (!res.ok) {
-//     throw new Error("Failed");
-//   }
-
-//   return res.json();
-// };
 
 export default async function page({ searchParams, params: {locale}}) {
   // const allPosts = await fetchAllPosts();

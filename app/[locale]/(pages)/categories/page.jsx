@@ -6,10 +6,8 @@ import Link from 'next/link';
 // import SectionCards from '../../../../components/component/section-cards';
 import CardCustom from '../../../../components/component/Card';
 import { ChevronRightIcon } from 'lucide-react';
-
-
+import { getCategories } from '../../../../data/dataApi';
 export const revalidate = 30;
-
 
 export async function generateMetadata({params: {locale}}) {
 
@@ -37,19 +35,6 @@ export async function generateMetadata({params: {locale}}) {
 
 }
 
-const getData = async () => {
-  const res = await fetch(`${process.env.NEXTAUTH_URL}/api/categories`, {
-    cache: "no-store",
-  });
-
-  if (!res.ok) {
-    throw new Error("Failed");
-  }
-
-  return res.json();
-};
-
-
 export default async function page({params: {locale}, searchParams}) {
   // const categories = await fetchAllCategories();
 
@@ -58,7 +43,7 @@ export default async function page({params: {locale}, searchParams}) {
 
   // console.log(searchParams);  
 
-    const data = await getData();
+    const data = await getCategories();
   return (
     <>
     <div className='container px-4 py-6 sm:px-4 sm:py-12 lg:px-6'>

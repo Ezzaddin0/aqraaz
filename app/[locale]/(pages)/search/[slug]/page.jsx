@@ -4,27 +4,14 @@
 // import { client } from '../../../../../lib/createClient'
 // import CardColumn from '../../../../../components/CardColumn'
 // import Script from 'next/script';
+import { getSearch } from '../../../../../data/dataApi';
 import CardCustom from '../../../../../components/component/Card';
-
-
 export const revalidate = 30;
-
-const getData = async (slug) => {
-  const res = await fetch(`${process.env.NEXTAUTH_URL}/api/posts?search=${slug}`, {
-    cache: "no-store",
-  });
-
-  if (!res.ok) {
-    throw new Error("Failed");
-  }
-
-  return res.json();
-};
 
 export async function generateMetadata({params: {locale, slug}}) {
   const decodedString = decodeURIComponent(slug);
 
-  const post = await getData(decodedString);
+  const post = await getSearch(decodedString);
 
   return{
     title: locale === "en" ? post.posts[0].title.en : post.posts[0].title.ar,
@@ -66,7 +53,7 @@ export default async function page({ params: { slug, locale }}) {
     // `
     // const posts = await client.fetch(query,{decodedString});
 
-  const posts = await getData(decodedString);
+  const posts = await getSearch(decodedString);
   // console.log(posts);
 
   return (

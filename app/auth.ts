@@ -14,8 +14,8 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   adapter: PrismaAdapter(prisma),
   providers: [
     Google({
-      // clientId: process.env.GOOGLE_ID,
-      // clientSecret: process.env.GOOGLE_SECRET,
+      clientId: process.env.GOOGLE_ID,
+      clientSecret: process.env.GOOGLE_SECRET,
     profile(profile) {
       return {
         id: profile.sub,

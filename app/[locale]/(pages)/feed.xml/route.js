@@ -2,21 +2,7 @@ import RSS from 'rss';
 
 import { client } from "../../../../lib/createClient";
 import { groq } from "next-sanity";
-
-const getPosts = async () => {
-  const res = await fetch(
-    `${process.env.NEXTAUTH_URL}/api/posts`,
-    {
-      cache: "no-store",
-    }
-  );
-
-  if (!res.ok) {
-    throw new Error("Failed");
-  }
-
-  return res.json();
-};
+import { getPosts } from '../../../../data/dataApi';
 
 export async function GET() {
 

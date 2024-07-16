@@ -1,38 +1,9 @@
+import { getCategories, getPosts } from "../../data/dataApi";
 import { client } from "../../lib/createClient";
 // import { Post } from "@/types";
 import { groq } from "next-sanity";
 
 export const revalidate = 30;
-
-const getPosts = async () => {
-  const res = await fetch(
-    `${process.env.NEXTAUTH_URL}/api/posts`,
-    {
-      cache: "no-store",
-    }
-  );
-
-  if (!res.ok) {
-    throw new Error("Failed");
-  }
-
-  return res.json();
-};
-
-const getCategories = async () => {
-  const res = await fetch(
-    `${process.env.NEXTAUTH_URL}/api/categories`,
-    {
-      cache: "no-store",
-    }
-  );
-
-  if (!res.ok) {
-    throw new Error("Failed");
-  }
-
-  return res.json();
-};
 
 export default async function sitemap() {
     const BaseUrlEn = "https://www.aqraaz.com/en";

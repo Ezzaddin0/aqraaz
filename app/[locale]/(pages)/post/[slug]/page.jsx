@@ -15,79 +15,11 @@ import Comments from "../../../../../components/Comments"
 import { format } from 'date-fns'
 import CardCustom from '../../../../../components/component/Card';
 import Image from 'next/image';
-
+import { getCategory, getPost } from '../../../../../data/dataApi';
 export const revalidate = 30;
 
-// const formatDate = (isoDateString) => {
-//   // const timeZone = 'America/New_York'; // Adjust this to your preferred time zone
-//   const date = new Date(isoDateString);
-//   const zonedDate = utcToZonedTime(date, timeZone);
-  
-//   const formattedDate = format(zonedDate, "MMMM d, yyyy 'at' h:mm a");
-  
-//   return `Published on ${formattedDate}`;
-// };
-
-// export async function generateMetadata({params: {locale, slug}}) {
-
-//   const query = groq`*[_type == 'post' && slug.current == $slug][0]{
-//     ...,
-//     body,
-//     author->
-//   }`
-//   const post = await client.fetch(query,{slug})
-
-//   return{
-//     title: locale == "en" ? post.title.en : post.title.ar,
-//     description: locale == "en" ? post.description.en : post.description.ar,
-//     keywords: locale == "en" ? post.keywords[0].en : post.keywords[0].ar,
-//     alternates: {
-//       canonical: `${locale}/post/${slug}`,
-//       languages: {
-//         'en': `/en/post/${slug}`,
-//         'ar': `/ar/post/${slug}`,
-//       },
-//     },
-//     other: {
-//       'google-adsense-account': `${process.env.NEXT_PUBLIC_GOOGLE_ADSENSE}`,
-//     },
-//     openGraph: {
-//       title: locale == "en" ? post.title.en : post.title.ar,
-//       description: locale == "en" ? post.description.en : post.description.ar,
-//       images: `${urlFor(post?.mainImage).url()}`,
-//       url: `${locale}/post/${slug}`,
-//       siteName: "Aqraaz.com"
-//     }
-//   }
-
-// }
-
-const getData = async (slug) => {
-  const res = await fetch(`${process.env.NEXTAUTH_URL}/api/posts/${slug}`, {
-    cache: "no-store",
-  });
-
-  if (!res.ok) {
-    throw new Error("Failed");
-  }
-
-  return res.json();
-};
-
-const getPosts = async (slug) => {
-  const res = await fetch(`${process.env.NEXTAUTH_URL}/api/categories?slug=${slug}`, {
-    cache: "no-store",
-  });
-
-  if (!res.ok) {
-    throw new Error("Failed");
-  }
-
-  return res.json();
-};
-
 export async function generateMetadata({params: {locale, slug}}) {
-  const post = await getData(slug);
+  const post = await getPost(slug);
 
   return{
     title: locale === "en" ? post.title.en : post.title.ar,
@@ -134,9 +66,9 @@ export default async function page({ params: {slug, locale} }) {
     // }`;
     // const post = await client.fetch(query,{slug});
     // console.log(post.categories[0].posts);
-    const data = await getData(slug);
+    const data = await getPost(slug);
 
-    const posts = await getPosts(data.catSlug);
+    const posts = await getCategory(data.catSlug);
 
     // console.log(locale);
 

@@ -5,6 +5,7 @@ import { getDictionary } from '../../../../lib/dictionary'
 import Image from 'next/image';
 import { ArrowRightIcon, TagIcon } from 'lucide-react';
 import Link from 'next/link';
+import { getCategories, getPosts } from '../../../../data/dataApi';
 
 
 export const metadata = {
@@ -32,30 +33,6 @@ export const metadata = {
     siteName: "Aqraaz.com"
   }
 }
-
-const getPosts = async () => {
-  const res = await fetch(`${process.env.NEXTAUTH_URL}/api/posts`, {
-    cache: "no-store",
-  });
-
-  if (!res.ok) {
-    throw new Error("Failed");
-  }
-
-  return res.json();
-};
-
-const getCategories = async () => {
-  const res = await fetch(`${process.env.NEXTAUTH_URL}/api/categories`, {
-    cache: "no-store",
-  });
-
-  if (!res.ok) {
-    throw new Error("Failed");
-  }
-
-  return res.json();
-};
 
 const getTags = [
   {

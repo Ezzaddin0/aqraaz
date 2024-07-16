@@ -6,20 +6,6 @@
 import Image from "next/image";
 import Link from "next/link"
 import CardCustom from "./Card";
-const getData = async (page, cat) => {
-  const res = await fetch(
-    `${process.env.NEXTAUTH_URL}/api/categories?slug=sports`,
-    {
-      cache: "no-store",
-    }
-  );
-
-  if (!res.ok) {
-    throw new Error("Failed");
-  }
-
-  return res.json();
-};
 
 export default async function PrimarySectionCard({ Posts, lang, page }) {
   // const data = await getData();

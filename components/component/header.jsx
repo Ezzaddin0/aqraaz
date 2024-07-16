@@ -105,7 +105,7 @@ export default function Header({lang}) {
   const router = useRouter();
 
   const { data: dataCategories, isLoading } = useSWR(
-    `https://www.aqraaz.com/api/categories`,
+    `http://localhost:3000/api/categories`,
     fetcher
   );
 

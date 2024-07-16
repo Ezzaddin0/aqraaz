@@ -12,6 +12,7 @@ import { CalendarIcon, EyeIcon, FileTextIcon, MessageCircleIcon, Users2Icon } fr
 import AreaChartsCard from "../../../components/component/area-charts-card"
 import Image from "next/image";
 import { sortPostsByDate } from "../../../helper/sorted";
+import { getPosts } from "../../../data/dataApi";
 
 const getComments = async () => {
   const res = await fetch(
@@ -28,20 +29,20 @@ const getComments = async () => {
   return res.json();
 };
 
-const getPosts = async () => {
-  const res = await fetch(
-    `${process.env.NEXTAUTH_URL}/api/posts`,
-    {
-      cache: "no-store",
-    }
-  );
+// const getPosts = async () => {
+//   const res = await fetch(
+//     `${process.env.NEXTAUTH_URL}/api/posts`,
+//     {
+//       cache: "no-store",
+//     }
+//   );
 
-  if (!res.ok) {
-    throw new Error("Failed");
-  }
+//   if (!res.ok) {
+//     throw new Error("Failed");
+//   }
 
-  return res.json();
-};
+//   return res.json();
+// };
 
 const getUsers = async () => {
   const res = await fetch(

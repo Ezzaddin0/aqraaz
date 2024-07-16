@@ -29,22 +29,11 @@ import { Input } from "../ui/input"
 import { Button } from "../ui/button"
 import Link from "next/link";
 import { fetchCategories } from "../../data/data";
-
-const getData = async () => {
-  const res = await fetch(`${process.env.NEXTAUTH_URL}/api/categories`, {
-    cache: "no-store",
-  });
-
-  if (!res.ok) {
-    throw new Error("Failed");
-  }
-
-  return res.json();
-};
+import { getCategories } from "../../data/dataApi";
 
 export default async function CategoriesSection({ lang }) {
   // const Categories = await fetchCategories();
-  const Categories = await getData();
+  const Categories = await getCategories();
   return (
     (<section className="grid grid-cols-1 md:grid-cols-2 gap-6 p-4 md:p-6">
       <div className="space-y-4 flex flex-col justify-between h-full">

@@ -6,6 +6,7 @@ import FeaturedArticle from "../../components/component/featured-article"
 import PrimarySectionCard from "../../components/component/primary-section-card"
 import CategoriesSection from "../../components/component/categories-section"
 import AdsCard from '../../components/AdsCard'
+import { getPosts, getCategory } from "../../data/dataApi"
 
 export async function generateMetadata({ params: { locale } }) {
   
@@ -31,36 +32,6 @@ export async function generateMetadata({ params: { locale } }) {
     }
   }
 }
-
-const getPosts = async () => {
-  const res = await fetch(
-    `${process.env.NEXTAUTH_URL}/api/posts`,
-    {
-      cache: "no-store",
-    }
-  );
-
-  if (!res.ok) {
-    throw new Error("Failed");
-  }
-
-  return res.json();
-};
-
-const getCategory = async (cat) => {
-  const res = await fetch(
-    `${process.env.NEXTAUTH_URL}/api/categories?slug=${cat}`,
-    {
-      cache: "no-store",
-    }
-  );
-
-  if (!res.ok) {
-    throw new Error("Failed");
-  }
-
-  return res.json();
-};
 
 export default async function  Home({ params: { locale } }) {
   const allPosts = await getPosts();
