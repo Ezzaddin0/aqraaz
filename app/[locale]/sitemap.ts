@@ -6,7 +6,7 @@ export const revalidate = 30;
 
 const getPosts = async () => {
   const res = await fetch(
-    `https://www.aqraaz.com/api/posts`,
+    `${process.env.NEXTAUTH_URL}/api/posts`,
     {
       cache: "no-store",
     }
@@ -21,7 +21,7 @@ const getPosts = async () => {
 
 const getCategories = async () => {
   const res = await fetch(
-    `https://www.aqraaz.com/api/categories`,
+    `${process.env.NEXTAUTH_URL}/api/categories`,
     {
       cache: "no-store",
     }

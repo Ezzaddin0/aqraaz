@@ -24,7 +24,7 @@ const fetcher = async (url) => {
 
 export default function Page({ params: { locale } }) {
   const { data, isLoading } = useSWR(
-    `http://localhost:3000/api/categories`,
+    `/api/categories`,
     fetcher
   );
 

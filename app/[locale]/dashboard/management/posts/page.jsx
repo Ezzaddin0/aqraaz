@@ -24,7 +24,7 @@ const fetcher = async (url) => {
 
 export default function Page() {
   const { data, isLoading } = useSWR(
-    `http://localhost:3000/api/posts`,
+    `/api/posts`,
     fetcher
   );
 

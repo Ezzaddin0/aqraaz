@@ -7,15 +7,15 @@ import prisma from './connect'
 import { Role } from "@prisma/client"
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
-  secret: process.env.AUTH_SECRET, // إضافة السر هنا
+  // secret: process.env.AUTH_SECRET, // إضافة السر هنا
   session: {
     strategy: "jwt",
   },
   adapter: PrismaAdapter(prisma),
   providers: [
     Google({
-      clientId: process.env.GOOGLE_ID,
-      clientSecret: process.env.GOOGLE_SECRET,
+      // clientId: process.env.GOOGLE_ID,
+      // clientSecret: process.env.GOOGLE_SECRET,
     profile(profile) {
       return {
         id: profile.sub,

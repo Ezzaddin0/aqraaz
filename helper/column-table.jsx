@@ -7,7 +7,7 @@ import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, Di
 
 async function deletePost(postId) {
   try {
-    const response = await fetch('http://localhost:3000/api/posts', {
+    const response = await fetch(`/api/posts`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
@@ -258,7 +258,7 @@ export const PostColumns = [
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem>
-              <Link href={`http://localhost:3000/en/dashboard/management/posts/${row.getValue("slug")}`} >View Post</Link>
+              <Link href={`/en/dashboard/management/posts/${row.getValue("slug")}`} >View Post</Link>
             </DropdownMenuItem>
             {/* <DropdownMenuItem> */}
               {/* <span onClick={() => deletePost(row.original.id)} title={row.original.id} >Delete Post</span> */}
@@ -474,7 +474,7 @@ export const CategoryColumns = [
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem>
-              <Link href={`http://localhost:3000/en/dashboard/management/posts/${row.getValue("slug")}`} >View Post</Link>
+              <Link href={`/en/dashboard/management/posts/${row.getValue("slug")}`} >View Post</Link>
             </DropdownMenuItem>
             {/* <DropdownMenuItem> */}
               {/* <span onClick={() => deletePost(row.original.id)} title={row.original.id} >Delete Post</span> */}

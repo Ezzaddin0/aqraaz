@@ -15,7 +15,7 @@ import Link from 'next/link';
 export const revalidate = 30;
 
 const getCategory = async (slug) => {
-  const res = await fetch(`http://localhost:3000/api/categories?slug=${slug}`, {
+  const res = await fetch(`${process.env.NEXTAUTH_URL}/api/categories?slug=${slug}`, {
     cache: "no-store",
   });
 

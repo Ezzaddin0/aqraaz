@@ -8,7 +8,7 @@ import Link from "next/link"
 import CardCustom from "./Card";
 const getData = async (page, cat) => {
   const res = await fetch(
-    `http://localhost:3000/api/categories?slug=sports`,
+    `${process.env.NEXTAUTH_URL}/api/categories?slug=sports`,
     {
       cache: "no-store",
     }

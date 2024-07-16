@@ -59,12 +59,12 @@ export default function Page({ params }) {
   const router = useRouter();
 
   const { data, isLoading } = useSWR(
-    `http://localhost:3000/api/categories`,
+    `/api/categories`,
     fetcher
   );
 
   const { data: postData } = useSWR(
-    params.id ? `http://localhost:3000/api/posts/${params.id}` : null,
+    params.id ? `/api/posts/${params.id}` : null,
     fetcher
   );
 
@@ -200,7 +200,7 @@ export default function Page({ params }) {
       body.id = postData.id;
     }
 
-    const res = await fetch("http://localhost:3000/api/posts", {
+    const res = await fetch(`/api/posts`, {
       method,
       headers: {
         "Content-Type": "application/json"

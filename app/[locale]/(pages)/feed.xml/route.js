@@ -5,7 +5,7 @@ import { groq } from "next-sanity";
 
 const getPosts = async () => {
   const res = await fetch(
-    `http://localhost:3000/api/posts`,
+    `${process.env.NEXTAUTH_URL}/api/posts`,
     {
       cache: "no-store",
     }

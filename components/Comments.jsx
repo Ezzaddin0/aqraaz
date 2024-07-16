@@ -27,7 +27,7 @@ export default function Comments({ postSlug, avatar }) {
     const { status, data } = useSession();
 
   const { data: dataComments, mutate, isLoading } = useSWR(
-    `http://localhost:3000/api/comments?postSlug=${postSlug}`,
+    `/api/comments?postSlug=${postSlug}`,
     fetcher
   );
 

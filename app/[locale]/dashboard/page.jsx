@@ -15,7 +15,7 @@ import { sortPostsByDate } from "../../../helper/sorted";
 
 const getComments = async () => {
   const res = await fetch(
-    `http://localhost:3000/api/comments`,
+    `${process.env.NEXTAUTH_URL}/api/comments`,
     {
       cache: "no-store",
     }
@@ -30,7 +30,7 @@ const getComments = async () => {
 
 const getPosts = async () => {
   const res = await fetch(
-    `http://localhost:3000/api/posts`,
+    `${process.env.NEXTAUTH_URL}/api/posts`,
     {
       cache: "no-store",
     }
@@ -45,7 +45,7 @@ const getPosts = async () => {
 
 const getUsers = async () => {
   const res = await fetch(
-    `http://localhost:3000/api/users`,
+    `${process.env.NEXTAUTH_URL}/api/users`,
     {
       cache: "no-store",
     }

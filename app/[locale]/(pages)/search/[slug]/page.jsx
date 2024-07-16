@@ -10,7 +10,7 @@ import CardCustom from '../../../../../components/component/Card';
 export const revalidate = 30;
 
 const getData = async (slug) => {
-  const res = await fetch(`http://localhost:3000/api/posts?search=${slug}`, {
+  const res = await fetch(`${process.env.NEXTAUTH_URL}/api/posts?search=${slug}`, {
     cache: "no-store",
   });
 

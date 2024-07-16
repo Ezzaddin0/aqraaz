@@ -60,7 +60,7 @@ export default function Page({ params }) {
   const router = useRouter();
 
   const { data: categoryData, isLoading } = useSWR(
-    params.id ? `http://localhost:3000/api/categories?slug=${params.id}` : null,
+    params.id ? `/api/categories?slug=${params.id}` : null,
     // `http://localhost:3000/api/categories?slug=${params.id}`,
     fetcher
   );
@@ -177,7 +177,7 @@ export default function Page({ params }) {
       body.id = categoryData[0].id;
     }
 
-    const res = await fetch("http://localhost:3000/api/categories", {
+    const res = await fetch(`/api/categories`, {
       method,
       headers: {
         "Content-Type": "application/json"

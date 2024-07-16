@@ -34,7 +34,7 @@ export async function generateMetadata({ params: { locale } }) {
 
 const getPosts = async () => {
   const res = await fetch(
-    `http://localhost:3000/api/posts`,
+    `${process.env.NEXTAUTH_URL}/api/posts`,
     {
       cache: "no-store",
     }
@@ -49,7 +49,7 @@ const getPosts = async () => {
 
 const getCategory = async (cat) => {
   const res = await fetch(
-    `http://localhost:3000/api/categories?slug=${cat}`,
+    `${process.env.NEXTAUTH_URL}/api/categories?slug=${cat}`,
     {
       cache: "no-store",
     }
