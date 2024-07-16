@@ -4,18 +4,16 @@
 * @see https://v0.dev/t/NJqV1EuJF1c
 * Documentation: https://v0.dev/docs#integrating-generated-code-into-your-nextjs-app
 */
-import { DropdownMenuTrigger, DropdownMenuItem, DropdownMenuContent, DropdownMenu, DropdownMenuLabel, DropdownMenuSeparator } from "../ui/dropdown-menu"
+import { DropdownMenuTrigger, DropdownMenuItem, DropdownMenuContent, DropdownMenu } from "../ui/dropdown-menu"
 import Link from "next/link"
 import { cn } from "../../lib/utils"
 import { Input } from "../ui/input"
 import { Button } from "../ui/button"
 import { NavigationMenu, NavigationMenuContent, NavigationMenuItem, NavigationMenuLink, NavigationMenuList, NavigationMenuTrigger } from "../ui/navigation-menu";
 import * as React from "react"
-import { Sheet, SheetClose, SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetTitle, SheetTrigger } from "../ui/sheet"
-import { Label } from "../ui/label"
+import { Sheet, SheetContent, SheetTrigger } from "../ui/sheet"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "../ui/accordion"
-import { BookOpen, CalendarIcon, CheckIcon, ChevronDownIcon, MenuIcon, MoonIcon, SearchIcon, Sun, SunIcon } from "lucide-react"
-import { i18n } from "../../i18n.config"
+import { BookOpen, CalendarIcon, CheckIcon, ChevronDownIcon, MenuIcon, SearchIcon, SunIcon } from "lucide-react"
 import { usePathname, useRouter } from "next/navigation"
 import { signOut, useSession } from "next-auth/react"
 import { format } from "date-fns"
@@ -104,15 +102,15 @@ const fetcher = async (url) => {
 export default function Header({lang}) {
   // const { resolvedTheme, theme, setTheme } = useTheme();
   // const theme = 'sun'
-  const date = new Date();
   const router = useRouter();
 
   const { data: dataCategories, isLoading } = useSWR(
-    `http://localhost:3000/api/categories`,
+    `https://www.aqraaz.com/api/categories`,
     fetcher
   );
 
   const pathName = usePathname();
+  console.log(pathName);
   const redirectedPathName = (locale) => {
     if (!pathName) return '/'
     const segments = pathName.split('/')
