@@ -200,7 +200,7 @@ export default function Page({ params }) {
       body.id = postData.id;
     }
 
-    const res = await fetch(`/api/posts`, {
+    const res = await fetch(`${process.env.NEXTAUTH_URL}/api/posts`, {
       method,
       headers: {
         "Content-Type": "application/json"
