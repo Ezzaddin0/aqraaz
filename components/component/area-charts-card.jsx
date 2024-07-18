@@ -43,8 +43,8 @@ const fetcher = async (url) => {
   return data;
 };
 
-export default function AreaChartsCard() {
-  const { data, isLoading, error } = useSWR(`${process.env.NEXTAUTH_URL}/api/posts`, fetcher);
+export default function AreaChartsCard({data}) {
+  // const { data, isLoading, error } = useSWR(`/api/posts`, fetcher);
 
   const [timeRange, setTimeRange] = useState("90d")
   const filteredData = data?.posts?.filter((item) => {

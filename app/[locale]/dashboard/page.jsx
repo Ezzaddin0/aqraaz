@@ -115,7 +115,7 @@ export default async function Dashboard() {
               </Card>
             </div>
             <div className="grid gap-6">
-              <AreaChartsCard />
+              <AreaChartsCard data={posts} />
             </div>
           </div>
           <div className="grid gap-6">
