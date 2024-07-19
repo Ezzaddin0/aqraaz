@@ -34,7 +34,7 @@ export async function generateMetadata({ params: { locale } }) {
 }
 
 export default async function  Home({ params: { locale } }) {
-  const allPosts = await getPosts();
+  const allPosts = await getPosts({page: 1});
   const allNews = await getCategory('news');
   const allSports = await getCategory('sports');
 

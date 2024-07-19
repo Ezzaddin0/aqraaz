@@ -382,6 +382,9 @@ export const CategoryColumns = [
         </Button>
       )
     },
+    cell: ({ row }) => (
+      <div className="capitalize line-clamp-2">{row.original.views.length}</div>
+    ),
   },
   // {
   //   accessorKey: "cat.slug",

@@ -43,7 +43,7 @@ export async function generateMetadata({params: {locale, slug}}) {
 
 export default async function page({ params: { slug, locale }}) {
     const decodedString = decodeURIComponent(slug);
-    // console.log(decodedString);
+    console.log(decodedString);
 
     // const query = groq`*[_type == 'post' && (title.en match $decodedString + "*" || title.ar match $decodedString + "*")] {
     //   ...,

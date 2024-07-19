@@ -4,9 +4,9 @@ import { NextResponse } from "next/server";
 export const GET = async () => {
   try {
     const categories = await prisma.user.findMany({
-        include: {
-            Comment: true
-        }
+      include: {
+        Comment: true
+      }
     });
 
     return new NextResponse(JSON.stringify(categories, { status: 200 }));

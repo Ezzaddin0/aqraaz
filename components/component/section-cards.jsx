@@ -13,7 +13,7 @@ export default function SectionCards({Posts, lang, time, title, page, cat}) {
   
   return (
     (<section className="py-8 md:py-12 lg:py-16">
-      <div className="container px-4 md:px-6">
+      <div>
         <h2 className="mb-8 text-3xl font-bold tracking-tighter sm:text-4xl">{title}</h2>
         <div className="grid gap-8 lg:grid-cols-[1fr_300px]">
           <div>

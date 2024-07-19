@@ -36,6 +36,9 @@ export const GET = async (req) => {
       },
       views: true,
     },
+    orderBy: {
+      createdAt: 'desc', // Sorting by createdAt in descending order
+    }
   };
 
   try {
