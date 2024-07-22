@@ -109,7 +109,6 @@ export default function Header({lang}) {
   // );
 
   const pathName = usePathname();
-  console.log(pathName);
   const redirectedPathName = (locale) => {
     if (!pathName) return '/'
     const segments = pathName.split('/')

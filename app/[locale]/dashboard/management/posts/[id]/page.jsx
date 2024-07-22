@@ -11,7 +11,7 @@ import { CalendarIcon, Check, ChevronsUpDown, UploadCloudIcon, XIcon } from "luc
 import { cn } from "../../../../../../lib/utils";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { app } from "../../../../../firebase";
 import useSWR from "swr";
@@ -24,6 +24,8 @@ import { Card, CardHeader, CardTitle, CardContent } from "../../../../../../comp
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "../../../../../../components/ui/chart"
 import { CartesianGrid, XAxis, BarChart, Bar } from "recharts"
 import { format } from "date-fns";
+import Image from "next/image";
+
 
 const storage = getStorage(app);
 
@@ -95,6 +97,17 @@ export default function Page({ params }) {
   const [date, setDate] = useState(new Date());
 
   const [searchImage, setSearchImage] = useState("");
+  const [debounceTimeout, setDebounceTimeout] = useState(null);
+
+  const [isFormValid, setIsFormValid] = useState(false);
+
+  const [suggestionsTitle, setSuggestionsTitle] = useState(false);
+  const [aiSuggestions, setAiSuggestions] = useState([]);
+  // const [isLoadingTitle, setIsLoadingTitle] = useState(false);
+
+
+  const [suggestionsDesc, setSuggestionsDesc] = useState(false);
+
 
   useEffect(() => {
     if (postData) {
@@ -113,10 +126,44 @@ export default function Page({ params }) {
     }
   }, [postData]);
 
-  const [suggestionsTitle, setSuggestionsTitle] = useState(false);
-  const [suggestionsDesc, setSuggestionsDesc] = useState(false);
+  useEffect(() => {
+    if (title && titleAr && desc && descAr && slug && valueCategory) {
+      setIsFormValid(true);
+    } else {
+      setIsFormValid(false);
+    }
+  }, [title, titleAr, desc, descAr, slug, valueCategory]);  
 
-  const [timeRange, setTimeRange] = useState("90d");
+
+  const fetchImageFromUnsplash = async (query) => {
+    const response = await fetch(`https://api.unsplash.com/search/photos?query=${query}&client_id=${process.env.NEXT_PUBLIC_UNSPLASH_API_KEY}`);
+    const data = await response.json();
+    if (data.results.length > 0) {
+      return data.results;
+    }
+    return '';
+  };
+
+  const debouncedSearch = useCallback((query) => {
+    clearTimeout(debounceTimeout);
+    const newTimeout = setTimeout(async () => {
+      if (query) {
+        const imageUrl = await fetchImageFromUnsplash(query);
+        setSearchImage(imageUrl);
+      }
+    }, 500); // Adjust the debounce delay as needed
+    setDebounceTimeout(newTimeout);
+  }, [debounceTimeout]);
+
+  const handleSearch = (e) => {
+    const query = e.target.value;
+    debouncedSearch(query);
+  };
+
+  const handleImageSelect = async (imageUrl) => {
+    const fileFromUrl = await fetchImageAsFile(imageUrl);
+    setFile(fileFromUrl);
+  };
 
   const fetchImageAsFile = async (url) => {
     const response = await fetch(url);
@@ -259,7 +306,7 @@ export default function Page({ params }) {
           <Tiptap content={content} onChange={(newContent) => handleContentChange(newContent)} />
         </TabsContent>
         <TabsContent value="arabic">
-          <Tiptap content={contentAr} onChange={(newContent) => handleContentChangeAr(newContent)} />
+          <Tiptap content={contentAr} dir="rtl" onChange={(newContent) => handleContentChangeAr(newContent)} />
         </TabsContent>
       </Tabs>
       
@@ -272,14 +319,11 @@ export default function Page({ params }) {
           <TabsTrigger value="analysis">Analysis</TabsTrigger>
         </TabsList>
         <TabsContent className="flex flex-col gap-4" value="english">
-          <div className="flex flex-col items-center gap-2">
+          <div className="grid w-full gap-2">
             <Input type="text" placeholder="Main Keywords" />
             <Button className="w-full" variant="outline">Ganertate</Button>
-          </div>
-          <div className="box">
-            <div className="flex items-center">
-              <Input type="text" value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Title" />
-            </div>
+
+            <Input type="text" value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Title" />
             <Collapsible
               open={suggestionsTitle}
               onOpenChange={setSuggestionsTitle}
@@ -308,14 +352,10 @@ export default function Page({ params }) {
                 </div>
               </CollapsibleContent>
             </Collapsible>
-          </div>
 
-          <div className="box flex flex-col gap-2">
             <Input type="text" value={slug} onChange={(e) => setSlug(e.target.value)} placeholder="Slug" />
             <Button onClick={handleCreateSlug} variant="outline">Create</Button>
-          </div>
-          
-          <div className="box flex flex-col gap-2">
+
             <Textarea onChange={(e) => setDesc(e.target.value)} value={desc} placeholder="Description" />
             <Collapsible
               open={suggestionsDesc}
@@ -345,21 +385,19 @@ export default function Page({ params }) {
                 </div>
               </CollapsibleContent>
             </Collapsible>
-          </div>
 
-          <div className="border p-2 rounded w-full max-w-lg">
-            <div className="flex flex-wrap gap-2">
-              {keywords.map((badge, index) => (
-                <div key={index} className="flex items-center bg-gray-200 text-gray-700 rounded-full px-3 py-1">
-                  {badge}
-                  <XIcon onClick={() => handleRemoveBadge(index)} className="h-4 w-4 cursor-pointer ml-2 focus:outline-none text-gray-500" />
-                </div>
-              ))}
-              <input type="text" value={inputValue} onChange={(e) => setInputValue(e.target.value)} onKeyDown={handleKeyDown} placeholder="Type something and press Enter" className="flex-grow p-2 focus:outline-none" />
+            <div className="border p-2 rounded w-full max-w-lg">
+              <div className="flex flex-wrap gap-2">
+                {keywords.map((badge, index) => (
+                  <div key={index} className="flex items-center bg-gray-200 text-gray-700 rounded-full px-3 py-1">
+                    {badge}
+                    <XIcon onClick={() => handleRemoveBadge(index)} className="h-4 w-4 cursor-pointer ml-2 focus:outline-none text-gray-500" />
+                  </div>
+                ))}
+                <input type="text" value={inputValue} onChange={(e) => setInputValue(e.target.value)} onKeyDown={handleKeyDown} placeholder="Type something and press Enter" className="flex-grow p-2 focus:outline-none" />
+              </div>
             </div>
-          </div>
 
-          <div className="flex flex-col gap-2">
             <Popover open={openCategory} onOpenChange={setOpenCategory}>
               <PopoverTrigger asChild>
                 <Button variant="outline" role="combobox" aria-expanded={openCategory} className="justify-between w-full">
@@ -388,148 +426,104 @@ export default function Page({ params }) {
                 </Command>
               </PopoverContent>
             </Popover>
-            <Link href="/dashboard/management/categories/new" className={buttonVariants({ variant: "outline" })}>Create</Link>
-          </div>
+            <Link href="/dashboard/management/categories/new" target="_blank" className={buttonVariants({ variant: "outline" })}>Create</Link>
 
-          <div className="flex w-full flex-col gap-2">
-          <Popover>
-            <PopoverTrigger asChild>
-              <Button
-                variant={"outline"}
-                className={cn(
-                  "justify-start text-left font-normal",
-                  !date && "text-muted-foreground"
-                )}
-              >
-                <CalendarIcon className="mr-2 h-4 w-4" />
-                {date ? format(date, "PPP") : <span>Pick a date</span>}
-              </Button>
-            </PopoverTrigger>
-            <PopoverContent className="w-auto p-0">
-              <Calendar
-                mode="single"
-                selected={date}
-                onSelect={setDate}
-                initialFocus
-              />
-            </PopoverContent>
-          </Popover>
-          </div>
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button
+                  variant={"outline"}
+                  className={cn(
+                    "justify-start text-left font-normal",
+                    !date && "text-muted-foreground"
+                  )}
+                >
+                  <CalendarIcon className="mr-2 h-4 w-4" />
+                  {date ? format(date, "PPP") : <span>Pick a date</span>}
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-auto p-0">
+                <Calendar
+                  mode="single"
+                  selected={date}
+                  onSelect={setDate}
+                  initialFocus
+                />
+              </PopoverContent>
+            </Popover>
 
-          <div>
             <Label htmlFor="image">Main Image</Label>
-            {/* <Input type="file" id="image" onChange={(e) => setFile(e.target.files[0])} /> */}
-          </div>
-          <Dialog>
-            <DialogTrigger asChild>
-              <Button variant="outline">Open Image Dialog</Button>
-            </DialogTrigger>
-            <DialogContent className="sm:max-w-[600px]">
-              <DialogHeader>
-                <DialogTitle>Image Management</DialogTitle>
-                <DialogDescription>Manage your images in this dialog.</DialogDescription>
-              </DialogHeader>
-              <Tabs defaultValue="upload" className="border-b space-y-4">
-                <TabsList className="grid grid-cols-3 gap-2">
-                  <TabsTrigger value="upload">Upload</TabsTrigger>
-                  <TabsTrigger value="link">Link</TabsTrigger>
-                  {/* <TabsTrigger value="gallery">Gallery</TabsTrigger> */}
-                </TabsList>
-                <TabsContent value="upload" className="py-2">
-                <div class="flex items-center justify-center w-full">
-                  <label for="dropzone-file" class="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-gray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500">
-                  {file ? 
-                    media ? <div className="w-full h-full"><img src={media} className="w-full h-full aspect-video" alt="" /> <p className="flex items-center">{file.name} <XIcon className="h-4 w-4 cursor-pointer ml-2 focus:outline-none text-gray-500" onClick={() => {setFile(null); setMedia("")}} /></p></div>  : <LoadingScreen />
-                  :
-                    <div class="flex flex-col items-center justify-center pt-5 pb-6">
-                      <UploadCloudIcon className="w-8 h-8 text-gray-500 dark:text-gray-400" />
-                      <p class="mb-2 text-sm text-gray-500 dark:text-gray-400"><span class="font-semibold">Click to upload</span> or drag and drop</p>
-                      <p class="text-xs text-gray-500 dark:text-gray-400">SVG, PNG, JPG or GIF (MAX. 800x400px)</p>
-                    </div>
-                  }
-                    <input id="dropzone-file" type="file" onChange={(e) => setFile(e.target.files[0])} class="hidden" />
-                  </label>
-              </div> 
-                </TabsContent>
-                <TabsContent value="link" className="py-6">
-                <div className="grid items-center gap-2">
-                  <Input className="w-full" type="text" value={searchImage} onChange={(e) => setSearchImage(e.target.value)} id="email" placeholder="Search..." />
-                  <img
-                    src={searchImage || "https://images.unsplash.com/photo-1588345921523-c2dcdb7f1dcd?w=800&dpr=2&q=80"}
-                    alt="Photo by Drew Beamer"
-                    fill
-                    className="rounded-md object-cover aspect-video"
-                  />
-                </div>
-                </TabsContent>
-                {/* <TabsContent value="gallery" className="py-1">
-                <Input className="col-3 form-control-sm py-1 fs-4 text-capitalize border border-3 border-dark" type="text" placeholder="Search Anything..." value={img} onChange={(e) => setImg(e.target.value)} />;
-                  <div class="grid grid-cols-2 md:grid-cols-4 gap-4 h-[300px] overflow-auto">
-                      <div class="grid gap-4">
-                          <div>
-                              <img class="h-auto max-w-full rounded-lg" src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image.jpg" alt="" />
-                          </div>
-                          <div>
-                              <img class="h-auto max-w-full rounded-lg" src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-1.jpg" alt="" />
-                          </div>
-                          <div>
-                              <img class="h-auto max-w-full rounded-lg" src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-2.jpg" alt="" />
-                          </div>
+            <Dialog>
+              <DialogTrigger asChild>
+                <Button variant="outline">Open Image Dialog</Button>
+              </DialogTrigger>
+              <DialogContent className="sm:max-w-[600px]">
+                <DialogHeader>
+                  <DialogTitle>Image Management</DialogTitle>
+                  <DialogDescription>Manage your images in this dialog.</DialogDescription>
+                </DialogHeader>
+                <Tabs defaultValue="upload" className="border-b space-y-4">
+                  <TabsList className="grid grid-cols-3 gap-2">
+                    <TabsTrigger value="upload">Upload</TabsTrigger>
+                    <TabsTrigger value="link">Link</TabsTrigger>
+                    <TabsTrigger value="gallery">Gallery</TabsTrigger>
+                  </TabsList>
+                  <TabsContent value="upload" className="py-2">
+                  <div class="flex items-center justify-center w-full">
+                    <label for="dropzone-file" class="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-gray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500">
+                    {file ? 
+                      media ? <div className="w-full h-full"><img src={media} className="w-full h-full aspect-video" alt="" /> <p className="flex items-center">{file.name} <XIcon className="h-4 w-4 cursor-pointer ml-2 focus:outline-none text-gray-500" onClick={() => {setFile(null); setMedia("")}} /></p></div>  : <LoadingScreen />
+                    :
+                      <div class="flex flex-col items-center justify-center pt-5 pb-6">
+                        <UploadCloudIcon className="w-8 h-8 text-gray-500 dark:text-gray-400" />
+                        <p class="mb-2 text-sm text-gray-500 dark:text-gray-400"><span class="font-semibold">Click to upload</span> or drag and drop</p>
+                        <p class="text-xs text-gray-500 dark:text-gray-400">SVG, PNG, JPG or GIF (MAX. 800x400px)</p>
                       </div>
-                      <div class="grid gap-4">
-                          <div>
-                              <img class="h-auto max-w-full rounded-lg" src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-3.jpg" alt="" />
-                          </div>
-                          <div>
-                              <img class="h-auto max-w-full rounded-lg" src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-4.jpg" alt="" />
-                          </div>
-                          <div>
-                              <img class="h-auto max-w-full rounded-lg" src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-5.jpg" alt="" />
-                          </div>
-                      </div>
-                      <div class="grid gap-4">
-                          <div>
-                              <img class="h-auto max-w-full rounded-lg" src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-6.jpg" alt="" />
-                          </div>
-                          <div>
-                              <img class="h-auto max-w-full rounded-lg" src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-7.jpg" alt="" />
-                          </div>
-                          <div>
-                              <img class="h-auto max-w-full rounded-lg" src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-8.jpg" alt="" />
-                          </div>
-                      </div>
-                      <div class="grid gap-4">
-                          <div>
-                              <img class="h-auto max-w-full rounded-lg" src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-9.jpg" alt="" />
-                          </div>
-                          <div>
-                              <img class="h-auto max-w-full rounded-lg" src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-10.jpg" alt="" />
-                          </div>
-                          <div>
-                              <img class="h-auto max-w-full rounded-lg" src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-11.jpg" alt="" />
-                          </div>
-                      </div>
+                    }
+                      <input id="dropzone-file" type="file" onChange={(e) => setFile(e.target.files[0])} class="hidden" />
+                    </label>
+                </div> 
+                  </TabsContent>
+                  <TabsContent value="link" className="py-6">
+                  <div className="grid items-center gap-2">
+                    <Input className="w-full" type="text" value={searchImage} onChange={(e) => setSearchImage(e.target.value)} id="email" placeholder="Search..." />
+                    <img
+                      src={searchImage || "https://images.unsplash.com/photo-1588345921523-c2dcdb7f1dcd?w=800&dpr=2&q=80"}
+                      alt="Photo by Drew Beamer"
+                      fill
+                      className="rounded-md object-cover aspect-video"
+                    />
                   </div>
-                </TabsContent> */}
-              </Tabs>
-              <DialogFooter>
-                <div>
-                  <Button variant="outline">Close</Button>
-                </div>
-                <Button>Save</Button>
-              </DialogFooter>
-            </DialogContent>
-          </Dialog>
+                  </TabsContent>
+                  <TabsContent value="gallery" className="py-1">
+                  <Input className="col-3 form-control-sm py-1 my-2 fs-4 text-capitalize border border-3 border-dark" type="text" placeholder="Search Anything..." onChange={handleSearch} />
+                    <div class="grid gap-4 h-[300px] overflow-auto">
+                        <div class="grid grid-cols-3 gap-4">
+                          {searchImage && searchImage.map((photo) => (
+                            <div>
+                              <Image id={photo.id} width={photo.width} height={photo.height}  className="h-auto max-w-full rounded-lg cursor-pointer" src={photo.urls.regular} alt={photo.alt_description} onClick={() => handleImageSelect(photo.urls.regular)} />
+                            </div>
+                          ))}
+                        </div>
+                    </div>
+                  </TabsContent>
+                </Tabs>
+                <DialogFooter>
+                  <div>
+                    <Button variant="outline">Close</Button>
+                  </div>
+                  <Button>Save</Button>
+                </DialogFooter>
+              </DialogContent>
+            </Dialog>
 
-          <Button className="mb-3" variant="outline" onClick={handleSubmit}>Publish</Button>
+            <Button className="mb-3" variant="outline" onClick={handleSubmit} disabled={!isFormValid}>Publish</Button>
+          </div>          
         </TabsContent>
 
         <TabsContent dir="rtl" className="flex flex-col gap-2" value="arabic">
-        <div className="box">
-            <div className="flex items-center">
-              <Input type="text" value={titleAr} onChange={(e) => setTitleAr(e.target.value)} placeholder="العنوان" />
-            </div>
-            <Collapsible open={suggestionsTitle} onOpenChange={setSuggestionsTitle} className="mt-2" >
+        <div className="grid w-full gap-2">
+          <Input type="text" value={titleAr} onChange={(e) => setTitleAr(e.target.value)} placeholder="العنوان" />
+          <Collapsible open={suggestionsTitle} onOpenChange={setSuggestionsTitle} className="mt-2" >
               <div className="flex items-center justify-between space-x-4">
                 <h4 className="text-sm font-semibold">
                   اقتراحات من الذكاء الاصطناعي
@@ -553,8 +547,7 @@ export default function Page({ params }) {
                 </div>
               </CollapsibleContent>
             </Collapsible>
-          </div>
-          <div className="box flex flex-col gap-2">
+
             <Textarea onChange={(e) => setDescAr(e.target.value)} value={descAr} placeholder="الوصف" />
             <Collapsible open={suggestionsDesc}onOpenChange={setSuggestionsDesc} className="space-y-2">
               <div className="flex items-center justify-between space-x-4">
@@ -580,21 +573,18 @@ export default function Page({ params }) {
                 </div>
               </CollapsibleContent>
             </Collapsible>
-          </div>
 
-          <div className="border p-2 rounded w-full max-w-lg">
-            <div className="flex flex-wrap gap-2">
-              {keywordsAr.map((badge, index) => (
-                <div key={index} className="flex items-center bg-gray-200 text-gray-700 rounded-full px-3 py-1">
-                  {badge}
-                    <XIcon onClick={() => handleRemoveBadgeAr(index)} className="h-4 w-4 cursor-pointer ml-2 focus:outline-none text-gray-500" />
-                </div>
-              ))}
-              <input type="text" value={inputValueAr} onChange={(e) => setInputValueAr(e.target.value)} onKeyDown={handleKeyDownAr} placeholder="اكتب شي وضغط حسنا" className="flex-grow p-2 focus:outline-none" />
+            <div className="border p-2 rounded w-full max-w-lg">
+              <div className="flex flex-wrap gap-2">
+                {keywordsAr.map((badge, index) => (
+                  <div key={index} className="flex items-center bg-gray-200 text-gray-700 rounded-full px-3 py-1">
+                    {badge}
+                      <XIcon onClick={() => handleRemoveBadgeAr(index)} className="h-4 w-4 cursor-pointer ml-2 focus:outline-none text-gray-500" />
+                  </div>
+                ))}
+                <input type="text" value={inputValueAr} onChange={(e) => setInputValueAr(e.target.value)} onKeyDown={handleKeyDownAr} placeholder="اكتب شي وضغط حسنا" className="flex-grow p-2 focus:outline-none" />
+              </div>
             </div>
-          </div>
-          
-          <div>
             <Label htmlFor="picture">صورة</Label>
             <Input id="picture" type="file" />
           </div>

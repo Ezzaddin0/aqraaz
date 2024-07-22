@@ -83,7 +83,7 @@
 }
 
 .tiptap.ProseMirror {
-  padding: 2rem!important;
+  padding: 0.5rem!important;
 }
 
 .tiptap >  *:not(img)  {

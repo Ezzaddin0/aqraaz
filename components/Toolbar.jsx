@@ -5,11 +5,12 @@ import { AlignCenterIcon, AlignLeftIcon, AlignRightIcon, BetweenHorizontalEndIco
 import { Menubar, MenubarContent, MenubarItem, MenubarMenu, MenubarTrigger} from "./ui/menubar"
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "./ui/dialog";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { app } from "../app/firebase";
 import { Input } from "./ui/input";
 import LoadingScreen from "./LoadingScreen";
+import Image from "next/image";
 
 const storage = getStorage(app);
 
@@ -21,12 +22,44 @@ const Toolbar = ({ editor, addImage, setLink }) => {
   const [file, setFile] = useState(null);
   const [media, setMedia] = useState("");
   const [searchImage, setSearchImage] = useState("");
+  const [debounceTimeout, setDebounceTimeout] = useState(null);
+
 
   useEffect(() => {
     if(media) {
       editor.commands.setImage({ src: media })
     }
   }, [media])
+
+  const fetchImageFromUnsplash = async (query) => {
+    const response = await fetch(`https://api.unsplash.com/search/photos?query=${query}&client_id=${process.env.NEXT_PUBLIC_UNSPLASH_API_KEY}`);
+    const data = await response.json();
+    if (data.results.length > 0) {
+      return data.results;
+    }
+    return '';
+  };
+
+  const debouncedSearch = useCallback((query) => {
+    clearTimeout(debounceTimeout);
+    const newTimeout = setTimeout(async () => {
+      if (query) {
+        const imageUrl = await fetchImageFromUnsplash(query);
+        setSearchImage(imageUrl);
+      }
+    }, 500); // Adjust the debounce delay as needed
+    setDebounceTimeout(newTimeout);
+  }, [debounceTimeout]);
+
+  const handleSearch = (e) => {
+    const query = e.target.value;
+    debouncedSearch(query);
+  };
+
+  const handleImageSelect = async (imageUrl) => {
+    const fileFromUrl = await fetchImageAsFile(imageUrl);
+    setFile(fileFromUrl);
+  };
 
 
   const fetchImageAsFile = async (url) => {
@@ -192,7 +225,7 @@ const Toolbar = ({ editor, addImage, setLink }) => {
           <TabsList className="grid grid-cols-3 gap-2">
             <TabsTrigger value="upload">Upload</TabsTrigger>
             <TabsTrigger value="link">Link</TabsTrigger>
-            {/* <TabsTrigger value="gallery">Gallery</TabsTrigger> */}
+            <TabsTrigger value="gallery">Gallery</TabsTrigger>
           </TabsList>
           <TabsContent value="upload" className="py-2">
           <div class="flex items-center justify-center w-full">
@@ -213,63 +246,35 @@ const Toolbar = ({ editor, addImage, setLink }) => {
           <TabsContent value="link" className="py-6">
           <div className="grid items-center gap-2">
             <Input className="w-full" type="text" value={searchImage} onChange={(e) => setSearchImage(e.target.value)} id="email" placeholder="Search..." />
-            <img
+            <Image
+              width={550}
+              height={309}
               src={searchImage || "https://images.unsplash.com/photo-1588345921523-c2dcdb7f1dcd?w=800&dpr=2&q=80"}
               alt="Photo by Drew Beamer"
-              fill
               className="rounded-md object-cover aspect-video"
             />
           </div>
           </TabsContent>
-          {/* <TabsContent value="gallery" className="py-1">
-          <Input className="col-3 form-control-sm py-1 fs-4 text-capitalize border border-3 border-dark" type="text" placeholder="Search Anything..." value={img} onChange={(e) => setImg(e.target.value)} />;
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 h-[300px] overflow-auto">
-                <div class="grid gap-4">
+          <TabsContent value="gallery" className="py-1">
+            <Input className="col-3 form-control-sm py-1 my-2 fs-4 text-capitalize border border-3 border-dark" type="text" placeholder="Search Anything..." onChange={handleSearch} />
+            <div class="grid gap-4 h-[300px] overflow-auto">
+                <div class="grid grid-cols-3 gap-4">
+                  {searchImage && searchImage.map((photo) => (
                     <div>
-                        <img class="h-auto max-w-full rounded-lg" src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image.jpg" alt="" />
+                      <Image
+                      id={photo.id}
+                        width={photo.width} 
+                        height={photo.height} 
+                        className="h-auto max-w-full rounded-lg cursor-pointer" 
+                        src={photo.urls.regular} 
+                        alt={photo.alt_description} 
+                        onClick={() => handleImageSelect(photo.urls.regular)}
+                        />
                     </div>
-                    <div>
-                        <img class="h-auto max-w-full rounded-lg" src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-1.jpg" alt="" />
-                    </div>
-                    <div>
-                        <img class="h-auto max-w-full rounded-lg" src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-2.jpg" alt="" />
-                    </div>
-                </div>
-                <div class="grid gap-4">
-                    <div>
-                        <img class="h-auto max-w-full rounded-lg" src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-3.jpg" alt="" />
-                    </div>
-                    <div>
-                        <img class="h-auto max-w-full rounded-lg" src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-4.jpg" alt="" />
-                    </div>
-                    <div>
-                        <img class="h-auto max-w-full rounded-lg" src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-5.jpg" alt="" />
-                    </div>
-                </div>
-                <div class="grid gap-4">
-                    <div>
-                        <img class="h-auto max-w-full rounded-lg" src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-6.jpg" alt="" />
-                    </div>
-                    <div>
-                        <img class="h-auto max-w-full rounded-lg" src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-7.jpg" alt="" />
-                    </div>
-                    <div>
-                        <img class="h-auto max-w-full rounded-lg" src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-8.jpg" alt="" />
-                    </div>
-                </div>
-                <div class="grid gap-4">
-                    <div>
-                        <img class="h-auto max-w-full rounded-lg" src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-9.jpg" alt="" />
-                    </div>
-                    <div>
-                        <img class="h-auto max-w-full rounded-lg" src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-10.jpg" alt="" />
-                    </div>
-                    <div>
-                        <img class="h-auto max-w-full rounded-lg" src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-11.jpg" alt="" />
-                    </div>
+                  ))}
                 </div>
             </div>
-          </TabsContent> */}
+          </TabsContent>
         </Tabs>
         <DialogFooter>
           <div>

@@ -20,7 +20,7 @@ import { ToggleGroup, ToggleGroupItem } from "./ui/toggle-group";
 import { Button } from "./ui/button";
 import { BoldIcon, Heading1Icon, Heading2Icon, ItalicIcon, ListIcon, UnderlineIcon } from "lucide-react";
 
-const Tiptap = ({ onChange, content }) => {
+const Tiptap = ({ onChange, content, dir }) => {
   const handleChange = (newContent) => {
     onChange(newContent);
   };
@@ -99,7 +99,7 @@ const Tiptap = ({ onChange, content }) => {
         </FloatingMenu>
         
         <div className="flex-1">
-          <EditorContent className="h-full max-h-screen overflow-auto" editor={editor} />
+          <EditorContent dir={dir} className="h-full max-h-screen overflow-auto" editor={editor} />
         </div>
         <div className="character-count bg-gray-100/35 shadow p-3">
           {characterCount && (
