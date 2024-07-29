@@ -55,10 +55,7 @@ export async function middleware(request: NextRequest) {
     }
   } else if (!isLoggedIn) {    
     return NextResponse.redirect(new URL("/login", request.url))
-  }
-
-  //  console.log((await auth())?.user?.role);
-   
+  }   
    
 
   return NextResponse.next();

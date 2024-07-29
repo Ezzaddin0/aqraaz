@@ -69,6 +69,7 @@ const ganeral = [
 ]
 
 const dashboardItems = [
+  { name: 'ganeral', path: `dashboard/management`, description: 'Ganeral Dashboard' },
   { name: 'Create Post', path: `dashboard/management/posts/new`, description: 'Create a new post' },
   { name: 'Posts', path: `dashboard/management/posts`, description: 'View and manage posts' },
   { name: 'Categories', path: `dashboard/management/categories`, description: 'Manage post categories' },
@@ -263,10 +264,12 @@ export default function Header({lang}) {
           </div>
         </nav>
         <div className="flex items-center gap-4">
+        {!['dashboard'].includes(hideP) && 
           <form onSubmit={handleSearch} className="relative hidden md:block">
             <Input id="search" className="pr-10 focus:border-gray-400 dark:focus:border-gray-600" placeholder="Search..." type="search" />
             <SearchIcon className="absolute top-1/2 right-3 -translate-y-1/2 h-4 w-4 text-gray-400" />
           </form>
+        }
         
         {status === 'authenticated' ? (
           <DropdownMenu>

@@ -70,16 +70,6 @@ export default async function  Home({ params: { locale } }) {
       <CategoriesSection lang={locale} />
 
       <AdsCard />
-    {/* <Script async strategy="afterInteractive" src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GOOGLE_ID}`}></Script>
-    <Script>
-    {`
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-
-      gtag('config', '${process.env.NEXT_PUBLIC_GOOGLE_ID}');
-    `}
-    </Script> */}
     </>
   );
 }
