@@ -7,6 +7,7 @@ import { CardContent, Card } from "../ui/card"
 import Link from "next/link"
 import { parseISO, compareDesc } from 'date-fns';
 import CardCustom from "./Card";
+import Script from "next/script";
 
 export default function SectionCards({Posts, lang, time, title, page, cat}) {
   const sortedPosts = Posts.posts.slice().sort((a, b) => compareDesc(parseISO(a.createdAt), parseISO(b.createdAt)));
@@ -26,7 +27,8 @@ export default function SectionCards({Posts, lang, time, title, page, cat}) {
           <div>
             <Card className="h-full">
               <CardContent className="p-6">
-
+              <Script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8893594961186089"
+     crossorigin="anonymous" />
               </CardContent>
             </Card>
           </div>
