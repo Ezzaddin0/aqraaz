@@ -11,18 +11,19 @@ import { app } from "../app/firebase";
 import { Input } from "./ui/input";
 import LoadingScreen from "./LoadingScreen";
 import Image from "next/image";
+import ImagesCard from "./ImagesCard";
 
-const storage = getStorage(app);
+// const storage = getStorage(app);
 
 
-const Toolbar = ({ editor, addImage, setLink }) => {
+const Toolbar = ({ editor, addImage }) => {
   if (!editor) {
     return null;
   }
-  const [file, setFile] = useState(null);
+  // const [file, setFile] = useState(null);
   const [media, setMedia] = useState("");
-  const [searchImage, setSearchImage] = useState("");
-  const [debounceTimeout, setDebounceTimeout] = useState(null);
+  // const [searchImage, setSearchImage] = useState("");
+  // const [debounceTimeout, setDebounceTimeout] = useState(null);
 
 
   useEffect(() => {
@@ -31,85 +32,85 @@ const Toolbar = ({ editor, addImage, setLink }) => {
     }
   }, [media])
 
-  const fetchImageFromUnsplash = async (query) => {
-    const response = await fetch(`https://api.unsplash.com/search/photos?query=${query}&client_id=${process.env.NEXT_PUBLIC_UNSPLASH_API_KEY}`);
-    const data = await response.json();
-    if (data.results.length > 0) {
-      return data.results;
-    }
-    return '';
-  };
+  // const fetchImageFromUnsplash = async (query) => {
+  //   const response = await fetch(`https://api.unsplash.com/search/photos?query=${query}&client_id=${process.env.NEXT_PUBLIC_UNSPLASH_API_KEY}`);
+  //   const data = await response.json();
+  //   if (data.results.length > 0) {
+  //     return data.results;
+  //   }
+  //   return '';
+  // };
 
-  const debouncedSearch = useCallback((query) => {
-    clearTimeout(debounceTimeout);
-    const newTimeout = setTimeout(async () => {
-      if (query) {
-        const imageUrl = await fetchImageFromUnsplash(query);
-        setSearchImage(imageUrl);
-      }
-    }, 500); // Adjust the debounce delay as needed
-    setDebounceTimeout(newTimeout);
-  }, [debounceTimeout]);
+  // const debouncedSearch = useCallback((query) => {
+  //   clearTimeout(debounceTimeout);
+  //   const newTimeout = setTimeout(async () => {
+  //     if (query) {
+  //       const imageUrl = await fetchImageFromUnsplash(query);
+  //       setSearchImage(imageUrl);
+  //     }
+  //   }, 500); // Adjust the debounce delay as needed
+  //   setDebounceTimeout(newTimeout);
+  // }, [debounceTimeout]);
 
-  const handleSearch = (e) => {
-    const query = e.target.value;
-    debouncedSearch(query);
-  };
+  // const handleSearch = (e) => {
+  //   const query = e.target.value;
+  //   debouncedSearch(query);
+  // };
 
-  const handleImageSelect = async (imageUrl) => {
-    const fileFromUrl = await fetchImageAsFile(imageUrl);
-    setFile(fileFromUrl);
-  };
+  // const handleImageSelect = async (imageUrl) => {
+  //   const fileFromUrl = await fetchImageAsFile(imageUrl);
+  //   setFile(fileFromUrl);
+  // };
 
 
-  const fetchImageAsFile = async (url) => {
-    const response = await fetch(url);
-    const blob = await response.blob();
-    const file = new File([blob], "image_from_url.jpg", { type: blob.type });
-    return file;
-  };
-  useEffect(() => {
-    const upload = (fileToUpload) => {
-      const name = new Date().getTime() + fileToUpload.name;
-      const storageRef = ref(storage, name);
-      const uploadTask = uploadBytesResumable(storageRef, fileToUpload);
+  // const fetchImageAsFile = async (url) => {
+  //   const response = await fetch(url);
+  //   const blob = await response.blob();
+  //   const file = new File([blob], "image_from_url.jpg", { type: blob.type });
+  //   return file;
+  // };
+  // useEffect(() => {
+  //   const upload = (fileToUpload) => {
+  //     const name = new Date().getTime() + fileToUpload.name;
+  //     const storageRef = ref(storage, name);
+  //     const uploadTask = uploadBytesResumable(storageRef, fileToUpload);
 
-      uploadTask.on(
-        "state_changed",
-        (snapshot) => {
-          const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-          console.log("Upload is " + progress + "% done");
-          switch (snapshot.state) {
-            case "paused":
-              console.log("Upload is paused");
-              break;
-            case "running":
-              console.log("Upload is running");
-              break;
-          }
-        },
-        (error) => {
-          console.log(error);
-        },
-        () => {
-          getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-            setMedia(downloadURL);
-          });
-        }
-      );
-    };
+  //     uploadTask.on(
+  //       "state_changed",
+  //       (snapshot) => {
+  //         const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+  //         console.log("Upload is " + progress + "% done");
+  //         switch (snapshot.state) {
+  //           case "paused":
+  //             console.log("Upload is paused");
+  //             break;
+  //           case "running":
+  //             console.log("Upload is running");
+  //             break;
+  //         }
+  //       },
+  //       (error) => {
+  //         console.log(error);
+  //       },
+  //       () => {
+  //         getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+  //           setMedia(downloadURL);
+  //         });
+  //       }
+  //     );
+  //   };
 
-    const handleUpload = async () => {
-      if (file) {
-        upload(file);
-      } else if (searchImage) {
-        const fileFromUrl = await fetchImageAsFile(searchImage);
-        upload(fileFromUrl);
-      }
-    };
+  //   const handleUpload = async () => {
+  //     if (file) {
+  //       upload(file);
+  //     } else if (searchImage) {
+  //       const fileFromUrl = await fetchImageAsFile(searchImage);
+  //       upload(fileFromUrl);
+  //     }
+  //   };
 
-    handleUpload();
-  }, [file, searchImage]);
+  //   handleUpload();
+  // }, [file, searchImage]);
 
 
 
@@ -125,11 +126,32 @@ const Toolbar = ({ editor, addImage, setLink }) => {
     }
   };
 
+  const setLink = useCallback(() => {
+    const previousUrl = editor.getAttributes('link').href
+    const url = window.prompt('URL', previousUrl)
+
+    // cancelled
+    if (url === null) {
+      return
+    }
+
+    // empty
+    if (url === '') {
+      editor.chain().focus().extendMarkRange('link').unsetLink()
+        .run()
+
+      return
+    }
+
+    // update link
+    editor.chain().focus().extendMarkRange('link').setLink({ href: url })
+      .run()
+  }, [editor])
   const getClassName = (name, active) =>
     classNames({ "bg-gray-100": active, "": !active });
 
   return (
-    <Menubar className="w-full overflow-auto">
+    <Menubar className="w-full overflow-x-auto p-0">
     <MenubarMenu>
       <MenubarTrigger>
         <LucideAlignStartVertical className="text-gray-500 w-5 h-5" />
@@ -210,7 +232,7 @@ const Toolbar = ({ editor, addImage, setLink }) => {
     {/* <Button onClick={addImage} variant="ghost" size="sm">
       <ImageIcon className="w-5 h-5" />
     </Button> */}
-    <Dialog>
+    {/* <Dialog>
       <DialogTrigger asChild>
         <Button variant="ghost" size="sm" >
           <ImageIcon className="w-5 h-5" />
@@ -261,15 +283,7 @@ const Toolbar = ({ editor, addImage, setLink }) => {
                 <div class="grid grid-cols-3 gap-4">
                   {searchImage && searchImage.map((photo) => (
                     <div>
-                      <Image
-                      id={photo.id}
-                        width={photo.width} 
-                        height={photo.height} 
-                        className="h-auto max-w-full rounded-lg cursor-pointer" 
-                        src={photo.urls.regular} 
-                        alt={photo.alt_description} 
-                        onClick={() => handleImageSelect(photo.urls.regular)}
-                        />
+                      <Image id={photo.id} width={photo.width} height={photo.height} className="h-auto max-w-full rounded-lg cursor-pointer" src={photo.urls.regular} alt={photo.alt_description} onClick={() => handleImageSelect(photo.urls.regular)} />
                     </div>
                   ))}
                 </div>
@@ -283,7 +297,8 @@ const Toolbar = ({ editor, addImage, setLink }) => {
           <Button>Save</Button>
         </DialogFooter>
       </DialogContent>
-    </Dialog>
+    </Dialog> */}
+    <ImagesCard setImage={setMedia} />
     <Button onClick={setLink} variant="ghost" size="sm">
       <LinkIcon className="w-5 h-5" />
     </Button>

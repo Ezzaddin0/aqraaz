@@ -25,6 +25,7 @@ import { ChartContainer, ChartTooltip, ChartTooltipContent } from "../../../../.
 import { CartesianGrid, XAxis, BarChart, Bar } from "recharts"
 import { format } from "date-fns";
 import Image from "next/image";
+import ImagesCard from "../../../../../../components/ImagesCard"
 
 
 const storage = getStorage(app);
@@ -410,7 +411,7 @@ export default function Page({ params }) {
               </CollapsibleContent>
             </Collapsible>
 
-            <div className="border p-2 rounded w-full max-w-lg">
+            <div className="border p-2 rounded w-full">
               <div className="flex flex-wrap gap-2">
                 {keywords.map((badge, index) => (
                   <div key={index} className="flex items-center bg-gray-200 text-gray-700 rounded-full px-3 py-1">
@@ -476,7 +477,7 @@ export default function Page({ params }) {
             </Popover>
 
             <Label htmlFor="image">Main Image</Label>
-            <Dialog>
+            {/* <Dialog>
               <DialogTrigger asChild>
                 <Button variant="outline">Open Image Dialog</Button>
               </DialogTrigger>
@@ -538,7 +539,8 @@ export default function Page({ params }) {
                   <Button>Save</Button>
                 </DialogFooter>
               </DialogContent>
-            </Dialog>
+            </Dialog> */}
+            <ImagesCard setImage={setMedia} />
 
             <Button className="mb-3" variant="outline" onClick={handleSubmit} disabled={!isFormValid}>Publish</Button>
           </div>          
@@ -598,7 +600,7 @@ export default function Page({ params }) {
               </CollapsibleContent>
             </Collapsible>
 
-            <div className="border p-2 rounded w-full max-w-lg">
+            <div className="border p-2 rounded w-full">
               <div className="flex flex-wrap gap-2">
                 {keywordsAr.map((badge, index) => (
                   <div key={index} className="flex items-center bg-gray-200 text-gray-700 rounded-full px-3 py-1">

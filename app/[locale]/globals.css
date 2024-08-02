@@ -113,6 +113,10 @@
   width: 100%;
 }
 
+.tiptap a {
+  text-decoration-line: underline;
+}
+
 .tiptap td + th {
   border: 2px solid #ced4da;
   box-sizing: border-box;
