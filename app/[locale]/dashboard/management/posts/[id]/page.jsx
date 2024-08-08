@@ -218,24 +218,24 @@ export default function Page({ params }) {
     }
   };
 
-  const handleSubmitGPT = async () => {
-    const res = await fetch('/api/gpt', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ title }),
-    });
+  // const handleSubmitGPT = async () => {
+  //   const res = await fetch('/api/gpt', {
+  //     method: 'POST',
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //     },
+  //     body: JSON.stringify({ title }),
+  //   });
 
-    const data = await res.json();
-    if (data.error) {
-      setResponse('Error: ' + data.error);
-    } else {
-      setResponse(data.text);
-      console.log(data.text);
+  //   const data = await res.json();
+  //   if (data.error) {
+  //     setResponse('Error: ' + data.error);
+  //   } else {
+  //     setResponse(data.text);
+  //     console.log(data.text);
       
-    }
-  };
+  //   }
+  // };
 
   if (isLoading) {
     return <LoadingScreen />
@@ -318,7 +318,7 @@ export default function Page({ params }) {
               open={suggestionsTitle}
               onOpenChange={setSuggestionsTitle}
               className="space-y-2"
-              onClick={handleSubmitGPT}
+              // onClick={handleSubmitGPT}
             >
               <div className="flex items-center justify-between space-x-4">
                 <h4 className="text-sm font-semibold">
