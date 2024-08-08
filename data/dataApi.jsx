@@ -27,7 +27,8 @@ export const getPosts = async ({ select, include, ...params } = {}) => {
   // تحويل كائن select أو include إلى JSON وإضافته كمعلمة إلى الاستعلام
   if (select) {
     url.searchParams.append("select", JSON.stringify(select));
-  } else if (include) {
+  }
+  if (include) {
     url.searchParams.append("include", JSON.stringify(include));
   }
 

@@ -13,8 +13,8 @@ export const GET = async (req) => {
   const selectParam = searchParams.get("select");
   const includeParam = searchParams.get("include");
 
-  let select = {};
-  let include = {};
+  let select = null;
+  let include = null;
 
   if (selectParam) {
     try {
@@ -51,8 +51,8 @@ export const GET = async (req) => {
         }
       }),
     },
-    ...(Object.keys(select).length > 0 && { select }), // استخدام select إذا كان موجودًا
-    ...(Object.keys(include).length > 0 && { include }), // استخدام include إذا كان موجودًا
+    ...(select && { select }), // استخدام select إذا كان موجودًا
+    ...(include && { include }), // استخدام include إذا كان موجودًا
     orderBy: {
       createdAt: 'desc',
     }
