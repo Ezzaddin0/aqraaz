@@ -62,7 +62,21 @@ const getUsers = async () => {
 
 export default async function Dashboard() {
   const comments = await getComments();
-  const posts = await getPosts();
+  const posts = await getPosts({
+    // page: 1,
+    // cat: 'news',
+    // searchQuery: 'latest updates',
+    include: {
+      user: true,
+      cat: true,
+      comments: {
+        include: {
+          user: true,
+        }
+      },
+      views: true,
+    },
+  });
   const users = await getUsers();
 
   const sortedPosts = sortPostsByDate(posts.posts);

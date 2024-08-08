@@ -12,19 +12,21 @@ import LoadingScreen from './LoadingScreen';
 
 const storage = getStorage(app);
 
-export default function ImagesCard({setImage}) {
+export default function ImagesCard({setImage, altImage, setAltImage}) {
   const [file, setFile] = useState(null);
   const [media, setMedia] = useState("");
   const [searchImage, setSearchImage] = useState("");
   const [galleryImages, setGalleryImages] = useState([]);
   const [debounceTimeout, setDebounceTimeout] = useState(null);
   const [page, setPage] = useState(1);
+  const [altText, setAltText] = useState(altImage || "");
 
   useEffect(() => {
     if (media) {
       setImage(media);
+      setAltImage(altText);
     }
-  }, [media]);
+  }, [media, altText]);
 
   const fetchImageFromUnsplash = async (query, page = 1) => {
     const response = await fetch(
@@ -66,9 +68,10 @@ export default function ImagesCard({setImage}) {
     }
   };
 
-  const handleImageSelect = async (imageUrl) => {
+  const handleImageSelect = async (imageUrl, altDescription) => {
     const fileFromUrl = await fetchImageAsFile(imageUrl);
     setFile(fileFromUrl);
+    setAltText(altDescription);
   };
 
   const fetchImageAsFile = async (url) => {
@@ -144,25 +147,18 @@ export default function ImagesCard({setImage}) {
           </TabsList>
           <TabsContent value="upload" className="py-2">
             <div className="flex items-center justify-center w-full">
-              <label
-                htmlFor="dropzone-file"
-                className="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-gray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500"
-              >
+              <label htmlFor="dropzone-file" className="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-gray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500">
                 {file ? (
                   media ? (
                     <div className="w-full h-full">
-                      <img
-                        src={media}
-                        className="w-full h-full aspect-video"
-                        alt=""
-                      />
+                      <img src={media} className="w-full h-full aspect-video" alt={altText} />
                       <p className="flex items-center">
                         {file.name}
-                        <XIcon
-                          className="h-4 w-4 cursor-pointer ml-2 focus:outline-none text-gray-500"
+                        <XIcon className="h-4 w-4 cursor-pointer ml-2 focus:outline-none text-gray-500"
                           onClick={() => {
                             setFile(null);
                             setMedia("");
+                            setAltText("");
                           }}
                         />
                       </p>
@@ -182,14 +178,16 @@ export default function ImagesCard({setImage}) {
                     </p>
                   </div>
                 )}
-                <input
-                  id="dropzone-file"
-                  type="file"
-                  onChange={(e) => setFile(e.target.files[0])}
-                  className="hidden"
-                />
+                <input id="dropzone-file" type="file" onChange={(e) => setFile(e.target.files[0])} className="hidden" />
               </label>
             </div>
+            <Input
+              className="mt-2"
+              type="text"
+              value={altText}
+              onChange={(e) => setAltText(e.target.value)}
+              placeholder="Enter alt text for the image"
+            />
           </TabsContent>
           <TabsContent value="link" className="py-6">
             <div className="grid items-center gap-2">
@@ -198,29 +196,28 @@ export default function ImagesCard({setImage}) {
                 type="text"
                 value={searchImage}
                 onChange={(e) => setSearchImage(e.target.value)}
-                id="email"
                 placeholder="Paste image URL here..."
               />
-              <Image
-                width={550}
-                height={309}
-                src={
-                  searchImage ||
-                  "https://images.unsplash.com/photo-1588345921523-c2dcdb7f1dcd?w=800&dpr=2&q=80"
-                }
-                alt="Photo by Drew Beamer"
-                className="rounded-md object-cover aspect-video"
+              {searchImage && (
+                <img
+                  width={550}
+                  height={309}
+                  src={searchImage}
+                  alt={altText || "Linked image"}
+                  className="rounded-md object-cover aspect-video"
+                />
+              )}
+              <Input
+                className="mt-2"
+                type="text"
+                value={altText}
+                onChange={(e) => setAltText(e.target.value)}
+                placeholder="Enter alt text for the image"
               />
             </div>
           </TabsContent>
           <TabsContent value="gallery" className="py-1">
-            <Input
-              className="col-3 form-control-sm py-1 my-2 fs-4 text-capitalize border border-3 border-dark"
-              type="text"
-              id="gallery-search-input"
-              placeholder="Search Anything..."
-              onChange={handleSearch}
-            />
+            <Input className="col-3 form-control-sm py-1 my-2 fs-4 text-capitalize border border-3 border-dark" type="text" id="gallery-search-input" placeholder="Search Anything..." onChange={handleSearch} />
             <div className="grid gap-4 h-[300px] overflow-auto">
               <div className="grid grid-cols-3 gap-4">
                 {galleryImages.map((photo) => (
@@ -232,20 +229,14 @@ export default function ImagesCard({setImage}) {
                       className="h-auto max-w-full rounded-lg cursor-pointer"
                       src={photo.urls.regular}
                       alt={photo.alt_description}
-                      onClick={() => handleImageSelect(photo.urls.regular)}
+                      onClick={() => handleImageSelect(photo.urls.regular, photo.alt_description)}
                     />
                   </div>
                 ))}
               </div>
             </div>
             {galleryImages.length > 0 && (
-              <Button
-                variant="outline"
-                className="mt-4"
-                onClick={handleLoadMore}
-              >
-                Load More
-              </Button>
+              <Button variant="outline" className="mt-4" onClick={handleLoadMore}>Load More</Button>
             )}
           </TabsContent>
         </Tabs>

@@ -16,6 +16,8 @@ import { format } from 'date-fns'
 import CardCustom from '../../../../../components/component/Card';
 import Image from 'next/image';
 import { getCategory, getPost } from '../../../../../data/dataApi';
+import { en, ar } from "date-fns/locale";
+
 export const revalidate = 30;
 
 export async function generateMetadata({params: {locale, slug}}) {
@@ -81,17 +83,17 @@ export default async function page({ params: {slug, locale} }) {
     <div>
       <div className='container mx-auto mt-4 max-sm:px-4 text-base leading-7 text-gray-700 dark:text-gray-200'>
         <header className="mb-8 space-y-4">
-          <div className="flex items-center space-x-4 border-b pb-2">
+          <div className="flex items-center space-x-4 gap-x-2 border-b pb-2">
             <Image alt="Author Avatar" className="h-12 w-12 aspect-[48/48] object-cover rounded-full" height={48} src={data.user.image} width={48} />
             <div>
-              <p className="text-sm font-medium text-gray-500 dark:text-gray-400">By {data.user.name}</p>
-              <p className="text-sm text-gray-500 dark:text-gray-400">Published on {format(data.createdAt, "MMMM d, yyyy 'at' h:mm a")}</p>
+              <p className="text-sm font-medium text-gray-500 dark:text-gray-400">{locale == 'en' ? 'By' : 'بواسطة'} {data.user.name}</p>
+              <p className="text-sm text-gray-500 dark:text-gray-400">{locale == 'en' ? 'Published on' : 'نُشرت في'} {format(data.createdAt, "MMMM d, yyyy 'at' h:mm a", {locale: locale == 'en' ? en : ar})}</p>
             </div>
           </div>
           <div
             className="flex items-center justify-between space-x-4 text-sm text-gray-500 dark:text-gray-400">
-            <p className="flex items-center">{data.views.length} views <Eye className="w-6 h-6 pl-2" /></p>
-            <p>5 min read</p>
+            <p className="flex items-center gap-1" dir={locale == 'en' ? 'ltr' : 'rtl'}>{data.views.length} {locale == 'en' ? 'views' : 'مشاهدة'} <Eye className="w-6 h-6 pl-2" /></p>
+            <p>5 {locale == 'en' ? 'min read' : 'دقائق قراءة'}</p>
           </div>
         </header>
           {/* <PortableText value={locale == "en" ? data.body.en : data.body.ar} components={RichText} /> */}

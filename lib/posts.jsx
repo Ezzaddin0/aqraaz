@@ -38,15 +38,30 @@ export const getData = async (cat, sort) => {
 };
 
 export const getPosts = async (sort) => {
-  const res = await fetch(`${process.env.NEXTAUTH_URL}/api/posts`, {
-    cache: "no-store",
+  // const res = await fetch(`${process.env.NEXTAUTH_URL}/api/posts`, {
+  //   cache: "no-store",
+  // });
+
+  // if (!res.ok) {
+  //   throw new Error("Failed");
+  // }
+
+  // const data = await res.json();
+  const data = await getPosts({
+    // page: 1,
+    // cat: 'news',
+    // searchQuery: 'latest updates',
+    include: {
+      user: true,
+      cat: true,
+      comments: {
+        include: {
+          user: true,
+        }
+      },
+      views: true,
+    },
   });
-
-  if (!res.ok) {
-    throw new Error("Failed");
-  }
-
-  const data = await res.json();
 
   let sortedPosts = [];
   if (sort === "a-to-z") {

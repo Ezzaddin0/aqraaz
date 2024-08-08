@@ -1,8 +1,10 @@
 const pathName = process.env.NEXTAUTH_URL;
 
+const cache = "no-store"
+
 export const getPost = async (slug) => {
   const res = await fetch(`${pathName}/api/posts/${slug}`, {
-    cache: "no-store",
+    cache: cache,
   });
 
   if (!res.ok) {
@@ -12,38 +14,39 @@ export const getPost = async (slug) => {
   return res.json();
 };
 
-export const getPosts = async ({ page, cat, searchQuery, postsPerPage } = {}) => {
+export const getPosts = async ({ select, include, ...params } = {}) => {
   const url = new URL(`${pathName}/api/posts`);
 
-  if (page !== undefined) {
-    url.searchParams.append("page", page);
-  }
-  if (cat !== undefined) {
-    url.searchParams.append("cat", cat);
-  }
-  // if (postsPerPage !== undefined) {
-  //   url.searchParams.append("postsPerPage", postsPerPage);
-  // }
-
-    const res = await fetch(
-      url.toString(),
-      {
-        cache: "no-store",
-      }
-    );
-  
-    if (!res.ok) {
-      throw new Error("Failed");
+  // إضافة المعلمات الأخرى إلى الاستعلام
+  Object.entries(params).forEach(([key, value]) => {
+    if (value !== undefined) {
+      url.searchParams.append(key, value);
     }
-  
-    return res.json();
+  });
+
+  // تحويل كائن select أو include إلى JSON وإضافته كمعلمة إلى الاستعلام
+  if (select) {
+    url.searchParams.append("select", JSON.stringify(select));
+  } else if (include) {
+    url.searchParams.append("include", JSON.stringify(include));
+  }
+
+  const res = await fetch(url.toString(), {
+    cache: 'no-cache',
+  });
+
+  if (!res.ok) {
+    throw new Error("Failed to fetch posts");
+  }
+
+  return res.json();
 };
 
 export const getCategory = async (cat) => {
   const res = await fetch(
     `${pathName}/api/categories?slug=${cat}`,
     {
-      cache: "no-store",
+      cache: cache,
     }
   );
 
@@ -58,7 +61,7 @@ export const getCategories = async () => {
   const res = await fetch(
     `${pathName}/api/categories`,
     {
-      cache: "no-store",
+      cache: cache,
     }
   );
 
@@ -71,7 +74,7 @@ export const getCategories = async () => {
 
 export const getSearch = async (slug) => {
   const res = await fetch(`${pathName}/api/posts?search=${slug}`, {
-    cache: "no-store",
+    cache: cache,
   });
 
   if (!res.ok) {

@@ -7,11 +7,11 @@ import { Textarea } from "../../../../../../components/ui/textarea"
 import Tiptap from "../../../../../../components/Tiptap";
 import { Popover, PopoverContent, PopoverTrigger } from "../../../../../../components/ui/popover";
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "../../../../../../components/ui/command";
-import { CalendarIcon, Check, ChevronsUpDown, UploadCloudIcon, XIcon } from "lucide-react";
+import { CalendarIcon, Check, ChevronsUpDown, InfoIcon, UploadCloudIcon, XIcon } from "lucide-react";
 import { cn } from "../../../../../../lib/utils";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { app } from "../../../../../firebase";
 import useSWR from "swr";
@@ -26,9 +26,8 @@ import { CartesianGrid, XAxis, BarChart, Bar } from "recharts"
 import { format } from "date-fns";
 import Image from "next/image";
 import ImagesCard from "../../../../../../components/ImagesCard"
-
-
-const storage = getStorage(app);
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "../../../../../../components/ui/accordion";
+import { Badge } from "../../../../../../components/ui/badge"
 
 const fetcher = async (url) => {
   const res = await fetch(url);
@@ -57,9 +56,40 @@ const chartConfig = {
   },
 }
 
+const extractTextFromHtml = (html) => {
+  const div = document.createElement('div');
+  div.innerHTML = html;
+  return div.textContent || div.innerText || '';
+};
+
+const processText = (text) => {
+  const words = text.split(/\s+/).map(word => word.replace(/[^\p{L}\p{N}]/gu, '').toLowerCase());
+  const totalWords = words.length;
+
+  const wordCounts = words.reduce((acc, word) => {
+    if (word && word.length >= 4) {  // تم إضافة شرط طول الكلمة هنا
+      acc[word] = (acc[word] || 0) + 1;
+    }
+    return acc;
+  }, {});
+
+  const wordFrequencies = Object.entries(wordCounts)
+    .map(([word, count]) => ({
+      word,
+      count,
+      percentage: (count / totalWords) * 100
+    }))
+    .sort((a, b) => b.count - a.count)
+    .slice(0, 10);
+
+  return { wordFrequencies, totalWords, originalText: text };
+};
+
 export default function Page({ params }) {
   const { status } = useSession();
   const router = useRouter();
+
+
 
   const { data, isLoading } = useSWR(
     `/api/categories`,
@@ -86,6 +116,7 @@ export default function Page({ params }) {
 
   const [file, setFile] = useState(null);
   const [media, setMedia] = useState("");
+  const [mediaAlt, setMediaAlt] = useState("");
   const [title, setTitle] = useState("");
   const [titleAr, setTitleAr] = useState("");
   const [desc, setDesc] = useState("");
@@ -140,87 +171,6 @@ export default function Page({ params }) {
       setIsFormValid(false);
     }
   }, [title, titleAr, desc, descAr, slug, valueCategory]);  
-
-
-  const fetchImageFromUnsplash = async (query) => {
-    const response = await fetch(`https://api.unsplash.com/search/photos?query=${query}&client_id=${process.env.NEXT_PUBLIC_UNSPLASH_API_KEY}`);
-    const data = await response.json();
-    if (data.results.length > 0) {
-      return data.results;
-    }
-    return '';
-  };
-
-  const debouncedSearch = useCallback((query) => {
-    clearTimeout(debounceTimeout);
-    const newTimeout = setTimeout(async () => {
-      if (query) {
-        const imageUrl = await fetchImageFromUnsplash(query);
-        setSearchImage(imageUrl);
-      }
-    }, 500); // Adjust the debounce delay as needed
-    setDebounceTimeout(newTimeout);
-  }, [debounceTimeout]);
-
-  const handleSearch = (e) => {
-    const query = e.target.value;
-    debouncedSearch(query);
-  };
-
-  const handleImageSelect = async (imageUrl) => {
-    const fileFromUrl = await fetchImageAsFile(imageUrl);
-    setFile(fileFromUrl);
-  };
-
-  const fetchImageAsFile = async (url) => {
-    const response = await fetch(url);
-    const blob = await response.blob();
-    const file = new File([blob], "image_from_url.jpg", { type: blob.type });
-    return file;
-  };
-
-  useEffect(() => {
-    const upload = (fileToUpload) => {
-      const name = new Date().getTime() + fileToUpload.name;
-      const storageRef = ref(storage, name);
-      const uploadTask = uploadBytesResumable(storageRef, fileToUpload);
-
-      uploadTask.on(
-        "state_changed",
-        (snapshot) => {
-          const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-          console.log("Upload is " + progress + "% done");
-          switch (snapshot.state) {
-            case "paused":
-              console.log("Upload is paused");
-              break;
-            case "running":
-              console.log("Upload is running");
-              break;
-          }
-        },
-        (error) => {
-          console.log(error);
-        },
-        () => {
-          getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-            setMedia(downloadURL);
-          });
-        }
-      );
-    };
-
-    const handleUpload = async () => {
-      if (file) {
-        upload(file);
-      } else if (searchImage) {
-        const fileFromUrl = await fetchImageAsFile(searchImage);
-        upload(fileFromUrl);
-      }
-    };
-
-    handleUpload();
-  }, [file, searchImage]);
 
   const slugify = (str) =>
     str
@@ -282,6 +232,8 @@ export default function Page({ params }) {
       setResponse('Error: ' + data.error);
     } else {
       setResponse(data.text);
+      console.log(data.text);
+      
     }
   };
 
@@ -318,6 +270,20 @@ export default function Page({ params }) {
   const handleRemoveBadgeAr = (indexToRemove) => {
     setKeywordsAr(keywordsAr.filter((_, index) => index !== indexToRemove));
   };
+
+  const words = content.trim().split(/\s+/).length;
+  const characters = content.length;
+  const paragraphs = content.split(/\n\s*\n/).length;
+  const readingTimeMin = Math.floor(words / 275);
+  const readingTimeSec = Math.round((words / 275 * 60) % 60);
+  const speakingTimeMin = Math.floor(words / 180);
+  const speakingTimeSec = Math.round((words / 180 * 60) % 60);
+
+  const { wordFrequencies, totalWords } = useMemo(() => {
+    const extractedText = extractTextFromHtml(content);
+    return processText(extractedText);
+  }, [content]);
+
 
   return (
     <div className="flex flex-col md:flex-row gap-3 min-h-screen pt-4">
@@ -540,7 +506,12 @@ export default function Page({ params }) {
                 </DialogFooter>
               </DialogContent>
             </Dialog> */}
-            <ImagesCard setImage={setMedia} />
+            {media && (
+            <div className="border w-full">
+              <Image width={280} height={100} src={media} alt="photo" className="w-full max-h-40 object-cover" />
+            </div>
+            )}
+              <ImagesCard altImage={mediaAlt} setAltImage={setMediaAlt} setImage={setMedia} />
 
             <Button className="mb-3" variant="outline" onClick={handleSubmit} disabled={!isFormValid}>Publish</Button>
           </div>          
@@ -616,11 +587,10 @@ export default function Page({ params }) {
           </div>
         </TabsContent>
         <TabsContent value="analysis">
-          <Card>
+          {/* <Card>
             <CardHeader className="flex items-center gap-2 space-y-0 border-b py-5 sm:flex-row">
               <div className="grid flex-1 gap-1 text-center sm:text-left">
                 <CardTitle>Area Chart</CardTitle>
-                {/* <CardDescription>Showing total visitors for the last 3 months</CardDescription> */}
               </div>
             </CardHeader>
             <CardContent className="px-2 pt-4 sm:px-6 sm:pt-6">
@@ -640,7 +610,53 @@ export default function Page({ params }) {
               </BarChart>
             </ChartContainer>
             </CardContent>
-          </Card>
+          </Card> */}
+          <Accordion type="multiple" collapsible className="w-full">
+            <AccordionItem value="item-1">
+              <AccordionTrigger><div className="flex items-center gap-3"><InfoIcon className="w-5 h-5"/> Details</div></AccordionTrigger>
+              <AccordionContent>
+              <ul className="flex flex-col gap-2">
+                <li className="flex items-center justify-between border-b py-1">
+                  {params.locale === 'en' ? 'Words' : 'الكلمات'} <Badge variant="outline">{words}</Badge>
+                </li>
+                <li className="flex items-center justify-between border-b py-1">
+                  {params.locale === 'en' ? 'Characters' : 'الحروف'} <Badge variant="outline">{characters}</Badge>
+                </li>
+                <li className="flex items-center justify-between border-b py-1">
+                  {params.locale === 'en' ? 'paragraphs' : 'الفقرات' } <Badge variant="outline">{paragraphs}</Badge>
+                </li>
+                <li className="flex items-center justify-between border-b py-1">
+                  {params.locale === 'en' ? 'Reading Time' : 'وقت القراءة' } <Badge variant="outline">{`${readingTimeMin} دقيقة ${readingTimeSec} ثانية`}</Badge>
+                </li>
+                <li className="flex items-center justify-between py-1">
+                {params.locale === 'en' ? 'Speaking Time' : 'وقت التحدث' } <Badge variant="outline">{`${speakingTimeMin} دقيقة ${speakingTimeSec} ثانية`}</Badge>
+                </li>
+              </ul>
+              </AccordionContent>
+            </AccordionItem>
+            <AccordionItem value="item-2">
+              <AccordionTrigger>Keywords list</AccordionTrigger>
+              <AccordionContent>
+              <ul className="flex flex-col gap-2">
+              {wordFrequencies.map(({ word, count, percentage }) => (
+                <li key={word} className="flex items-center justify-between border-b py-1">
+                  <span className="font-semibold">{word}</span>
+                  <div className="flex items-center gap-2">
+                    <Badge variant="outline">{count} ({percentage.toFixed(2)}%)</Badge>
+                  </div>
+                </li>
+              ))}
+              </ul>
+              </AccordionContent>
+            </AccordionItem>
+            <AccordionItem value="item-3">
+              <AccordionTrigger>Is it animated?</AccordionTrigger>
+              <AccordionContent>
+                Yes. It&apos;s animated by default, but you can disable it if you
+                prefer.
+              </AccordionContent>
+            </AccordionItem>
+          </Accordion>
         </TabsContent>
       </Tabs>
       </div>

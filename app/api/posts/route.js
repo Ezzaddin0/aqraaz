@@ -7,37 +7,54 @@ export const GET = async (req) => {
 
   const page = searchParams.get("page");
   const cat = searchParams.get("cat");
-
   const searchQuery = searchParams.get("search");
-  // console.log(searchQuery);
 
+  // استرجاع كائن select أو include وتحويله من JSON
+  const selectParam = searchParams.get("select");
+  const includeParam = searchParams.get("include");
+
+  let select = {};
+  let include = {};
+
+  if (selectParam) {
+    try {
+      select = JSON.parse(selectParam);
+    } catch (err) {
+      return new NextResponse(
+        JSON.stringify({ message: "Invalid select format" }),
+        { status: 400 }
+      );
+    }
+  }
+
+  if (includeParam) {
+    try {
+      include = JSON.parse(includeParam);
+    } catch (err) {
+      return new NextResponse(
+        JSON.stringify({ message: "Invalid include format" }),
+        { status: 400 }
+      );
+    }
+  }
 
   const POST_PER_PAGE = 9;
 
-  // إنشاء استعلام بناءً على توفر القيم
   const query = {
     ...(page && { take: POST_PER_PAGE, skip: POST_PER_PAGE * (page - 1) }),
     where: {
       ...(cat && { catSlug: cat }),
       ...(searchQuery && {
         slug: {
-          contains: searchQuery, // Corrected line
-          mode: 'insensitive', // Optional: to make the search case insensitive
+          contains: searchQuery,
+          mode: 'insensitive',
         }
-      }),      
+      }),
     },
-    include: {
-      user: true,
-      cat: true,
-      comments: {
-        include: {
-          user: true,
-        }
-      },
-      views: true,
-    },
+    ...(Object.keys(select).length > 0 && { select }), // استخدام select إذا كان موجودًا
+    ...(Object.keys(include).length > 0 && { include }), // استخدام include إذا كان موجودًا
     orderBy: {
-      createdAt: 'desc', // Sorting by createdAt in descending order
+      createdAt: 'desc',
     }
   };
 

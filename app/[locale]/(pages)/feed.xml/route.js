@@ -15,7 +15,17 @@ export async function GET() {
 
     // const posts = await client.fetch(query);
 
-    const posts = await getPosts();
+    const posts = await getPosts({
+        // page: 1,
+        // cat: 'news',
+        // searchQuery: 'latest updates',
+        select: {
+          title: true,
+          desc: true,
+          slug: true,
+          createdAt: true,
+        },
+    });
 
 
     const feed = new RSS({

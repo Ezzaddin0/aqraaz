@@ -34,12 +34,27 @@ export async function generateMetadata({ params: { locale } }) {
 }
 
 export default async function  Home({ params: { locale } }) {
-  const allPosts = await getPosts({page: 1});
+  const allPosts = await getPosts({
+    page: 1,
+    // cat: 'news',
+    // searchQuery: 'latest updates',
+    include: {
+      user: true,
+      cat: true,
+      comments: {
+        include: {
+          user: true,
+        }
+      },
+      views: true,
+    },
+  });
   const allNews = await getCategory('news');
   const allSports = await getCategory('sports');
+  const allTech = await getCategory('technology');    
 
   const postWithHighestViews = allPosts.posts.reduce((max, post) => (post.views.length > max.views.length ? post : max), allPosts.posts[0]);
-
+  
   return (
     <>
       <AdsCard />
@@ -49,9 +64,10 @@ export default async function  Home({ params: { locale } }) {
       <AdsCard />
 
       <PopularArticles Posts={allPosts} lang={locale} />
+      
       <AdsCard />
 
-      <SectionCards title={locale == "en" ? "Latest Posts" : "أخر المنشورات"} time Posts={allPosts} lang={locale} />
+      <SectionCards title={locale == "en" ? "Technology" : "تكنولوجيا"} time Posts={allTech[0]} lang={locale} />
 
       <AdsCard />
 
@@ -60,8 +76,6 @@ export default async function  Home({ params: { locale } }) {
       <AdsCard />
 
       <SectionCards title={locale == "en" ? "News" : "الاخبار"} time Posts={allNews[0]} lang={locale} />
-
-      <AdsCard />
 
       <PrimarySectionCard Posts={allSports} lang={locale} />
 
