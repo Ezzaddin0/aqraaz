@@ -16,7 +16,7 @@ import { format } from 'date-fns'
 import CardCustom from '../../../../../components/component/Card';
 import Image from 'next/image';
 import { getCategory, getPost } from '../../../../../data/dataApi';
-import { en, ar } from "date-fns/locale";
+// import { en, ar } from "date-fns/locale";
 
 export const revalidate = 30;
 
@@ -87,7 +87,7 @@ export default async function page({ params: {slug, locale} }) {
             <Image alt="Author Avatar" className="h-12 w-12 aspect-[48/48] object-cover rounded-full" height={48} src={data.user.image} width={48} />
             <div>
               <p className="text-sm font-medium text-gray-500 dark:text-gray-400">{locale == 'en' ? 'By' : 'بواسطة'} {data.user.name}</p>
-              <p className="text-sm text-gray-500 dark:text-gray-400">{locale == 'en' ? 'Published on' : 'نُشرت في'} {format(data.createdAt, "MMMM d, yyyy 'at' h:mm a", {locale: locale == 'en' ? en : ar})}</p>
+              <p className="text-sm text-gray-500 dark:text-gray-400">{locale == 'en' ? 'Published on' : 'نُشرت في'} {format(data.createdAt, "MMMM d, yyyy 'at' h:mm a")}</p>
             </div>
           </div>
           <div
