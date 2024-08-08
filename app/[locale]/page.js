@@ -34,21 +34,22 @@ export async function generateMetadata({ params: { locale } }) {
 }
 
 export default async function  Home({ params: { locale } }) {
-  const allPosts = await getPosts({
-    page: 1,
-    // cat: 'news',
-    // searchQuery: 'latest updates',
-    include: {
-      user: true,
-      cat: true,
-      comments: {
-        include: {
-          user: true,
-        }
-      },
-      views: true,
-    },
-  });
+  // const allPosts = await getPosts({
+  //   page: 1,
+  //   // cat: 'news',
+  //   // searchQuery: 'latest updates',
+  //   include: {
+  //     user: true,
+  //     cat: true,
+  //     comments: {
+  //       include: {
+  //         user: true,
+  //       }
+  //     },
+  //     views: true,
+  //   },
+  // });
+  const allPosts = await getPosts();
   const allNews = await getCategory('news');
   const allSports = await getCategory('sports');
   const allTech = await getCategory('technology');    

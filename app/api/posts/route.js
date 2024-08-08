@@ -2,62 +2,112 @@ import { auth  } from "../../auth";
 import prisma from "../../connect";
 import { NextResponse } from "next/server";
 
+// export const GET = async (req) => {
+//   const { searchParams } = new URL(req.url);
+
+//   const page = searchParams.get("page");
+//   const cat = searchParams.get("cat");
+//   const searchQuery = searchParams.get("search");
+
+//   // استرجاع كائن select أو include وتحويله من JSON
+//   const selectParam = searchParams.get("select");
+//   const includeParam = searchParams.get("include");
+
+//   let select = null;
+//   let include = null;
+
+//   if (selectParam) {
+//     try {
+//       select = JSON.parse(selectParam);
+//     } catch (err) {
+//       return new NextResponse(
+//         JSON.stringify({ message: "Invalid select format" }),
+//         { status: 400 }
+//       );
+//     }
+//   }
+
+//   if (includeParam) {
+//     try {
+//       include = JSON.parse(includeParam);
+//     } catch (err) {
+//       return new NextResponse(
+//         JSON.stringify({ message: "Invalid include format" }),
+//         { status: 400 }
+//       );
+//     }
+//   }
+
+//   const POST_PER_PAGE = 9;
+
+//   const query = {
+//     ...(page && { take: POST_PER_PAGE, skip: POST_PER_PAGE * (page - 1) }),
+//     where: {
+//       ...(cat && { catSlug: cat }),
+//       ...(searchQuery && {
+//         slug: {
+//           contains: searchQuery,
+//           mode: 'insensitive',
+//         }
+//       }),
+//     },
+//     ...(select && { select }), // استخدام select إذا كان موجودًا
+//     ...(include && { include }), // استخدام include إذا كان موجودًا
+//     orderBy: {
+//       createdAt: 'desc',
+//     }
+//   };
+
+//   try {
+//     const [posts, count] = await prisma.$transaction([
+//       prisma.post.findMany(query),
+//       prisma.post.count({ where: query.where }),
+//     ]);
+//     return new NextResponse(JSON.stringify({ posts, count }), { status: 200 });
+//   } catch (err) {
+//     console.log(err);
+//     return new NextResponse(
+//       JSON.stringify({ message: "Something went wrong!" }),
+//       { status: 500 }
+//     );
+//   }
+// };
+
+// CREATE A POST
+
 export const GET = async (req) => {
   const { searchParams } = new URL(req.url);
-
   const page = searchParams.get("page");
   const cat = searchParams.get("cat");
   const searchQuery = searchParams.get("search");
-
-  // استرجاع كائن select أو include وتحويله من JSON
-  const selectParam = searchParams.get("select");
-  const includeParam = searchParams.get("include");
-
-  let select = null;
-  let include = null;
-
-  if (selectParam) {
-    try {
-      select = JSON.parse(selectParam);
-    } catch (err) {
-      return new NextResponse(
-        JSON.stringify({ message: "Invalid select format" }),
-        { status: 400 }
-      );
-    }
-  }
-
-  if (includeParam) {
-    try {
-      include = JSON.parse(includeParam);
-    } catch (err) {
-      return new NextResponse(
-        JSON.stringify({ message: "Invalid include format" }),
-        { status: 400 }
-      );
-    }
-  }
-
+  // console.log(searchQuery);
   const POST_PER_PAGE = 9;
-
+  // إنشاء استعلام بناءً على توفر القيم
   const query = {
     ...(page && { take: POST_PER_PAGE, skip: POST_PER_PAGE * (page - 1) }),
     where: {
       ...(cat && { catSlug: cat }),
       ...(searchQuery && {
         slug: {
-          contains: searchQuery,
-          mode: 'insensitive',
+          contains: searchQuery, // Corrected line
+          mode: 'insensitive', // Optional: to make the search case insensitive
         }
-      }),
+      }),      
     },
-    ...(select && { select }), // استخدام select إذا كان موجودًا
-    ...(include && { include }), // استخدام include إذا كان موجودًا
+    include: {
+      user: true,
+      cat: true,
+      comments: {
+        include: {
+          user: true,
+        }
+      },
+      views: true,
+    },
     orderBy: {
-      createdAt: 'desc',
+      createdAt: 'desc', // Sorting by createdAt in descending order
     }
   };
-
   try {
     const [posts, count] = await prisma.$transaction([
       prisma.post.findMany(query),
@@ -71,9 +121,8 @@ export const GET = async (req) => {
       { status: 500 }
     );
   }
-};
+}
 
-// CREATE A POST
 export const POST = async (req) => {
   const session = await auth()
 

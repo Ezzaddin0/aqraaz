@@ -47,22 +47,22 @@ export const getPosts = async (sort) => {
   // }
 
   // const data = await res.json();
-  const data = await getPosts({
-    // page: 1,
-    // cat: 'news',
-    // searchQuery: 'latest updates',
-    include: {
-      user: true,
-      cat: true,
-      comments: {
-        include: {
-          user: true,
-        }
-      },
-      views: true,
-    },
-  });
-
+  // const data = await getPosts({
+  //   // page: 1,
+  //   // cat: 'news',
+  //   // searchQuery: 'latest updates',
+  //   include: {
+  //     user: true,
+  //     cat: true,
+  //     comments: {
+  //       include: {
+  //         user: true,
+  //       }
+  //     },
+  //     views: true,
+  //   },
+  // });
+  const data = await getPosts();
   let sortedPosts = [];
   if (sort === "a-to-z") {
     sortedPosts = sortByTitleAsc([...data.posts]);

@@ -14,32 +14,56 @@ export const getPost = async (slug) => {
   return res.json();
 };
 
-export const getPosts = async ({ select, include, ...params } = {}) => {
+// export const getPosts = async ({ select, include, ...params } = {}) => {
+//   const url = new URL(`${pathName}/api/posts`);
+
+//   // إضافة المعلمات الأخرى إلى الاستعلام
+//   Object.entries(params).forEach(([key, value]) => {
+//     if (value !== undefined) {
+//       url.searchParams.append(key, value);
+//     }
+//   });
+
+//   // تحويل كائن select أو include إلى JSON وإضافته كمعلمة إلى الاستعلام
+//   if (select) {
+//     url.searchParams.append("select", JSON.stringify(select));
+//   }
+//   if (include) {
+//     url.searchParams.append("include", JSON.stringify(include));
+//   }
+
+//   const res = await fetch(url.toString(), {
+//     cache: 'no-cache',
+//   });
+
+//   if (!res.ok) {
+//     throw new Error("Failed to fetch posts");
+//   }
+
+//   return res.json();
+// };
+
+export const getPosts = async ({ page, cat, searchQuery, postsPerPage } = {}) => {
   const url = new URL(`${pathName}/api/posts`);
-
-  // إضافة المعلمات الأخرى إلى الاستعلام
-  Object.entries(params).forEach(([key, value]) => {
-    if (value !== undefined) {
-      url.searchParams.append(key, value);
+if (page !== undefined) {
+    url.searchParams.append("page", page);
+  }
+  if (cat !== undefined) {
+    url.searchParams.append("cat", cat);
+  }
+  // if (postsPerPage !== undefined) {
+  //   url.searchParams.append("postsPerPage", postsPerPage);
+  // }
+  const res = await fetch(
+    url.toString(),
+    {
+      cache: cache,
     }
-  });
-
-  // تحويل كائن select أو include إلى JSON وإضافته كمعلمة إلى الاستعلام
-  if (select) {
-    url.searchParams.append("select", JSON.stringify(select));
-  }
-  if (include) {
-    url.searchParams.append("include", JSON.stringify(include));
-  }
-
-  const res = await fetch(url.toString(), {
-    cache: 'no-cache',
-  });
-
+  );
   if (!res.ok) {
-    throw new Error("Failed to fetch posts");
+    throw new Error("Failed");
   }
-
+ 
   return res.json();
 };
 

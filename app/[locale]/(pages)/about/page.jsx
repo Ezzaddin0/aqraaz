@@ -77,17 +77,18 @@ export default async function page({params: { locale }}) {
   const { page } = await getDictionary(locale);
 
   const categories = await getCategories();
-  const posts = await getPosts({
-    page: 1,
-    // cat: 'news',
-    // searchQuery: 'latest updates',
-    select: {
-      img: true,
-      title: true,
-      desc: true,
-      slug: true,
-    },
-  });
+  // const posts = await getPosts({
+  //   page: 1,
+  //   // cat: 'news',
+  //   // searchQuery: 'latest updates',
+  //   select: {
+  //     img: true,
+  //     title: true,
+  //     desc: true,
+  //     slug: true,
+  //   },
+  // });
+  const posts = await getPosts()
   return (
     <>
     <main>
