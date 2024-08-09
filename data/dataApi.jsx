@@ -67,9 +67,22 @@ if (page !== undefined) {
   return res.json();
 };
 
-export const getCategory = async (cat) => {
+export const getCategory = async (cat, options = {}) => {
+  const { include, select } = options;
+
+  const query = new URLSearchParams();
+  query.set("slug", cat);
+
+  if (include) {
+    query.set("include", JSON.stringify(include));
+  }
+
+  if (select) {
+    query.set("select", JSON.stringify(select));
+  }
+
   const res = await fetch(
-    `${pathName}/api/categories?slug=${cat}`,
+    `${pathName}/api/categories?${query.toString()}`,
     {
       cache: cache,
     }

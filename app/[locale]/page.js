@@ -50,9 +50,36 @@ export default async function  Home({ params: { locale } }) {
   //   },
   // });
   const allPosts = await getPosts();
-  const allNews = await getCategory('news');
-  const allSports = await getCategory('sports');
-  const allTech = await getCategory('technology');    
+  const allNews = await getCategory('news', {
+    include: {
+        posts: {
+        include: {
+            views: true,
+            comments: true
+        }
+        },
+    },
+  });
+  const allSports = await getCategory('sports', {
+    include: {
+        posts: {
+        include: {
+            views: true,
+            comments: true
+        }
+        },
+    },
+  });
+  const allTech = await getCategory('technology', {
+    include: {
+        posts: {
+        include: {
+            views: true,
+            comments: true
+        }
+        },
+    },
+  });    
 
   const postWithHighestViews = allPosts.posts.reduce((max, post) => (post.views.length > max.views.length ? post : max), allPosts.posts[0]);
   
