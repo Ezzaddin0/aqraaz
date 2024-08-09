@@ -38,25 +38,16 @@ export const GET = async (req) => {
   const includeParam = searchParams.get("include");
   const selectParam = searchParams.get("select");
 
-  let includeOptions = {};
-  let selectOptions = {};
+  let queryOptions = { where: slug ? { slug: slug } : {} };
 
-  // Process the include parameter if present
-  if (includeParam) {
-    includeOptions = JSON.parse(includeParam);
-  }
-
-  // Process the select parameter if present
-  if (selectParam) {
-    selectOptions = JSON.parse(selectParam);
+  if (includeParam && !selectParam) {
+    queryOptions.include = JSON.parse(includeParam);
+  } else if (selectParam && !includeParam) {
+    queryOptions.select = JSON.parse(selectParam);
   }
 
   try {
-    const categories = await prisma.category.findMany({
-      include: includeOptions,
-      select: Object.keys(selectOptions).length > 0 ? selectOptions : undefined,
-      where: slug ? { slug: slug } : {},
-    });
+    const categories = await prisma.category.findMany(queryOptions);
 
     return new NextResponse(JSON.stringify(categories), { status: 200 });
   } catch (err) {

@@ -73,11 +73,9 @@ export const getCategory = async (cat, options = {}) => {
   const query = new URLSearchParams();
   query.set("slug", cat);
 
-  if (include) {
+  if (include && !select) {
     query.set("include", JSON.stringify(include));
-  }
-
-  if (select) {
+  } else if (select && !include) {
     query.set("select", JSON.stringify(select));
   }
 
@@ -110,16 +108,15 @@ export const getCategory = async (cat, options = {}) => {
 
 //   return res.json();
 // };
-export const getCategories = async (options = {}) => {
+export const getCategories = async (cat, options = {}) => {
   const { include, select } = options;
 
   const query = new URLSearchParams();
+  query.set("slug", cat);
 
-  if (include) {
+  if (include && !select) {
     query.set("include", JSON.stringify(include));
-  }
-
-  if (select) {
+  } else if (select && !include) {
     query.set("select", JSON.stringify(select));
   }
 
