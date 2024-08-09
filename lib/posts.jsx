@@ -1,3 +1,4 @@
+import { getCategory, getPosts } from "../data/dataApi";
 import { sortPostsByDate } from "../helper/sorted";
 
 export const sortByTitleAsc = (posts) => {
@@ -13,15 +14,25 @@ export const sortByMostViewed = (posts) => {
 };
 
 export const getData = async (cat, sort) => {
-  const res = await fetch(`${process.env.NEXTAUTH_URL}/api/categories?slug=${cat}`, {
-    cache: "no-store",
-  });
+  // const res = await fetch(`${process.env.NEXTAUTH_URL}/api/categories?slug=${cat}`, {
+  //   cache: "no-store",
+  // });
 
-  if (!res.ok) {
-    throw new Error("Failed");
-  }
+  // if (!res.ok) {
+  //   throw new Error("Failed");
+  // }
 
-  const data = await res.json();
+  // const data = await res.json();
+  const data  = await getCategory(cat, {
+    include: {
+      posts: {
+        include: {
+          views: true,
+          comments: true
+        }
+      },
+    },
+  })
 
   let sortedPosts = [];
   if (sort === "a-to-z") {
@@ -37,7 +48,7 @@ export const getData = async (cat, sort) => {
   return sortedPosts;
 };
 
-export const getPosts = async (sort) => {
+export const getPostsLib = async (sort) => {
   // const res = await fetch(`${process.env.NEXTAUTH_URL}/api/posts`, {
   //   cache: "no-store",
   // });

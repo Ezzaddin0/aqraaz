@@ -43,27 +43,36 @@ export const getPost = async (slug) => {
 //   return res.json();
 // };
 
-export const getPosts = async ({ page, cat, searchQuery, postsPerPage } = {}) => {
+export const getPosts = async ({ page, cat, searchQuery, include, select } = {}) => {
   const url = new URL(`${pathName}/api/posts`);
-if (page !== undefined) {
+
+  if (page !== undefined) {
     url.searchParams.append("page", page);
   }
   if (cat !== undefined) {
     url.searchParams.append("cat", cat);
   }
-  // if (postsPerPage !== undefined) {
-  //   url.searchParams.append("postsPerPage", postsPerPage);
-  // }
+  if (searchQuery !== undefined) {
+    url.searchParams.append("search", searchQuery);
+  }
+  if (include) {
+    url.searchParams.append("include", JSON.stringify(include));
+  }
+  if (select) {
+    url.searchParams.append("select", JSON.stringify(select));
+  }
+
   const res = await fetch(
     url.toString(),
     {
       cache: cache,
     }
   );
+
   if (!res.ok) {
     throw new Error("Failed");
   }
- 
+
   return res.json();
 };
 
@@ -108,24 +117,23 @@ export const getCategory = async (cat, options = {}) => {
 
 //   return res.json();
 // };
-export const getCategories = async (cat, options = {}) => {
+export const getCategories = async (options = {}) => {
   const { include, select } = options;
 
   const query = new URLSearchParams();
-  query.set("slug", cat);
 
-  if (include && !select) {
+  if (include) {
     query.set("include", JSON.stringify(include));
-  } else if (select && !include) {
+  }
+
+  if (select) {
     query.set("select", JSON.stringify(select));
   }
 
-  const res = await fetch(
-    `${pathName}/api/categories?${query.toString()}`,
-    {
-      cache: cache,
-    }
-  );
+  const url = `${pathName}/api/categories?${query.toString()}`;
+  const res = await fetch(url, {
+    cache: cache,
+  });
 
   if (!res.ok) {
     throw new Error("Failed");

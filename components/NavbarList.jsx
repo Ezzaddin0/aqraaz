@@ -168,7 +168,7 @@ export function Sidebar({lang, dataCategories}) {
   return (
     <Sheet>
         <SheetTrigger asChild>
-        <Button className="block lg:hidden" variant="outline" size="sm">
+        <Button aria-label="Menu" className="block lg:hidden" variant="outline" size="sm">
             <MenuIcon className="h-4 w-4" />
         </Button>
         </SheetTrigger>

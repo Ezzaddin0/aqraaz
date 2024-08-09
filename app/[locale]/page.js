@@ -79,7 +79,7 @@ export default async function  Home({ params: { locale } }) {
         }
         },
     },
-  });    
+  });      
 
   const postWithHighestViews = allPosts.posts.reduce((max, post) => (post.views.length > max.views.length ? post : max), allPosts.posts[0]);
   

@@ -12,7 +12,7 @@ export default function SelectComponent({ defaultSort }) {
 
   return (
     <Select defaultValue={defaultSort} onValueChange={handleSortChange}>
-      <SelectTrigger className="w-[180px]">
+      <SelectTrigger aria-label="Filter" className="w-[180px]">
         <SelectValue placeholder="Filter" />
       </SelectTrigger>
       <SelectContent>

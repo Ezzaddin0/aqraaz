@@ -80,21 +80,36 @@ export const GET = async (req) => {
   const page = searchParams.get("page");
   const cat = searchParams.get("cat");
   const searchQuery = searchParams.get("search");
-  // console.log(searchQuery);
+  const includeParam = searchParams.get("include");
+  const selectParam = searchParams.get("select");
+
   const POST_PER_PAGE = 9;
-  // إنشاء استعلام بناءً على توفر القيم
+
+  // Building the query based on available values
   const query = {
     ...(page && { take: POST_PER_PAGE, skip: POST_PER_PAGE * (page - 1) }),
     where: {
       ...(cat && { catSlug: cat }),
       ...(searchQuery && {
         slug: {
-          contains: searchQuery, // Corrected line
-          mode: 'insensitive', // Optional: to make the search case insensitive
+          contains: searchQuery,
+          mode: 'insensitive',
         }
       }),      
     },
-    include: {
+    orderBy: {
+      createdAt: 'desc',
+    }
+  };
+
+  // If include or select parameters are provided, add them to the query
+  if (includeParam && !selectParam) {
+    query.include = JSON.parse(includeParam);
+  } else if (selectParam && !includeParam) {
+    query.select = JSON.parse(selectParam);
+  } else {
+    // Default include fields
+    query.include = {
       user: true,
       cat: true,
       comments: {
@@ -103,16 +118,15 @@ export const GET = async (req) => {
         }
       },
       views: true,
-    },
-    orderBy: {
-      createdAt: 'desc', // Sorting by createdAt in descending order
-    }
-  };
+    };
+  }
+
   try {
     const [posts, count] = await prisma.$transaction([
       prisma.post.findMany(query),
       prisma.post.count({ where: query.where }),
     ]);
+
     return new NextResponse(JSON.stringify({ posts, count }), { status: 200 });
   } catch (err) {
     console.log(err);
@@ -121,7 +135,7 @@ export const GET = async (req) => {
       { status: 500 }
     );
   }
-}
+};
 
 export const POST = async (req) => {
   const session = await auth()

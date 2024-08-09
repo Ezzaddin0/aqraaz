@@ -10,7 +10,7 @@
 import CardCustom from '../../../../components/component/Card';
 // import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../../../../components/ui/select';
 import SelectComponent from '../../../../components/SelectComponent';
-import { getPosts } from '../../../../lib/posts';
+import { getPostsLib } from '../../../../lib/posts';
 export const revalidate = 30;
 
 export async function generateMetadata({params: {locale}}) {  
@@ -47,7 +47,7 @@ export default async function page({ searchParams, params: {locale}}) {
     // const data = await getPosts();
 
     const sort = searchParams.sort || "";
-    const posts = await getPosts(sort);  
+    const posts = await getPostsLib(sort);  
     
   return (
     <div className='px-4 py-6 sm:px-4 sm:py-12 lg:px-6 '>
