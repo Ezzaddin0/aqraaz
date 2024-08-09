@@ -60,13 +60,9 @@ export async function Footer({lang, dataCategories}) {
     //     fetcher
     // );
   const Categories = await getCategories({
-    include: {
-      posts: {
-        include: {
-          views: true,
-          comments: true
-        }
-      },
+    select: {
+      slug: true,
+      title: true,
     },
   });
   return (
@@ -131,13 +127,10 @@ export async function Header({lang}) {
   //   fetcher
   // );
   const Categories = await getCategories({
-    include: {
-      posts: {
-        include: {
-          views: true,
-          comments: true
-        }
-      },
+    select: {
+      slug: true,
+      title: true,
+      desc: true,
     },
   });
 

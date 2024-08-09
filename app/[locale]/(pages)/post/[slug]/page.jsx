@@ -70,7 +70,16 @@ export default async function page({ params: {slug, locale} }) {
     // console.log(post.categories[0].posts);
     const data = await getPost(slug);
 
-    const posts = await getCategory(data.catSlug);
+    const posts = await getCategory(data.catSlug, {
+      include: {
+          posts: {
+          include: {
+              views: true,
+              comments: true
+          }
+          },
+      },
+    });
 
     // console.log(locale);
 

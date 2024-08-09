@@ -17,13 +17,9 @@ export default async function sitemap() {
     // });
     const posts = await getPosts();
     const categories = await getCategories({
-    include: {
-        posts: {
-        include: {
-            views: true,
-            comments: true
-        }
-        },
+    select: {
+        slug: true,
+        createdAt: true,
     },
     });        
 

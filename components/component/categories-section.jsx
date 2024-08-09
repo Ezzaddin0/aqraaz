@@ -35,13 +35,9 @@ const soicelMedia = [
 
 export default async function CategoriesSection({ lang }) {
   const Categories = await getCategories({
-    include: {
-      posts: {
-        include: {
-          views: true,
-          comments: true
-        }
-      },
+    select: {
+      slug: true,
+      title: true,
     },
   });
   return (

@@ -16,7 +16,14 @@ import { getCategory } from '../../../../../data/dataApi';
 export const revalidate = 30;
 
 export async function generateMetadata({params: {locale, slug}}) {
-  const post = await getCategory(slug);
+  const post = await getCategory(slug, {
+    select: {
+      title: true,
+      desc: true,
+      keywords: true,
+      img: true,
+    },
+  });
 
   return{
     title: locale === "en" ? post[0].title.en : post[0].title.ar,
