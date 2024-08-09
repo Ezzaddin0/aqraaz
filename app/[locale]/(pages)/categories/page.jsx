@@ -43,7 +43,16 @@ export default async function page({params: {locale}, searchParams}) {
 
   // console.log(searchParams);  
 
-    const data = await getCategories();
+  const data = await getCategories({
+    include: {
+      posts: {
+        include: {
+          views: true,
+          comments: true
+        }
+      },
+    },
+  });
   return (
     <>
     <div className='container px-4 py-6 sm:px-4 sm:py-12 lg:px-6'>

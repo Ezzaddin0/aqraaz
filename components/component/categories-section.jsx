@@ -34,7 +34,16 @@ const soicelMedia = [
 ]
 
 export default async function CategoriesSection({ lang }) {
-  const Categories = await getCategories();
+  const Categories = await getCategories({
+    include: {
+      posts: {
+        include: {
+          views: true,
+          comments: true
+        }
+      },
+    },
+  });
   return (
     <section className="grid grid-cols-1 md:grid-cols-2 gap-6 p-4 md:p-6">
       <div className="space-y-4 flex flex-col justify-between h-full">

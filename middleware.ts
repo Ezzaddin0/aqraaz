@@ -5,6 +5,7 @@ import { i18n } from './i18n.config'
 
 import { match as matchLocale } from '@formatjs/intl-localematcher'
 import Negotiator from 'negotiator'
+import { auth } from './app/auth'
 
 function getLocale(request: NextRequest): string | undefined {
   // Negotiator expects plain object so we need to transform headers
@@ -42,16 +43,16 @@ export async function middleware(request: NextRequest) {
     );
   }  
 
-  // const isLoggedIn = !!auth()
-  // const isAdmin = (await auth())?.user?.role === "ADMIN"  
+  const isLoggedIn = !!auth()
+  const isAdmin = (await auth())?.user?.role === "ADMIN"  
 
-  // if (request.nextUrl.pathname.startsWith("/en/dashboard")) {    
-  //   if (!isAdmin) {
-  //     return NextResponse.redirect(new URL("/login", request.url))
-  //   }
-  // } else if (!isLoggedIn) {    
-  //   return NextResponse.redirect(new URL("/login", request.url))
-  // }   
+  if (request.nextUrl.pathname.startsWith("/en/dashboard")) {    
+    if (!isAdmin) {
+      return NextResponse.redirect(new URL("/login", request.url))
+    }
+  } else if (!isLoggedIn) {    
+    return NextResponse.redirect(new URL("/login", request.url))
+  }   
    
 
   return NextResponse.next();

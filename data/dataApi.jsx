@@ -82,9 +82,34 @@ export const getCategory = async (cat) => {
   return res.json();
 };
 
-export const getCategories = async () => {
+// get Categories old
+// export const getCategories = async () => {
+//   const res = await fetch(
+//     `${pathName}/api/categories`,
+//     {
+//       cache: cache,
+//     }
+//   );
+
+//   if (!res.ok) {
+//     throw new Error("Failed");
+//   }
+
+//   return res.json();
+// };
+export const getCategories = async ({ include, select } = {}) => {
+  const query = new URLSearchParams();
+
+  if (include) {
+    query.set("include", JSON.stringify(include));
+  }
+
+  if (select) {
+    query.set("select", JSON.stringify(select));
+  }
+
   const res = await fetch(
-    `${pathName}/api/categories`,
+    `${pathName}/api/categories?${query.toString()}`,
     {
       cache: cache,
     }

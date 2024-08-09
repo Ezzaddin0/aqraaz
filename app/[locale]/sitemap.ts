@@ -16,7 +16,16 @@ export default async function sitemap() {
     //     },
     // });
     const posts = await getPosts();
-    const categories = await getCategories();        
+    const categories = await getCategories({
+    include: {
+        posts: {
+        include: {
+            views: true,
+            comments: true
+        }
+        },
+    },
+    });        
 
     const postUrlsEnSlug = posts.posts.map((post:any) => ({
         url: `${BaseUrlEn}/post/${post.slug}`,

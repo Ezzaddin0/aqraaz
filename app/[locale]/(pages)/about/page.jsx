@@ -76,7 +76,16 @@ const getTags = [
 export default async function page({params: { locale }}) {
   const { page } = await getDictionary(locale);
 
-  const categories = await getCategories();
+  const categories = await getCategories({
+    include: {
+      posts: {
+        include: {
+          views: true,
+          comments: true
+        }
+      },
+    },
+  });
   // const posts = await getPosts({
   //   page: 1,
   //   // cat: 'news',
