@@ -97,7 +97,9 @@ export const getCategory = async (cat) => {
 
 //   return res.json();
 // };
-export const getCategories = async ({ include, select } = {}) => {
+export const getCategories = async (options = {}) => {
+  const { include, select } = options;
+
   const query = new URLSearchParams();
 
   if (include) {
