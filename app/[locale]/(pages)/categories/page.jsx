@@ -44,13 +44,10 @@ export default async function page({params: {locale}, searchParams}) {
   // console.log(searchParams);  
 
   const data = await getCategories({
-    include: {
-      posts: {
-        include: {
-          views: true,
-          comments: true
-        }
-      },
+    select: {
+      slug: true,
+      title: true,
+      posts: true,
     },
   });
   return (

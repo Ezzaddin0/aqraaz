@@ -49,7 +49,18 @@ export default async function  Home({ params: { locale } }) {
   //     views: true,
   //   },
   // });
-  const allPosts = await getPosts();
+  const allPosts = await getPosts({
+    page: 1,
+    select: {
+      views: true,
+      slug: true,
+      title: true,
+      desc: true,
+      img: true,
+      createdAt: true,
+      catSlug: true,
+    }
+  });
   const allNews = await getCategory('news', {
     include: {
         posts: {
@@ -82,6 +93,7 @@ export default async function  Home({ params: { locale } }) {
   });      
 
   const postWithHighestViews = allPosts.posts.reduce((max, post) => (post.views.length > max.views.length ? post : max), allPosts.posts[0]);
+  
   
   return (
     <>

@@ -6,16 +6,12 @@ export default async function sitemap() {
     const BaseUrlEn = "https://www.aqraaz.com/en";
     const BaseUrlAr = "https://www.aqraaz.com/ar";
 
-    // const posts = await getPosts({
-    //     // page: 1,
-    //     // cat: 'news',
-    //     // searchQuery: 'latest updates',
-    //     select: {
-    //       slug: true,
-    //       createdAt: true,
-    //     },
-    // });
-    const posts = await getPosts();
+    const posts = await getPosts({
+        select: {
+          createdAt: true,
+          slug: true,
+        },
+    });
     const categories = await getCategories({
     select: {
         slug: true,

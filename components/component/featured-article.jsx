@@ -8,8 +8,8 @@ export default async function FeaturedArticle({ lang, posts }) {
       <div className="absolute inset-0 bg-gradient-to-r from-gray-950/80 to-gray-950/80" />
       <div className="relative z-10 container mx-auto px-4 md:px-6">
         <div className="flex flex-wrap items-center justify-between gap-4 mb-8">
-          <Link href={`${lang}/categories/${posts.cat.slug}`} className="rounded-full first:bg-gray-200 first:text-gray-900 first:dark:bg-gray-800 first:dark:text-gray-400 bg-primary px-4 py-1 text-xs font-medium text-white">
-            {lang == 'en' ? posts.cat.title.en : posts.cat.title.ar}
+          <Link href={`${lang}/categories/${posts.catSlug}`} className="rounded-full first:bg-gray-200 first:text-gray-900 first:dark:bg-gray-800 first:dark:text-gray-400 bg-primary px-4 py-1 text-xs font-medium text-white">
+            {posts.catSlug}
           </Link>
           <p className="text-sm text-gray-400">{format((posts.createdAt), 'MMMM d, yyyy')}</p>
         </div>

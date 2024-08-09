@@ -26,7 +26,14 @@ export async function GET() {
     //       createdAt: true,
     //     },
     // });
-    const posts = await getPosts();
+    const posts = await getPosts({
+        select: {
+          title: true,
+          slug: true,
+          desc: true,
+          createdAt: true,
+        }
+    });
 
     const feed = new RSS({
         title: "aqraaz",

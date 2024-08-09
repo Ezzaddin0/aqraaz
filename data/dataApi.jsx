@@ -142,14 +142,6 @@ export const getCategories = async (options = {}) => {
   return res.json();
 };
 
-export const getSearch = async (slug) => {
-  const res = await fetch(`${pathName}/api/posts?search=${slug}`, {
-    cache: cache,
-  });
-
-  if (!res.ok) {
-    throw new Error("Failed");
-  }
-
-  return res.json();
+export const getSearch = async (slug, options = {}) => {
+  return getPosts({ searchQuery: slug, ...options });
 };

@@ -43,7 +43,6 @@ export async function generateMetadata({params: {locale, slug}}) {
 
 export default async function page({ params: { slug, locale }}) {
     const decodedString = decodeURIComponent(slug);
-    console.log(decodedString);
 
     // const query = groq`*[_type == 'post' && (title.en match $decodedString + "*" || title.ar match $decodedString + "*")] {
     //   ...,
@@ -53,7 +52,15 @@ export default async function page({ params: { slug, locale }}) {
     // `
     // const posts = await client.fetch(query,{decodedString});
 
-  const posts = await getSearch(decodedString);
+  const posts = await getSearch(decodedString, {
+    select: {
+      title: true,
+      desc: true,
+      img: true,
+      slug: true,
+      createdAt: true,
+    },
+  });
   // console.log(posts);
 
   return (

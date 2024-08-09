@@ -83,7 +83,7 @@ export const GET = async (req) => {
   const includeParam = searchParams.get("include");
   const selectParam = searchParams.get("select");
 
-  const POST_PER_PAGE = 9;
+  const POST_PER_PAGE = 7;
 
   // Building the query based on available values
   const query = {

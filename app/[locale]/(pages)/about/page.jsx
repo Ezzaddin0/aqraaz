@@ -19,10 +19,10 @@ export const metadata = {
       'ar': '/ar/about',
     },
   },
-  robots: {
-    index: false,
-    nocache: true
-  },
+  // robots: {
+  //   index: false,
+  //   nocache: true
+  // },
   other: {
     'google-adsense-account': `${process.env.NEXT_PUBLIC_GOOGLE_ADSENSE}`,
   },
@@ -93,7 +93,15 @@ export default async function page({params: { locale }}) {
   //     slug: true,
   //   },
   // });
-  const posts = await getPosts()
+  const posts = await getPosts({
+    page: 1,
+    select: {
+      img: true,
+      title: true,
+      desc: true,
+      slug: true,
+    }
+  })
   return (
     <>
     <main>

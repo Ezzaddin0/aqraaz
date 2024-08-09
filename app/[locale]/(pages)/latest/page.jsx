@@ -10,6 +10,7 @@
 import CardCustom from '../../../../components/component/Card';
 // import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../../../../components/ui/select';
 import SelectComponent from '../../../../components/SelectComponent';
+import InfiniteCards from "../../../../components/InfiniteCards"
 import { getPostsLib } from '../../../../lib/posts';
 export const revalidate = 30;
 
@@ -52,13 +53,13 @@ export default async function page({ searchParams, params: {locale}}) {
   return (
     <div className='px-4 py-6 sm:px-4 sm:py-12 lg:px-6 '>
     <SelectComponent defaultSort={sort} />
-    <div className='mt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4'>
-      {posts.map((post, index) => (
+    {/* <div className='mt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4'> */}
+      {/* {posts.map((post, index) => (
         <CardCustom key={index} article={post} lang={locale} views time />
-      ))}
+      ))} */}
       {/* <PopularArticles Posts={allPosts} num={9} lang={locale} /> */}
-      {/* <InfiniteCards postsAll={postsAll} number={5} lang={locale} /> */}
-    </div>
+      <InfiniteCards postsAll={posts} number={6} lang={locale} />
+    {/* </div> */}
     {/* Google tag (gtag.js) */}
     {/* <Script async strategy="afterInteractive" src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GOOGLE_ID}`}></Script>
     <Script>
