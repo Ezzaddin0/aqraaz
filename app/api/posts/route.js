@@ -125,9 +125,25 @@ export const GET = async (req) => {
     const [posts, count] = await prisma.$transaction([
       prisma.post.findMany(query),
       prisma.post.count({ where: query.where }),
+      prisma.view.aggregate({
+        _sum: {
+          id: true, // Assuming 'id' is unique for each view, this will count the total views.
+        },
+        where: {
+          postId: {
+            in: (await prisma.post.findMany({
+              where: query.where,
+              select: { id: true },
+            })).map(post => post.id),
+          },
+        },
+      }),
     ]);
 
-    return new NextResponse(JSON.stringify({ posts, count }), { status: 200 });
+    // Calculate the total views for each post
+    const totalViews = viewsCount._sum.id || 0;
+
+    return new NextResponse(JSON.stringify({ posts, count, totalViews }), { status: 200 });
   } catch (err) {
     console.log(err);
     return new NextResponse(

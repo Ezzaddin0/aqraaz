@@ -114,7 +114,7 @@ export default async function page({ params: {slug, locale} }) {
           <div className='w-full singlePost' dangerouslySetInnerHTML={{ __html: locale == "en" ? data.body.en : data.body.ar }}></div>
       </div>
 
-      {/* <Comments postSlug={slug} avatar={data.img} /> */}
+      <Comments postSlug={slug} avatar={data.img} />
 
       <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 my-4 p-2 rounded bg-gray-100 gap-6'>
         {posts[0].posts.slice(0, 6).map((post, index) => {

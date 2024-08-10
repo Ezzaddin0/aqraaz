@@ -37,7 +37,7 @@ export default function Page({ params: { locale } }) {
   });
 
   const { data, isLoading } = useSWR(
-    `/api/categories?include=${encodeURIComponent(includeParam)}`,
+    `${process.env.NEXTAUTH_URL}/api/categories?include=${encodeURIComponent(includeParam)}`,
     fetcher
   );
 

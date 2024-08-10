@@ -5,7 +5,18 @@ import DataTable from "../../../../../components/data-table"
 import LoadingScreen from "../../../../../components/LoadingScreen"
 
 const fetcher = async (url) => {
-  const res = await fetch(url);
+  const res = await fetch(url, {
+    include: {
+      user: true,
+      cat: true,
+      comments: {
+        include: {
+          user: true,
+        }
+      },
+      views: true,
+    }
+  });
 
   const data = await res.json();
 
@@ -18,8 +29,20 @@ const fetcher = async (url) => {
 };
 
 export default function Page() {
+  const includeParam = JSON.stringify({
+    include: {
+      user: true,
+      cat: true,
+      comments: {
+        include: {
+          user: true,
+        }
+      },
+      views: true,
+    }
+  });
   const { data, isLoading } = useSWR(
-    `/api/posts`,
+    `/api/posts?${encodeURIComponent(includeParam)}`,
     fetcher
   );
 

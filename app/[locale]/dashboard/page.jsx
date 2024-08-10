@@ -77,7 +77,17 @@ export default async function Dashboard() {
   //     views: true,
   //   },
   // });
-  const posts = await getPosts();
+  const posts = await getPosts({
+    select: {
+      views: true,
+      comments: true,
+      img: true,
+      title: true,
+      desc: true,
+      slug: true,
+      createdAt: true,
+    }
+  });
   const users = await getUsers();
 
   const sortedPosts = sortPostsByDate(posts.posts);

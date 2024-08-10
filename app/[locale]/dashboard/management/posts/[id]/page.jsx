@@ -42,6 +42,28 @@ const fetcher = async (url) => {
   return data;
 };
 
+const fetcherCategory = async (url) => {
+  const res = await fetch(url, {
+    include: {
+      posts: {
+        include: {
+          views: true,
+          comments: true
+        }
+      },
+    },
+  });
+
+  const data = await res.json();
+
+  if (!res.ok) {
+    const error = new Error(data.message);
+    throw error;
+  }
+
+  return data;
+};
+
 const chartConfig = {
   visitors: {
     label: "Visitors",
@@ -89,11 +111,18 @@ export default function Page({ params }) {
   const { status } = useSession();
   const router = useRouter();
 
-
+  const includeParam = JSON.stringify({
+    posts: {
+      include: {
+        views: true,
+        comments: true,
+      },
+    },
+  });
 
   const { data, isLoading } = useSWR(
-    `/api/categories`,
-    fetcher
+    `/api/categories?include=${encodeURIComponent(includeParam)}`,
+    fetcherCategory
   );
 
   const { data: postData } = useSWR(

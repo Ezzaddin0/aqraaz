@@ -22,8 +22,30 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 import { ChartContainer, ChartTooltip, ChartTooltipContent, ChartLegend, ChartLegendContent } from "../../../../../../components/ui/chart"
 import { AreaChart, CartesianGrid, XAxis, Area } from "recharts"
 
+// const fetcher = async (url) => {
+//   const res = await fetch(url);
+
+//   const data = await res.json();
+
+//   if (!res.ok) {
+//     const error = new Error(data.message);
+//     throw error;
+//   }
+
+//   return data;
+// };
+
 const fetcher = async (url) => {
-  const res = await fetch(url);
+  const res = await fetch(url, {
+    include: {
+      posts: {
+        include: {
+          views: true,
+          comments: true
+        }
+      },
+    },
+  });
 
   const data = await res.json();
 
@@ -59,8 +81,17 @@ export default function Page({ params }) {
   const { status } = useSession();
   const router = useRouter();
 
+  const includeParam = JSON.stringify({
+    posts: {
+      include: {
+        views: true,
+        comments: true,
+      },
+    },
+  });
+
   const { data: categoryData, isLoading } = useSWR(
-    params.id ? `/api/categories?slug=${params.id}` : null,
+    params.id ? `/api/categories?slug=${params.id}&include=${encodeURIComponent(includeParam)}` : null,
     // `http://localhost:3000/api/categories?slug=${params.id}`,
     fetcher
   );
