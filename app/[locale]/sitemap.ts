@@ -7,12 +7,11 @@ export default async function sitemap() {
     const BaseUrlAr = "https://www.aqraaz.com/ar";
 
     const posts = await getPosts({
-        select: {
-            slug: true,
-            createdAt: true,
-        }
+        // select: {
+        //     slug: true,
+        //     createdAt: true,
+        // }
     });
-    console.log(posts);
     
     const categories = await getCategories({
     select: {
