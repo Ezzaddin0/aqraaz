@@ -7,22 +7,16 @@ import { Textarea } from "../../../../../../components/ui/textarea"
 import Tiptap from "../../../../../../components/Tiptap";
 import { Popover, PopoverContent, PopoverTrigger } from "../../../../../../components/ui/popover";
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "../../../../../../components/ui/command";
-import { CalendarIcon, Check, ChevronsUpDown, InfoIcon, UploadCloudIcon, XIcon } from "lucide-react";
+import { CalendarIcon, Check, ChevronsUpDown, InfoIcon, XIcon } from "lucide-react";
 import { cn } from "../../../../../../lib/utils";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { useCallback, useEffect, useMemo, useState } from "react";
-import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
-import { app } from "../../../../../firebase";
+import { useEffect, useMemo, useState } from "react";
 import useSWR from "swr";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "../../../../../../components/ui/collapsible";
 import LoadingScreen from "../../../../../../components/LoadingScreen";
 import Link from "next/link";
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "../../../../../../components/ui/dialog";
 import { Calendar } from "../../../../../../components/ui/calendar"
-import { Card, CardHeader, CardTitle, CardContent } from "../../../../../../components/ui/card";
-import { ChartContainer, ChartTooltip, ChartTooltipContent } from "../../../../../../components/ui/chart"
-import { CartesianGrid, XAxis, BarChart, Bar } from "recharts"
 import { format } from "date-fns";
 import Image from "next/image";
 import ImagesCard from "../../../../../../components/ImagesCard"
@@ -377,11 +371,7 @@ export default function Page({ params }) {
             <Button onClick={handleCreateSlug} variant="outline">Create</Button>
 
             <Textarea onChange={(e) => setDesc(e.target.value)} value={desc} placeholder="Description" />
-            <Collapsible
-              open={suggestionsDesc}
-              onOpenChange={setSuggestionsDesc}
-              className="space-y-2"
-            >
+            <Collapsible open={suggestionsDesc} onOpenChange={setSuggestionsDesc} className="space-y-2">
               <div className="flex items-center justify-between space-x-4">
                 <h4 className="text-sm font-semibold">
                   Suggestions from AI

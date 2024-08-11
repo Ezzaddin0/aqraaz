@@ -1,3 +1,4 @@
+"use client" // new line
 import { ArrowUpDown, MoreHorizontal, Trash2Icon } from "lucide-react"
 import { Button } from "../components/ui/button"
 import { Checkbox } from "../components/ui/checkbox"
