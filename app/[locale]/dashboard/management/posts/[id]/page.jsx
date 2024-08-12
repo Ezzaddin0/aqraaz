@@ -23,18 +23,48 @@ import ImagesCard from "../../../../../../components/ImagesCard"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "../../../../../../components/ui/accordion";
 import { Badge } from "../../../../../../components/ui/badge"
 
-const fetcher = async (url) => {
-  const res = await fetch(url);
+// const fetcher = async (url) => {
+//   const res = await fetch(url);
 
-  const data = await res.json();
+//   const data = await res.json();
 
-  if (!res.ok) {
-    const error = new Error(data.message);
-    throw error;
+//   if (!res.ok) {
+//     const error = new Error(data.message);
+//     throw error;
+//   }
+
+//   return data;
+// };
+
+const fetcher = (...args) => fetch(...args).then(res => res.json())
+
+function usePost (id) {
+  const { data, error, isLoading } = useSWR(`/api/posts/${id}` , fetcher)
+ 
+  return {
+    postData: data,
+    isLoading,
+    isError: error
   }
+}
 
-  return data;
-};
+function useCategories (id) {
+  const includeParam = JSON.stringify({
+    posts: {
+      include: {
+        views: true,
+        comments: true,
+      },
+    },
+  });
+  const { data, error, isLoading } = useSWR(`/api/categories?include=${encodeURIComponent(includeParam)}` , fetcher)
+ 
+  return {
+    data: data,
+    isLoading,
+    isError: error
+  }
+}
 
 const fetcherCategory = async (url) => {
   const res = await fetch(url, {
@@ -105,24 +135,26 @@ export default function Page({ params }) {
   const { status } = useSession();
   const router = useRouter();
 
-  const includeParam = JSON.stringify({
-    posts: {
-      include: {
-        views: true,
-        comments: true,
-      },
-    },
-  });
+  // const includeParam = JSON.stringify({
+  //   posts: {
+  //     include: {
+  //       views: true,
+  //       comments: true,
+  //     },
+  //   },
+  // });
 
-  const { data, isLoading } = useSWR(
-    `/api/categories?include=${encodeURIComponent(includeParam)}`,
-    fetcherCategory
-  );
+  // const { data, isLoading } = useSWR(
+  //   `/api/categories?include=${encodeURIComponent(includeParam)}`,
+  //   fetcherCategory
+  // );
+  const { data, isLoading } = useCategories()
 
-  const { data: postData } = useSWR(
-    params.id ? `/api/posts/${params.id}` : null,
-    fetcher
-  );
+  // const { data: postData } = useSWR(
+  //   params.id ? `/api/posts/${params.id}` : null,
+  //   fetcher
+  // );
+  const { postData } = usePost(params.id)
 
   const [content, setContent] = useState('')
   const handleContentChange = (reason) => {
@@ -260,17 +292,17 @@ export default function Page({ params }) {
   //   }
   // };
 
-  // if (isLoading) {
-  //   return <LoadingScreen />
-  // }
+  if (isLoading) {
+    return <LoadingScreen />
+  }
 
-  // if (status === "loading") {
-  //   return <LoadingScreen />;
-  // }
+  if (status === "loading") {
+    return <LoadingScreen />;
+  }
 
-  // if (status === "unauthenticated") {
-  //   router.push("/");
-  // }
+  if (status === "unauthenticated") {
+    router.push("/");
+  }
 
   const handleKeyDown = (e) => {
     if (e.key === 'Enter' && inputValue.trim() !== '') {

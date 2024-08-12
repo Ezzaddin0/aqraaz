@@ -68,7 +68,7 @@ function useUser (id) {
       },
     },
   });
-  const { data, error, isLoading } = useSWR(`/api/categories?slug=news&include=${encodeURIComponent(includeParam)}`, fetcher)
+  const { data, error, isLoading } = useSWR(`/api/categories?slug=${id}&include=${encodeURIComponent(includeParam)}`, fetcher)
  
   return {
     categoryData: data,
@@ -109,7 +109,7 @@ export default function Page({ params }) {
       },
     },
   });
-  const { categoryData, isLoading, isError } = useUser()
+  const { categoryData, isLoading, isError } = useUser(params.id)
 
   // const { data: categoryData, isLoading } = useSWR(
   //   params.id ? `${process.env.NEXTAUTH_URL}/api/categories?slug=news&include=${encodeURIComponent(includeParam)}` : null,
@@ -267,23 +267,24 @@ export default function Page({ params }) {
   if (isLoading) {
     return <LoadingScreen />;
   }
+  console.log(categoryData);
+  
 
-  const filteredData =
-    categoryData[0]?.posts.filter((item) => {
-    const date = new Date(item.createdAt);
-    const now = new Date();
-    let daysToSubtract = 90;
-    if (timeRange === "30d") {
-      daysToSubtract = 30;
-    } else if (timeRange === "7d") {
-      daysToSubtract = 7;
-    }
-    now.setDate(now.getDate() - daysToSubtract);
-    return date >= now;
-  }).map((item) => ({
-    ...item,
-    comments: item.comments.length,
-  })) || [];
+  // const filteredData = categoryData[0]?.posts.filter((item) => {
+  //   const date = new Date(item.createdAt);
+  //   const now = new Date();
+  //   let daysToSubtract = 90;
+  //   if (timeRange === "30d") {
+  //     daysToSubtract = 30;
+  //   } else if (timeRange === "7d") {
+  //     daysToSubtract = 7;
+  //   }
+  //   now.setDate(now.getDate() - daysToSubtract);
+  //   return date >= now;
+  // }).map((item) => ({
+  //   ...item,
+  //   comments: item.comments.length,
+  // })) || [];
 
   if (status === "loading") {
     return <LoadingScreen />;
@@ -565,7 +566,7 @@ export default function Page({ params }) {
           </div>
         </TabsContent>
         <TabsContent value="analysis">
-          <Card>
+          {/* <Card>
             <CardHeader className="flex items-center gap-2 space-y-0 border-b py-5 sm:flex-row">
               <div className="grid flex-1 gap-1 text-center sm:text-left">
                 <CardTitle>Area Chart</CardTitle>
@@ -640,7 +641,7 @@ export default function Page({ params }) {
                 </AreaChart>
               </ChartContainer>
             </CardContent>
-          </Card>
+          </Card> */}
         </TabsContent>
       </Tabs>
       </div>}
