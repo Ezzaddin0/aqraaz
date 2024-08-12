@@ -260,17 +260,17 @@ export default function Page({ params }) {
   //   }
   // };
 
-  if (isLoading) {
-    return <LoadingScreen />
-  }
+  // if (isLoading) {
+  //   return <LoadingScreen />
+  // }
 
-  if (status === "loading") {
-    return <LoadingScreen />;
-  }
+  // if (status === "loading") {
+  //   return <LoadingScreen />;
+  // }
 
-  if (status === "unauthenticated") {
-    router.push("/");
-  }
+  // if (status === "unauthenticated") {
+  //   router.push("/");
+  // }
 
   const handleKeyDown = (e) => {
     if (e.key === 'Enter' && inputValue.trim() !== '') {
@@ -337,11 +337,8 @@ export default function Page({ params }) {
             <Button className="w-full" variant="outline">Ganertate</Button>
 
             <Input type="text" value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Title" />
-            <Collapsible
-              open={suggestionsTitle}
-              onOpenChange={setSuggestionsTitle}
-              className="space-y-2"
-              // onClick={handleSubmitGPT}
+            <Collapsible open={suggestionsTitle} onOpenChange={setSuggestionsTitle} className="space-y-2"
+            // onClick={handleSubmitGPT}
             >
               <div className="flex items-center justify-between space-x-4">
                 <h4 className="text-sm font-semibold">
@@ -420,7 +417,7 @@ export default function Page({ params }) {
                   <CommandInput placeholder="Search Category..." />
                   <CommandList>
                     <CommandEmpty>No Category found.</CommandEmpty>
-                    <CommandGroup>
+                    {/* <CommandGroup>
                       {isLoading ? "Loading..." : data.map((category) => (
                         <CommandItem key={category.id} value={category.slug}
                           onSelect={(currentValue) => {
@@ -431,7 +428,7 @@ export default function Page({ params }) {
                           {category.title.en}
                         </CommandItem>
                       ))}
-                    </CommandGroup>
+                    </CommandGroup> */}
                   </CommandList>
                 </Command>
               </PopoverContent>
@@ -452,79 +449,11 @@ export default function Page({ params }) {
                 </Button>
               </PopoverTrigger>
               <PopoverContent className="w-auto p-0">
-                <Calendar
-                  mode="single"
-                  selected={date}
-                  onSelect={setDate}
-                  initialFocus
-                />
+                <Calendar mode="single" selected={date} onSelect={setDate} initialFocus />
               </PopoverContent>
             </Popover>
 
             <Label htmlFor="image">Main Image</Label>
-            {/* <Dialog>
-              <DialogTrigger asChild>
-                <Button variant="outline">Open Image Dialog</Button>
-              </DialogTrigger>
-              <DialogContent className="sm:max-w-[600px]">
-                <DialogHeader>
-                  <DialogTitle>Image Management</DialogTitle>
-                  <DialogDescription>Manage your images in this dialog.</DialogDescription>
-                </DialogHeader>
-                <Tabs defaultValue="upload" className="border-b space-y-4">
-                  <TabsList className="grid grid-cols-3 gap-2">
-                    <TabsTrigger value="upload">Upload</TabsTrigger>
-                    <TabsTrigger value="link">Link</TabsTrigger>
-                    <TabsTrigger value="gallery">Gallery</TabsTrigger>
-                  </TabsList>
-                  <TabsContent value="upload" className="py-2">
-                  <div class="flex items-center justify-center w-full">
-                    <label for="dropzone-file" class="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-gray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500">
-                    {file ? 
-                      media ? <div className="w-full h-full"><img src={media} className="w-full h-full aspect-video" alt="" /> <p className="flex items-center">{file.name} <XIcon className="h-4 w-4 cursor-pointer ml-2 focus:outline-none text-gray-500" onClick={() => {setFile(null); setMedia("")}} /></p></div>  : <LoadingScreen />
-                    :
-                      <div class="flex flex-col items-center justify-center pt-5 pb-6">
-                        <UploadCloudIcon className="w-8 h-8 text-gray-500 dark:text-gray-400" />
-                        <p class="mb-2 text-sm text-gray-500 dark:text-gray-400"><span class="font-semibold">Click to upload</span> or drag and drop</p>
-                        <p class="text-xs text-gray-500 dark:text-gray-400">SVG, PNG, JPG or GIF (MAX. 800x400px)</p>
-                      </div>
-                    }
-                      <input id="dropzone-file" type="file" onChange={(e) => setFile(e.target.files[0])} class="hidden" />
-                    </label>
-                </div> 
-                  </TabsContent>
-                  <TabsContent value="link" className="py-6">
-                  <div className="grid items-center gap-2">
-                    <Input className="w-full" type="text" value={searchImage} onChange={(e) => setSearchImage(e.target.value)} id="email" placeholder="Search..." />
-                    <img
-                      src={searchImage || "https://images.unsplash.com/photo-1588345921523-c2dcdb7f1dcd?w=800&dpr=2&q=80"}
-                      alt="Photo by Drew Beamer"
-                      fill
-                      className="rounded-md object-cover aspect-video"
-                    />
-                  </div>
-                  </TabsContent>
-                  <TabsContent value="gallery" className="py-1">
-                  <Input className="col-3 form-control-sm py-1 my-2 fs-4 text-capitalize border border-3 border-dark" type="text" placeholder="Search Anything..." onChange={handleSearch} />
-                    <div class="grid gap-4 h-[300px] overflow-auto">
-                        <div class="grid grid-cols-3 gap-4">
-                          {searchImage && searchImage.map((photo) => (
-                            <div>
-                              <Image id={photo.id} width={photo.width} height={photo.height}  className="h-auto max-w-full rounded-lg cursor-pointer" src={photo.urls.regular} alt={photo.alt_description} onClick={() => handleImageSelect(photo.urls.regular)} />
-                            </div>
-                          ))}
-                        </div>
-                    </div>
-                  </TabsContent>
-                </Tabs>
-                <DialogFooter>
-                  <div>
-                    <Button variant="outline">Close</Button>
-                  </div>
-                  <Button>Save</Button>
-                </DialogFooter>
-              </DialogContent>
-            </Dialog> */}
             {media && (
             <div className="border w-full">
               <Image width={280} height={100} src={media} alt="photo" className="w-full max-h-40 object-cover" />

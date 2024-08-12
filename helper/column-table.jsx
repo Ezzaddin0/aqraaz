@@ -303,11 +303,7 @@ export const CategoryColumns = [
       />
     ),
     cell: ({ row }) => (
-      <Checkbox
-        checked={row.getIsSelected()}
-        onCheckedChange={(value) => row.toggleSelected(!!value)}
-        aria-label="Select row"
-      />
+      <Checkbox checked={row.getIsSelected()} onCheckedChange={(value) => row.toggleSelected(!!value)} aria-label="Select row" />
     ),
     enableSorting: false,
     enableHiding: false,
@@ -323,10 +319,7 @@ export const CategoryColumns = [
     accessorKey: "title.en",
     header: ({ column }) => {
       return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
+        <Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
           Title
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
@@ -340,10 +333,7 @@ export const CategoryColumns = [
     accessorKey: "slug",
     header: ({ column }) => {
       return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
+        <Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
           Slug
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
@@ -357,10 +347,7 @@ export const CategoryColumns = [
     accessorKey: "desc",
     header: ({ column }) => {
       return (
-        <Button
-          variant="ghost"
-          onClick={() => column.getToggleSortingHandler()}
-        >
+        <Button variant="ghost" onClick={() => column.getToggleSortingHandler()}>
           Description
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
@@ -374,18 +361,13 @@ export const CategoryColumns = [
     accessorKey: "views",
     header: ({ column }) => {
       return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
+        <Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
           Views
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       )
     },
-    cell: ({ row }) => (
-      <div className="capitalize line-clamp-2">{row.original.views.length}</div>
-    ),
+    cell: ({ row }) => {},
   },
   // {
   //   accessorKey: "cat.slug",
@@ -408,10 +390,7 @@ export const CategoryColumns = [
     accessorKey: "keywords",
     header: ({ column }) => {
       return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
+        <Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
           Keywords
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
@@ -425,10 +404,7 @@ export const CategoryColumns = [
     accessorKey: "comments",
     header: ({ column }) => {
       return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
+        <Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === "asc")} >
           Comments
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
@@ -442,10 +418,7 @@ export const CategoryColumns = [
     accessorKey: "createdAt",
     header: ({ column }) => {
       return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
+        <Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === "asc")} >
           CreatedAt
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>

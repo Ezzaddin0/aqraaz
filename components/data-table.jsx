@@ -148,7 +148,7 @@ export default function DataTable({ data, columns, addPost }) {
               <CommandInput placeholder="Change status..." />
               <CommandList>
                 <CommandEmpty>No results found.</CommandEmpty>
-                <CommandGroup>
+                {/* <CommandGroup>
                   {isLoading ? "Loading..." : dataPost.posts.map((status) => (
                     <CommandItem key={status.id} value={status.title.en}>
                       <Checkbox
@@ -158,7 +158,7 @@ export default function DataTable({ data, columns, addPost }) {
                       <span>{status.title.en}</span>
                     </CommandItem>
                   ))}
-                </CommandGroup>
+                </CommandGroup> */}
               </CommandList>
             </Command>
             <DialogFooter>
