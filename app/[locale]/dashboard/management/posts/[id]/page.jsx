@@ -39,55 +39,55 @@ const fetcher = async (url) => {
 
 // const fetcher = (...args) => fetch(...args).then(res => res.json())
 
-function usePost (id) {
-  const { data, error, isLoading } = useSWR(`https://www.aqraaz.com/api/posts/${id}` , fetcher)
+// function usePost (id) {
+//   const { data, error, isLoading } = useSWR(`https://www.aqraaz.com/api/posts/${id}` , fetcher)
  
-  return {
-    postData: data,
-    isLoadingPost: isLoading,
-    isError: error
-  }
-}
+//   return {
+//     postData: data,
+//     isLoadingPost: isLoading,
+//     isError: error
+//   }
+// }
 
-function useCategories (id) {
-  const includeParam = JSON.stringify({
-    posts: {
-      include: {
-        views: true,
-        comments: true,
-      },
-    },
-  });
-  const { data, error, isLoading } = useSWR(`https://www.aqraaz.com/api/categories?include=${encodeURIComponent(includeParam)}` , fetcher)
+// function useCategories (id) {
+//   const includeParam = JSON.stringify({
+//     posts: {
+//       include: {
+//         views: true,
+//         comments: true,
+//       },
+//     },
+//   });
+//   const { data, error, isLoading } = useSWR(`https://www.aqraaz.com/api/categories?include=${encodeURIComponent(includeParam)}` , fetcher)
  
-  return {
-    data: data,
-    isLoading,
-    isError: error
-  }
-}
+//   return {
+//     data: data,
+//     isLoading,
+//     isError: error
+//   }
+// }
 
-const fetcherCategory = async (url) => {
-  const res = await fetch(url, {
-    include: {
-      posts: {
-        include: {
-          views: true,
-          comments: true
-        }
-      },
-    },
-  });
+// const fetcherCategory = async (url) => {
+//   const res = await fetch(url, {
+//     include: {
+//       posts: {
+//         include: {
+//           views: true,
+//           comments: true
+//         }
+//       },
+//     },
+//   });
 
-  const data = await res.json();
+//   const data = await res.json();
 
-  if (!res.ok) {
-    const error = new Error(data.message);
-    throw error;
-  }
+//   if (!res.ok) {
+//     const error = new Error(data.message);
+//     throw error;
+//   }
 
-  return data;
-};
+//   return data;
+// };
 
 const chartConfig = {
   visitors: {
@@ -147,7 +147,7 @@ export default function Page({ params }) {
 
   const { data, isLoading } = useSWR(
     `https://www.aqraaz.com/api/categories?include=${encodeURIComponent(includeParam)}`,
-    fetcherCategory
+    fetcher
   );
   // const { data, isLoading } = useCategories()
 
@@ -451,7 +451,7 @@ export default function Page({ params }) {
                   <CommandInput placeholder="Search Category..." />
                   <CommandList>
                     <CommandEmpty>No Category found.</CommandEmpty>
-                    {/* <CommandGroup>
+                    <CommandGroup>
                       {isLoading ? "Loading..." : data.map((category) => (
                         <CommandItem key={category.id} value={category.slug}
                           onSelect={(currentValue) => {
@@ -462,7 +462,7 @@ export default function Page({ params }) {
                           {category.title.en}
                         </CommandItem>
                       ))}
-                    </CommandGroup> */}
+                    </CommandGroup>
                   </CommandList>
                 </Command>
               </PopoverContent>
