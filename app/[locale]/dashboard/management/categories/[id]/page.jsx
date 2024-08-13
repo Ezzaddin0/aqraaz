@@ -22,18 +22,18 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 import { ChartContainer, ChartTooltip, ChartTooltipContent, ChartLegend, ChartLegendContent } from "../../../../../../components/ui/chart"
 import { AreaChart, CartesianGrid, XAxis, Area } from "recharts"
 
-// const fetcher = async (url) => {
-//   const res = await fetch(url);
+const fetcher = async (url) => {
+  const res = await fetch(url);
 
-//   const data = await res.json();
+  const data = await res.json();
 
-//   if (!res.ok) {
-//     const error = new Error(data.message);
-//     throw error;
-//   }
+  if (!res.ok) {
+    const error = new Error(data.message);
+    throw error;
+  }
 
-//   return data;
-// };
+  return data;
+};
 
 // const fetcher = async (url) => {
 //   const res = await fetch(url, {
@@ -57,25 +57,7 @@ import { AreaChart, CartesianGrid, XAxis, Area } from "recharts"
 //   return data;
 // };
 
-const fetcher = (...args) => fetch(...args).then(res => res.json())
-
-function useUser (id) {
-  const includeParam = JSON.stringify({
-    posts: {
-      include: {
-        views: true,
-        comments: true,
-      },
-    },
-  });
-  const { data, error, isLoading } = useSWR(`/api/categories?slug=${id}&include=${encodeURIComponent(includeParam)}`, fetcher)
- 
-  return {
-    categoryData: data,
-    isLoading,
-    isError: error
-  }
-}
+// const fetcher = (...args) => fetch(...args).then(res => res.json())
 
 const storage = getStorage(app);
 
@@ -109,12 +91,11 @@ export default function Page({ params }) {
       },
     },
   });
-  const { categoryData, isLoading, isError } = useUser(params.id)
 
-  // const { data: categoryData, isLoading } = useSWR(
-  //   params.id ? `${process.env.NEXTAUTH_URL}/api/categories?slug=news&include=${encodeURIComponent(includeParam)}` : null,
-  //   fetcher
-  // );  
+  const { data: categoryData, isLoading } = useSWR(
+    params.id ? `https://www.aqraaz.com/api/categories?slug=news&include=${encodeURIComponent(includeParam)}` : null,
+    fetcher
+  );  
 
   const [timeRange, setTimeRange] = useState("90d");
 
@@ -267,7 +248,6 @@ export default function Page({ params }) {
   if (isLoading) {
     return <LoadingScreen />;
   }
-  console.log(categoryData);
   
 
   // const filteredData = categoryData[0]?.posts.filter((item) => {

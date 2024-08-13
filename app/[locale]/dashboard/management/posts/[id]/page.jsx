@@ -22,28 +22,29 @@ import Image from "next/image";
 import ImagesCard from "../../../../../../components/ImagesCard"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "../../../../../../components/ui/accordion";
 import { Badge } from "../../../../../../components/ui/badge"
+const pathName = process.env.NEXTAUTH_URL;
 
-// const fetcher = async (url) => {
-//   const res = await fetch(url);
+const fetcher = async (url) => {
+  const res = await fetch(url);
 
-//   const data = await res.json();
+  const data = await res.json();
 
-//   if (!res.ok) {
-//     const error = new Error(data.message);
-//     throw error;
-//   }
+  if (!res.ok) {
+    const error = new Error(data.message);
+    throw error;
+  }
 
-//   return data;
-// };
+  return data;
+};
 
-const fetcher = (...args) => fetch(...args).then(res => res.json())
+// const fetcher = (...args) => fetch(...args).then(res => res.json())
 
 function usePost (id) {
-  const { data, error, isLoading } = useSWR(`/api/posts/${id}` , fetcher)
+  const { data, error, isLoading } = useSWR(`https://www.aqraaz.com/api/posts/${id}` , fetcher)
  
   return {
     postData: data,
-    isLoading,
+    isLoadingPost: isLoading,
     isError: error
   }
 }
@@ -57,7 +58,7 @@ function useCategories (id) {
       },
     },
   });
-  const { data, error, isLoading } = useSWR(`/api/categories?include=${encodeURIComponent(includeParam)}` , fetcher)
+  const { data, error, isLoading } = useSWR(`https://www.aqraaz.com/api/categories?include=${encodeURIComponent(includeParam)}` , fetcher)
  
   return {
     data: data,
@@ -135,26 +136,27 @@ export default function Page({ params }) {
   const { status } = useSession();
   const router = useRouter();
 
-  // const includeParam = JSON.stringify({
-  //   posts: {
-  //     include: {
-  //       views: true,
-  //       comments: true,
-  //     },
-  //   },
-  // });
+  const includeParam = JSON.stringify({
+    posts: {
+      include: {
+        views: true,
+        comments: true,
+      },
+    },
+  });
 
-  // const { data, isLoading } = useSWR(
-  //   `/api/categories?include=${encodeURIComponent(includeParam)}`,
-  //   fetcherCategory
-  // );
-  const { data, isLoading } = useCategories()
+  const { data, isLoading } = useSWR(
+    `https://www.aqraaz.com/api/categories?include=${encodeURIComponent(includeParam)}`,
+    fetcherCategory
+  );
+  // const { data, isLoading } = useCategories()
 
-  // const { data: postData } = useSWR(
-  //   params.id ? `/api/posts/${params.id}` : null,
-  //   fetcher
-  // );
-  const { postData } = usePost(params.id)
+  const { data: postData } = useSWR(
+    params.id ? `https://www.aqraaz.com/api/posts/${params.id}` : null,
+    fetcher
+  );
+  // const { postData, isLoadingPost } = usePost(params.id)
+  // console.log(postData);
 
   const [content, setContent] = useState('')
   const handleContentChange = (reason) => {
