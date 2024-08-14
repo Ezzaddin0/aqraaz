@@ -25,7 +25,9 @@ import { Badge } from "../../../../../../components/ui/badge"
 const pathName = process.env.NEXTAUTH_URL;
 
 const fetcher = async (url) => {
-  const res = await fetch(url);
+  const res = await fetch(url, {
+    cache: "no-store"
+  });
 
   const data = await res.json();
 
@@ -58,7 +60,7 @@ const fetcher = async (url) => {
 //       },
 //     },
 //   });
-//   const { data, error, isLoading } = useSWR(`https://www.aqraaz.com/api/categories?include=${encodeURIComponent(includeParam)}` , fetcher)
+//   const { data, error, isLoading } = useSWR(`${}/api/categories?include=${encodeURIComponent(includeParam)}` , fetcher)
  
 //   return {
 //     data: data,
@@ -146,17 +148,18 @@ export default function Page({ params }) {
   });
 
   const { data, isLoading } = useSWR(
-    `https://www.aqraaz.com/api/categories?include=${encodeURIComponent(includeParam)}`,
+    `/api/categories?include=${encodeURIComponent(includeParam)}`,
     fetcher
   );
+  
   // const { data, isLoading } = useCategories()
+  // console.log(isLoading ? "withing..." : data);
 
   const { data: postData } = useSWR(
-    params.id ? `https://www.aqraaz.com/api/posts/${params.id}` : null,
+    params.id ? `/api/posts/${params.id}` : null,
     fetcher
   );
   // const { postData, isLoadingPost } = usePost(params.id)
-  // console.log(postData);
 
   const [content, setContent] = useState('')
   const handleContentChange = (reason) => {
@@ -451,7 +454,7 @@ export default function Page({ params }) {
                   <CommandInput placeholder="Search Category..." />
                   <CommandList>
                     <CommandEmpty>No Category found.</CommandEmpty>
-                    <CommandGroup>
+                    {/* <CommandGroup>
                       {isLoading ? "Loading..." : data.map((category) => (
                         <CommandItem key={category.id} value={category.slug}
                           onSelect={(currentValue) => {
@@ -462,7 +465,7 @@ export default function Page({ params }) {
                           {category.title.en}
                         </CommandItem>
                       ))}
-                    </CommandGroup>
+                    </CommandGroup> */}
                   </CommandList>
                 </Command>
               </PopoverContent>
