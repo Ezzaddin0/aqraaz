@@ -59,12 +59,13 @@ export async function Footer({lang, dataCategories}) {
     //     `${process.env.NEXTAUTH_URL}/api/categories`,
     //     fetcher
     // );
-  const Categories = await getCategories({
-    select: {
-      slug: true,
-      title: true,
-    },
-  });
+  const Categories = await getCategories();
+  // const Categories = await getCategories({
+  //   select: {
+  //     slug: true,
+  //     title: true,
+  //   },
+  // });
   return (
     <HiddenWrapper>
       <header className="bg-gray-50 text-black py-4 px-4 md:px-6">
@@ -126,13 +127,14 @@ export async function Header({lang}) {
   //   `${process.env.NEXTAUTH_URL}/api/categories`,
   //   fetcher
   // );
-  const Categories = await getCategories({
-    select: {
-      slug: true,
-      title: true,
-      desc: true,
-    },
-  });
+  const Categories = await getCategories();
+  // const Categories = await getCategories({
+  //   select: {
+  //     slug: true,
+  //     title: true,
+  //     desc: true,
+  //   },
+  // });
 
   return (
     <HiddenWrapper>

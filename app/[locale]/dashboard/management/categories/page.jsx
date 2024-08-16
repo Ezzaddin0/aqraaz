@@ -50,16 +50,17 @@ export default async function Page({ params: { locale } }) {
   //   fetcher
   // );
 
-  const data = await getCategories({
-    include: {
-      posts: {
-        include: {
-          views: true,
-          comments: true
-        }
-      },
-    },
-  }); // استدعاء الدالة للحصول على البيانات
+  const data = await getCategories(); // استدعاء الدالة للحصول على البيانات
+  // const data = await getCategories({
+  //   include: {
+  //     posts: {
+  //       include: {
+  //         views: true,
+  //         comments: true
+  //       }
+  //     },
+  //   },
+  // }); // استدعاء الدالة للحصول على البيانات
   
 
   return (

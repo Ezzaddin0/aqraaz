@@ -102,37 +102,13 @@ export const getCategory = async (cat, options = {}) => {
 };
 
 // get Categories old
-// export const getCategories = async () => {
-//   const res = await fetch(
-//     `${pathName}/api/categories`,
-//     {
-//       cache: cache,
-//     }
-//   );
-
-//   if (!res.ok) {
-//     throw new Error("Failed");
-//   }
-
-//   return res.json();
-// };
-export const getCategories = async (options = {}) => {
-  const { include, select } = options;
-
-  const query = new URLSearchParams();
-
-  if (include) {
-    query.set("include", JSON.stringify(include));
-  }
-
-  if (select) {
-    query.set("select", JSON.stringify(select));
-  }
-
-  const url = `${pathName}/api/categories?${query.toString()}`;
-  const res = await fetch(url, {
-    cache: cache,
-  });
+export const getCategories = async () => {
+  const res = await fetch(
+    `${pathName}/api/categories`,
+    {
+      cache: cache,
+    }
+  );
 
   if (!res.ok) {
     throw new Error("Failed");
@@ -140,6 +116,30 @@ export const getCategories = async (options = {}) => {
 
   return res.json();
 };
+// export const getCategories = async (options = {}) => {
+//   const { include, select } = options;
+
+//   const query = new URLSearchParams();
+
+//   if (include) {
+//     query.set("include", JSON.stringify(include));
+//   }
+
+//   if (select) {
+//     query.set("select", JSON.stringify(select));
+//   }
+
+//   const url = `${pathName}/api/categories?${query.toString()}`;
+//   const res = await fetch(url, {
+//     cache: cache,
+//   });
+
+//   if (!res.ok) {
+//     throw new Error("Failed");
+//   }
+
+//   return res.json();
+// };
 
 export const getSearch = async (slug) => {
   const res = await fetch(`${pathName}/api/posts?search=${slug}`, {

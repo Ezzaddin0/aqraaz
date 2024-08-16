@@ -76,12 +76,13 @@ const getTags = [
 export default async function page({params: { locale }}) {
   const { page } = await getDictionary(locale);
 
-  const categories = await getCategories({
-    select: {
-      title: true,
-      slug: true,
-    },
-  });
+  const categories = await getCategories();
+  // const categories = await getCategories({
+  //   select: {
+  //     title: true,
+  //     slug: true,
+  //   },
+  // });
   const posts = await getPosts({page: 1});
   // const posts = await getPosts({
   //   page: 1,

@@ -3,51 +3,22 @@ import prisma from "../../connect";
 import { NextResponse } from "next/server";
 
 // GET ALL Categories old
-// export const GET = async (req) => {
-//   const { searchParams } = new URL(req.url);
-
-//   const slug = searchParams.get("slug");
-//   try {
-//     const categories = await prisma.category.findMany({
-//       include: {
-//         posts: {
-//           include: {
-//             views: true,
-//             comments: true
-//           }
-//         },
-//       },
-//       where: slug ? { slug: slug } : {},
-//     });
-
-//     return new NextResponse(JSON.stringify(categories), { status: 200 });
-//   } catch (err) {
-//     console.log(err);
-//     return new NextResponse(
-//       JSON.stringify({ message: "Something went wrong!" }),
-//       { status: 500 }
-//     );
-//   }
-// };
-
-// CREATE A Category
 export const GET = async (req) => {
   const { searchParams } = new URL(req.url);
 
   const slug = searchParams.get("slug");
-  const includeParam = searchParams.get("include");
-  const selectParam = searchParams.get("select");
-
-  let queryOptions = { where: slug ? { slug: slug } : {} };
-
-  if (includeParam && !selectParam) {
-    queryOptions.include = JSON.parse(includeParam);
-  } else if (selectParam && !includeParam) {
-    queryOptions.select = JSON.parse(selectParam);
-  }
-
   try {
-    const categories = await prisma.category.findMany(queryOptions);
+    const categories = await prisma.category.findMany({
+      include: {
+        posts: {
+          include: {
+            views: true,
+            comments: true
+          }
+        },
+      },
+      where: slug ? { slug: slug } : {},
+    });
 
     return new NextResponse(JSON.stringify(categories), { status: 200 });
   } catch (err) {
@@ -58,6 +29,35 @@ export const GET = async (req) => {
     );
   }
 };
+
+// CREATE A Category
+// export const GET = async (req) => {
+//   const { searchParams } = new URL(req.url);
+
+//   const slug = searchParams.get("slug");
+//   const includeParam = searchParams.get("include");
+//   const selectParam = searchParams.get("select");
+
+//   let queryOptions = { where: slug ? { slug: slug } : {} };
+
+//   if (includeParam && !selectParam) {
+//     queryOptions.include = JSON.parse(includeParam);
+//   } else if (selectParam && !includeParam) {
+//     queryOptions.select = JSON.parse(selectParam);
+//   }
+
+//   try {
+//     const categories = await prisma.category.findMany(queryOptions);
+
+//     return new NextResponse(JSON.stringify(categories), { status: 200 });
+//   } catch (err) {
+//     console.log(err);
+//     return new NextResponse(
+//       JSON.stringify({ message: "Something went wrong!" }),
+//       { status: 500 }
+//     );
+//   }
+// };
 
 export const POST = async (req) => {
   const session = await auth()
