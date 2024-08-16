@@ -157,7 +157,7 @@ export default function Page({ params }) {
       setMedia(postData?.img || "");
       setDesc(postData?.desc?.en || "");
       setDescAr(postData?.desc?.ar || "");
-      setKeywords(postData?.keywords?.en || []);
+      setKeywordsEn(postData?.keywords?.en || []);
       setKeywordsAr(postData?.keywords?.ar || []);
 
       setDate(postData?.createdAt || new Date());
@@ -233,17 +233,17 @@ export default function Page({ params }) {
   //   }
   // };
 
-  // if (isLoading) {
-  //   return <LoadingScreen />
-  // }
+  if (isLoading) {
+    return <LoadingScreen />
+  }
 
-  // if (status === "loading") {
-  //   return <LoadingScreen />;
-  // }
+  if (status === "loading") {
+    return <LoadingScreen />;
+  }
 
-  // if (status === "unauthenticated") {
-  //   router.push("/");
-  // }
+  if (status === "unauthenticated") {
+    router.push("/");
+  }
 
   const handleKeyDown = (e, inputValue, setInputValue, setKeywords, keywords) => {
     if (e.key === 'Enter' && inputValue.trim() !== '') {
