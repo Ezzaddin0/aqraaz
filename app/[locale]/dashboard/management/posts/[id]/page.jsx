@@ -24,22 +24,20 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "..
 import { Badge } from "../../../../../../components/ui/badge"
 const pathName = process.env.NEXTAUTH_URL;
 
-// const fetcher = async (url) => {
-//   const res = await fetch(url, {
-//     cache: "no-store"
-//   });
+const fetcher = async (url) => {
+  const res = await fetch(url);
 
-//   const data = await res.json();
+  const data = await res.json();
 
-//   if (!res.ok) {
-//     const error = new Error(data.message);
-//     throw error;
-//   }
+  if (!res.ok) {
+    const error = new Error(data.message);
+    throw error;
+  }
 
-//   return data;
-// };
+  return data;
+};
 
-const fetcher = (...args) => fetch(...args).then(res => res.json())
+// const fetcher = (...args) => fetch(...args).then(res => res.json())
 
 const extractTextFromHtml = (html) => {
   const div = document.createElement('div');
@@ -96,9 +94,13 @@ export default function Page({ params }) {
   });
 
   const { data, isLoading } = useSWR(
-    `/api/categories?include=${encodeURIComponent(includeParam)}`,
+    `/api/categories`,
     fetcher
   );
+  // const { data, isLoading } = useSWR(
+  //   `/api/categories?include=${encodeURIComponent(includeParam)}`,
+  //   fetcher
+  // );
   
   // console.log(isLoading ? "withing..." : data);
 
