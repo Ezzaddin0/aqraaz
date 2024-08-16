@@ -24,61 +24,9 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "..
 import { Badge } from "../../../../../../components/ui/badge"
 const pathName = process.env.NEXTAUTH_URL;
 
-const fetcher = async (url) => {
-  const res = await fetch(url, {
-    cache: "no-store"
-  });
-
-  const data = await res.json();
-
-  if (!res.ok) {
-    const error = new Error(data.message);
-    throw error;
-  }
-
-  return data;
-};
-
-// const fetcher = (...args) => fetch(...args).then(res => res.json())
-
-// function usePost (id) {
-//   const { data, error, isLoading } = useSWR(`https://www.aqraaz.com/api/posts/${id}` , fetcher)
- 
-//   return {
-//     postData: data,
-//     isLoadingPost: isLoading,
-//     isError: error
-//   }
-// }
-
-// function useCategories (id) {
-//   const includeParam = JSON.stringify({
-//     posts: {
-//       include: {
-//         views: true,
-//         comments: true,
-//       },
-//     },
-//   });
-//   const { data, error, isLoading } = useSWR(`${}/api/categories?include=${encodeURIComponent(includeParam)}` , fetcher)
- 
-//   return {
-//     data: data,
-//     isLoading,
-//     isError: error
-//   }
-// }
-
-// const fetcherCategory = async (url) => {
+// const fetcher = async (url) => {
 //   const res = await fetch(url, {
-//     include: {
-//       posts: {
-//         include: {
-//           views: true,
-//           comments: true
-//         }
-//       },
-//     },
+//     cache: "no-store"
 //   });
 
 //   const data = await res.json();
@@ -91,19 +39,7 @@ const fetcher = async (url) => {
 //   return data;
 // };
 
-const chartConfig = {
-  visitors: {
-    label: "Visitors",
-  },
-  views: {
-    label: "views",
-    color: "hsl(var(--chart-1))",
-  },
-  comments: {
-    label: "comments",
-    color: "hsl(var(--chart-2))",
-  },
-}
+const fetcher = (...args) => fetch(...args).then(res => res.json())
 
 const extractTextFromHtml = (html) => {
   const div = document.createElement('div');
@@ -134,6 +70,18 @@ const processText = (text) => {
   return { wordFrequencies, totalWords, originalText: text };
 };
 
+const BadgeInput = ({ value, keywords, onInputChange, onKeyDown, onRemoveBadge, placeholder }) => (
+  <div className="flex flex-wrap gap-2">
+    {keywords.map((badge, index) => (
+      <div key={index} className="flex items-center bg-gray-200 text-gray-700 rounded-full px-3 py-1">
+        {badge}
+        <XIcon onClick={() => onRemoveBadge(index)} className="h-4 w-4 cursor-pointer ml-2 focus:outline-none text-gray-500" />
+      </div>
+    ))}
+    <input type="text" value={value} onChange={onInputChange} onKeyDown={onKeyDown} placeholder={placeholder} className="flex-grow p-2 focus:outline-none" />
+  </div>
+);
+
 export default function Page({ params }) {
   const { status } = useSession();
   const router = useRouter();
@@ -152,14 +100,12 @@ export default function Page({ params }) {
     fetcher
   );
   
-  // const { data, isLoading } = useCategories()
   // console.log(isLoading ? "withing..." : data);
 
   const { data: postData } = useSWR(
     params.id ? `/api/posts/${params.id}` : null,
     fetcher
   );
-  // const { postData, isLoadingPost } = usePost(params.id)
 
   const [content, setContent] = useState('')
   const handleContentChange = (reason) => {
@@ -174,7 +120,6 @@ export default function Page({ params }) {
   const [openCategory, setOpenCategory] = useState(false)
   const [valueCategory, setValueCategory] = useState("")
 
-  const [file, setFile] = useState(null);
   const [media, setMedia] = useState("");
   const [mediaAlt, setMediaAlt] = useState("");
   const [title, setTitle] = useState("");
@@ -182,14 +127,11 @@ export default function Page({ params }) {
   const [desc, setDesc] = useState("");
   const [descAr, setDescAr] = useState("");
   const [slug, setSlug] = useState(""); // new
-  const [inputValue, setInputValue] = useState('');
-  const [keywords, setKeywords] = useState([]);
+  const [inputValueEn, setInputValueEn] = useState('');
+  const [keywordsEn, setKeywordsEn] = useState([]);
   const [inputValueAr, setInputValueAr] = useState('');
   const [keywordsAr, setKeywordsAr] = useState([]);
   const [date, setDate] = useState(new Date());
-
-  const [searchImage, setSearchImage] = useState("");
-  const [debounceTimeout, setDebounceTimeout] = useState(null);
 
   const [isFormValid, setIsFormValid] = useState(false);
 
@@ -232,19 +174,13 @@ export default function Page({ params }) {
     }
   }, [title, titleAr, desc, descAr, slug, valueCategory]);  
 
-  const slugify = (str) =>
-    str
-      .toLowerCase()
-      .trim()
-      .replace(/[^\w\s-]/g, "")
-      .replace(/[\s_-]+/g, "-")
-      .replace(/^-+|-+$/g, "");
+  const slugify = (str) => str.toLowerCase().trim().replace(/[^\w\s-]/g, "").replace(/[\s_-]+/g, "-").replace(/^-+|-+$/g, "");
 
-    const handleCreateSlug = () => {
-      if (title) {
-        setSlug(slugify(title));
-      }
-    }  
+  const handleCreateSlug = () => {
+    if (title) {
+      setSlug(slugify(title));
+    }
+  }  
 
   const handleSubmit = async () => {
     const method = postData && postData.id  ? "PUT" : "POST";
@@ -297,39 +233,31 @@ export default function Page({ params }) {
   //   }
   // };
 
-  if (isLoading) {
-    return <LoadingScreen />
-  }
+  // if (isLoading) {
+  //   return <LoadingScreen />
+  // }
 
-  if (status === "loading") {
-    return <LoadingScreen />;
-  }
+  // if (status === "loading") {
+  //   return <LoadingScreen />;
+  // }
 
-  if (status === "unauthenticated") {
-    router.push("/");
-  }
+  // if (status === "unauthenticated") {
+  //   router.push("/");
+  // }
 
-  const handleKeyDown = (e) => {
+  const handleKeyDown = (e, inputValue, setInputValue, setKeywords, keywords) => {
     if (e.key === 'Enter' && inputValue.trim() !== '') {
       setKeywords([...keywords, inputValue.trim()]);
       setInputValue('');
     }
   };
 
-  const handleRemoveBadge = (indexToRemove) => {
+  const handleRemoveBadge = (indexToRemove, setKeywords, keywords) => {
     setKeywords(keywords.filter((_, index) => index !== indexToRemove));
   };
-
-  const handleKeyDownAr = (e) => {
-    if (e.key === 'Enter' && inputValueAr.trim() !== '') {
-      setKeywordsAr([...keywordsAr, inputValueAr.trim()]);
-      setInputValueAr('');
-    }
-  };
-
-  const handleRemoveBadgeAr = (indexToRemove) => {
-    setKeywordsAr(keywordsAr.filter((_, index) => index !== indexToRemove));
-  };
+  useEffect(() => {
+    
+  }, [keywordsAr, keywordsEn]);
 
   const words = content.trim().split(/\s+/).length;
   const characters = content.length;
@@ -432,13 +360,7 @@ export default function Page({ params }) {
 
             <div className="border p-2 rounded w-full">
               <div className="flex flex-wrap gap-2">
-                {keywords.map((badge, index) => (
-                  <div key={index} className="flex items-center bg-gray-200 text-gray-700 rounded-full px-3 py-1">
-                    {badge}
-                    <XIcon onClick={() => handleRemoveBadge(index)} className="h-4 w-4 cursor-pointer ml-2 focus:outline-none text-gray-500" />
-                  </div>
-                ))}
-                <input type="text" value={inputValue} onChange={(e) => setInputValue(e.target.value)} onKeyDown={handleKeyDown} placeholder="Type something and press Enter" className="flex-grow p-2 focus:outline-none" />
+              <BadgeInput value={inputValueEn} keywords={keywordsEn} onInputChange={(e) => setInputValueEn(e.target.value)} onKeyDown={(e) => handleKeyDown(e, inputValueEn, setInputValueEn, setKeywordsEn, keywordsEn)} onRemoveBadge={(index) => handleRemoveBadge(index, setKeywordsEn, keywordsEn)} placeholder="Type something and press Enter" />
               </div>
             </div>
 
@@ -474,13 +396,7 @@ export default function Page({ params }) {
 
             <Popover>
               <PopoverTrigger asChild>
-                <Button
-                  variant={"outline"}
-                  className={cn(
-                    "justify-start text-left font-normal",
-                    !date && "text-muted-foreground"
-                  )}
-                >
+                <Button variant={"outline"} className={cn("justify-start text-left font-normal", !date && "text-muted-foreground")}>
                   <CalendarIcon className="mr-2 h-4 w-4" />
                   {date ? format(date, "PPP") : <span>Pick a date</span>}
                 </Button>
@@ -496,7 +412,7 @@ export default function Page({ params }) {
               <Image width={280} height={100} src={media} alt="photo" className="w-full max-h-40 object-cover" />
             </div>
             )}
-              <ImagesCard altImage={mediaAlt} setAltImage={setMediaAlt} setImage={setMedia} />
+            <ImagesCard altImage={mediaAlt} setAltImage={setMediaAlt} setImage={setMedia} />
 
             <Button className="mb-3" variant="outline" onClick={handleSubmit} disabled={!isFormValid}>Publish</Button>
           </div>          
@@ -558,13 +474,7 @@ export default function Page({ params }) {
 
             <div className="border p-2 rounded w-full">
               <div className="flex flex-wrap gap-2">
-                {keywordsAr.map((badge, index) => (
-                  <div key={index} className="flex items-center bg-gray-200 text-gray-700 rounded-full px-3 py-1">
-                    {badge}
-                      <XIcon onClick={() => handleRemoveBadgeAr(index)} className="h-4 w-4 cursor-pointer ml-2 focus:outline-none text-gray-500" />
-                  </div>
-                ))}
-                <input type="text" value={inputValueAr} onChange={(e) => setInputValueAr(e.target.value)} onKeyDown={handleKeyDownAr} placeholder="اكتب شي وضغط حسنا" className="flex-grow p-2 focus:outline-none" />
+              <BadgeInput value={inputValueAr} keywords={keywordsAr} onInputChange={(e) => setInputValueAr(e.target.value)} onKeyDown={(e) => handleKeyDown(e, inputValueAr, setInputValueAr, setKeywordsAr, keywordsAr)} onRemoveBadge={(index) => handleRemoveBadge(index, setKeywordsAr, keywordsAr)} placeholder="اكتب شيئًا واضغط على Enter" />
               </div>
             </div>
             <Label htmlFor="picture">صورة</Label>
@@ -572,30 +482,6 @@ export default function Page({ params }) {
           </div>
         </TabsContent>
         <TabsContent value="analysis">
-          {/* <Card>
-            <CardHeader className="flex items-center gap-2 space-y-0 border-b py-5 sm:flex-row">
-              <div className="grid flex-1 gap-1 text-center sm:text-left">
-                <CardTitle>Area Chart</CardTitle>
-              </div>
-            </CardHeader>
-            <CardContent className="px-2 pt-4 sm:px-6 sm:pt-6">
-            <ChartContainer config={chartConfig} className="min-h-[200px] w-full">
-              <BarChart accessibilityLayer data={postData}>
-                <CartesianGrid vertical={false} />
-                <XAxis
-                  dataKey="createdAt"
-                  tickLine={false}
-                  tickMargin={10}
-                  axisLine={false}
-                  tickFormatter={(value) => value.slice(0, 3)}
-                />
-                <ChartTooltip content={<ChartTooltipContent />} />
-                <Bar dataKey="views" fill="var(--color-desktop)" radius={4} />
-                <Bar dataKey="comments" fill="var(--color-mobile)" radius={4} />
-              </BarChart>
-            </ChartContainer>
-            </CardContent>
-          </Card> */}
           <Accordion type="multiple" collapsible className="w-full">
             <AccordionItem value="item-1">
               <AccordionTrigger><div className="flex items-center gap-3"><InfoIcon className="w-5 h-5"/> Details</div></AccordionTrigger>

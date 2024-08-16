@@ -46,18 +46,19 @@ export default async function Page() {
   //   `/api/posts?${encodeURIComponent(includeParam)}`,
   //   fetcher
   // );
-  const data = await getPosts({
-    include: {
-      user: true,
-      cat: true,
-      comments: {
-        include: {
-          user: true,
-        }
-      },
-      views: true,
-    }
-  })
+  const data = await getPosts();
+  // const data = await getPosts({
+  //   include: {
+  //     user: true,
+  //     cat: true,
+  //     comments: {
+  //       include: {
+  //         user: true,
+  //       }
+  //     },
+  //     views: true,
+  //   }
+  // })
 
   return (<DataTable data={data.posts} columns={PostColumns} />);
 }

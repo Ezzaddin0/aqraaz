@@ -93,7 +93,7 @@ export default function Page({ params }) {
   });
 
   const { data: categoryData, isLoading } = useSWR(
-    params.id ? `https://www.aqraaz.com/api/categories?slug=${params.id}&include=${encodeURIComponent(includeParam)}` : null,
+    params.id ? `/api/categories?slug=${params.id}&include=${encodeURIComponent(includeParam)}` : null,
     fetcher
   );  
 

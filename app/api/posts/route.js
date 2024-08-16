@@ -2,44 +2,68 @@ import { auth  } from "../../auth";
 import prisma from "../../connect";
 import { NextResponse } from "next/server";
 
+export const GET = async (req) => {
+  const { searchParams } = new URL(req.url);
+
+  const page = searchParams.get("page");
+  const cat = searchParams.get("cat");
+  const searchQuery = searchParams.get("search");
+
+  const POST_PER_PAGE = 9;
+
+  const query = {
+    ...(page && { take: POST_PER_PAGE, skip: POST_PER_PAGE * (page - 1) }),
+    where: {
+      ...(cat && { catSlug: cat }),
+      ...(searchQuery && {
+        slug: {
+          contains: searchQuery,
+          mode: 'insensitive',
+        }
+      }),
+    },
+    include: {
+      user: true,
+      cat: true,
+      comments: {
+        include: {
+          user: true,
+        }
+      },
+      views: true,
+    },
+    orderBy: {
+      createdAt: 'desc',
+    }
+  };
+
+  try {
+    const [posts, count] = await prisma.$transaction([
+      prisma.post.findMany(query),
+      prisma.post.count({ where: query.where }),
+    ]);
+    return new NextResponse(JSON.stringify({ posts, count }), { status: 200 });
+  } catch (err) {
+    console.log(err);
+    return new NextResponse(
+      JSON.stringify({ message: "Something went wrong!" }),
+      { status: 500 }
+    );
+  }
+};
+
+// this is new code but have same problem if deployed
 // export const GET = async (req) => {
 //   const { searchParams } = new URL(req.url);
-
 //   const page = searchParams.get("page");
 //   const cat = searchParams.get("cat");
 //   const searchQuery = searchParams.get("search");
-
-//   // استرجاع كائن select أو include وتحويله من JSON
-//   const selectParam = searchParams.get("select");
 //   const includeParam = searchParams.get("include");
+//   const selectParam = searchParams.get("select");
 
-//   let select = null;
-//   let include = null;
+//   const POST_PER_PAGE = 7;
 
-//   if (selectParam) {
-//     try {
-//       select = JSON.parse(selectParam);
-//     } catch (err) {
-//       return new NextResponse(
-//         JSON.stringify({ message: "Invalid select format" }),
-//         { status: 400 }
-//       );
-//     }
-//   }
-
-//   if (includeParam) {
-//     try {
-//       include = JSON.parse(includeParam);
-//     } catch (err) {
-//       return new NextResponse(
-//         JSON.stringify({ message: "Invalid include format" }),
-//         { status: 400 }
-//       );
-//     }
-//   }
-
-//   const POST_PER_PAGE = 9;
-
+//   // Building the query based on available values
 //   const query = {
 //     ...(page && { take: POST_PER_PAGE, skip: POST_PER_PAGE * (page - 1) }),
 //     where: {
@@ -49,20 +73,54 @@ import { NextResponse } from "next/server";
 //           contains: searchQuery,
 //           mode: 'insensitive',
 //         }
-//       }),
+//       }),      
 //     },
-//     ...(select && { select }), // استخدام select إذا كان موجودًا
-//     ...(include && { include }), // استخدام include إذا كان موجودًا
 //     orderBy: {
 //       createdAt: 'desc',
 //     }
 //   };
 
+//   // If include or select parameters are provided, add them to the query
+//   if (includeParam && !selectParam) {
+//     query.include = JSON.parse(includeParam);
+//   } else if (selectParam && !includeParam) {
+//     query.select = JSON.parse(selectParam);
+//   } else {
+//     // Default include fields
+//     query.include = {
+//       user: true,
+//       cat: true,
+//       comments: {
+//         include: {
+//           user: true,
+//         }
+//       },
+//       views: true,
+//     };
+//   }
+
 //   try {
 //     const [posts, count] = await prisma.$transaction([
 //       prisma.post.findMany(query),
 //       prisma.post.count({ where: query.where }),
+//       // prisma.view.aggregate({
+//       //   _sum: {
+//       //     id: true, // Assuming 'id' is unique for each view, this will count the total views.
+//       //   },
+//       //   where: {
+//       //     postId: {
+//       //       in: (await prisma.post.findMany({
+//       //         where: query.where,
+//       //         select: { id: true },
+//       //       })).map(post => post.id),
+//       //     },
+//       //   },
+//       // }),
 //     ]);
+
+//     // Calculate the total views for each post
+//     // const totalViews = viewsCount._sum.id || 0;
+
 //     return new NextResponse(JSON.stringify({ posts, count }), { status: 200 });
 //   } catch (err) {
 //     console.log(err);
@@ -73,85 +131,8 @@ import { NextResponse } from "next/server";
 //   }
 // };
 
+
 // CREATE A POST
-
-export const GET = async (req) => {
-  const { searchParams } = new URL(req.url);
-  const page = searchParams.get("page");
-  const cat = searchParams.get("cat");
-  const searchQuery = searchParams.get("search");
-  const includeParam = searchParams.get("include");
-  const selectParam = searchParams.get("select");
-
-  const POST_PER_PAGE = 7;
-
-  // Building the query based on available values
-  const query = {
-    ...(page && { take: POST_PER_PAGE, skip: POST_PER_PAGE * (page - 1) }),
-    where: {
-      ...(cat && { catSlug: cat }),
-      ...(searchQuery && {
-        slug: {
-          contains: searchQuery,
-          mode: 'insensitive',
-        }
-      }),      
-    },
-    orderBy: {
-      createdAt: 'desc',
-    }
-  };
-
-  // If include or select parameters are provided, add them to the query
-  if (includeParam && !selectParam) {
-    query.include = JSON.parse(includeParam);
-  } else if (selectParam && !includeParam) {
-    query.select = JSON.parse(selectParam);
-  } else {
-    // Default include fields
-    query.include = {
-      user: true,
-      cat: true,
-      comments: {
-        include: {
-          user: true,
-        }
-      },
-      views: true,
-    };
-  }
-
-  try {
-    const [posts, count] = await prisma.$transaction([
-      prisma.post.findMany(query),
-      prisma.post.count({ where: query.where }),
-      // prisma.view.aggregate({
-      //   _sum: {
-      //     id: true, // Assuming 'id' is unique for each view, this will count the total views.
-      //   },
-      //   where: {
-      //     postId: {
-      //       in: (await prisma.post.findMany({
-      //         where: query.where,
-      //         select: { id: true },
-      //       })).map(post => post.id),
-      //     },
-      //   },
-      // }),
-    ]);
-
-    // Calculate the total views for each post
-    // const totalViews = viewsCount._sum.id || 0;
-
-    return new NextResponse(JSON.stringify({ posts, count }), { status: 200 });
-  } catch (err) {
-    console.log(err);
-    return new NextResponse(
-      JSON.stringify({ message: "Something went wrong!" }),
-      { status: 500 }
-    );
-  }
-};
 
 export const POST = async (req) => {
   const session = await auth()

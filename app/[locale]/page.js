@@ -34,33 +34,21 @@ export async function generateMetadata({ params: { locale } }) {
 }
 
 export default async function  Home({ params: { locale } }) {
+  const allPosts = await getPosts({page: 1});
+
+  // this is new code but have same problem id deployed on vercel
   // const allPosts = await getPosts({
   //   page: 1,
-  //   // cat: 'news',
-  //   // searchQuery: 'latest updates',
-  //   include: {
-  //     user: true,
-  //     cat: true,
-  //     comments: {
-  //       include: {
-  //         user: true,
-  //       }
-  //     },
+  //   select: {
   //     views: true,
-  //   },
+  //     slug: true,
+  //     title: true,
+  //     desc: true,
+  //     img: true,
+  //     createdAt: true,
+  //     catSlug: true,
+  //   }
   // });
-  const allPosts = await getPosts({
-    page: 1,
-    select: {
-      views: true,
-      slug: true,
-      title: true,
-      desc: true,
-      img: true,
-      createdAt: true,
-      catSlug: true,
-    }
-  });
   const allNews = await getCategory('news', {
     include: {
         posts: {

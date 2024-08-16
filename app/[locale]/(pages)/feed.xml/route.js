@@ -15,25 +15,15 @@ export async function GET() {
 
     // const posts = await client.fetch(query);
 
+    const posts = await getPosts({page: 1});
     // const posts = await getPosts({
-    //     // page: 1,
-    //     // cat: 'news',
-    //     // searchQuery: 'latest updates',
     //     select: {
     //       title: true,
-    //       desc: true,
     //       slug: true,
+    //       desc: true,
     //       createdAt: true,
-    //     },
+    //     }
     // });
-    const posts = await getPosts({
-        select: {
-          title: true,
-          slug: true,
-          desc: true,
-          createdAt: true,
-        }
-    });
 
     const feed = new RSS({
         title: "aqraaz",

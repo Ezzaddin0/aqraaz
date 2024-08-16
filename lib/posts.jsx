@@ -73,16 +73,17 @@ export const getPostsLib = async (sort) => {
   //     views: true,
   //   },
   // });
-  const data = await getPosts({
-    select: {
-      title: true,
-      slug: true,
-      desc: true,
-      img: true,
-      createdAt: true,
-      views: true,
-    }
-  });
+  const data = await getPosts();
+  // const data = await getPosts({
+  //   select: {
+  //     title: true,
+  //     slug: true,
+  //     desc: true,
+  //     img: true,
+  //     createdAt: true,
+  //     views: true,
+  //   }
+  // });
   let sortedPosts = [];
   if (sort === "a-to-z") {
     sortedPosts = sortByTitleAsc([...data.posts]);
