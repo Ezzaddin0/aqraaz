@@ -21,20 +21,20 @@ export default async function sitemap() {
     },
     });        
 
-    const postUrlsEnSlug = posts.posts.map((post:any) => ({
+    const postUrlsEnSlug = posts.posts.map((post) => ({
         url: `${BaseUrlEn}/post/${post.slug}`,
         lastModified: post?.createdAt,
     }))
-    const postUrlsArSlug = posts.posts.map((post:any) => ({
+    const postUrlsArSlug = posts.posts.map((post) => ({
         url: `${BaseUrlAr}/post/${post.slug}`,
         lastModified: post?.createdAt,
     }))
 
-    const CategoryUrlsEn = categories.map((post:any) => ({
+    const CategoryUrlsEn = categories.map((post) => ({
         url: `${BaseUrlEn}/categories/${post.slug}`,
         lastModified: post?.createdAt,
     }))
-    const CategoryUrlsAr = categories.map((post:any) => ({
+    const CategoryUrlsAr = categories.map((post) => ({
         url: `${BaseUrlAr}/categories/${post.slug}`,
         lastModified: post?.createdAt,
     }))
