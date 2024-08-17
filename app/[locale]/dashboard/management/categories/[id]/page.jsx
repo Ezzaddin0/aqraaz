@@ -83,17 +83,17 @@ export default function Page({ params }) {
   const { status } = useSession();
   const router = useRouter();  
 
-  const includeParam = JSON.stringify({
-    posts: {
-      include: {
-        views: true,
-        comments: true,
-      },
-    },
-  });
+  // const includeParam = JSON.stringify({
+  //   posts: {
+  //     include: {
+  //       views: true,
+  //       comments: true,
+  //     },
+  //   },
+  // });
 
   const { data: categoryData, isLoading } = useSWR(
-    params.id ? `/api/categories?slug=${params.id}&include=${encodeURIComponent(includeParam)}` : null,
+    params.id ? `/api/categories?slug=${params.id}` : null,
     fetcher
   );  
 
@@ -266,14 +266,14 @@ export default function Page({ params }) {
   //   comments: item.comments.length,
   // })) || [];
 
-  if (status === "loading") {
-    return <LoadingScreen />;
-  }
+  // if (status === "loading") {
+  //   return <LoadingScreen />;
+  // }
 
-  if (status === "unauthenticated") {
-    router.push("/");
-    return null;
-  }
+  // if (status === "unauthenticated") {
+  //   router.push("/");
+  //   return null;
+  // }
 
   return (
     <div className="flex gap-4 min-h-screen pt-4">

@@ -60,12 +60,12 @@ export async function Footer({lang, dataCategories}) {
     //     fetcher
     // );
   // const Categories = await getCategories();
-  // const Categories = await getCategories({
-  //   select: {
-  //     slug: true,
-  //     title: true,
-  //   },
-  // });
+  const Categories = await getCategories({
+    select: {
+      slug: true,
+      title: true,
+    },
+  });
   return (
     <HiddenWrapper>
       <header className="bg-gray-50 text-black py-4 px-4 md:px-6">
@@ -91,9 +91,9 @@ export async function Footer({lang, dataCategories}) {
           <div className="space-y-2">
             <h2 className="text-lg font-bold">{lang === 'en' ? 'Categories' : 'الفئات'}</h2>
             <ul className="space-y-1 text-sm">
-              {/* {Categories.slice(0, 4).map((category) => (
+              {Categories.slice(0, 4).map((category) => (
                 <li key={category.slug}><Link className="hover:underline" href={`/${lang}/categories/${category.slug}`}>{lang == 'en' ? category.title.en : category.title.ar}</Link></li>
-              ))} */}
+              ))}
             </ul>
           </div>
           <div className="space-y-2">
@@ -127,16 +127,15 @@ export async function Header({lang}) {
   //   `${process.env.NEXTAUTH_URL}/api/categories`,
   //   fetcher
   // );
-
   // const Categories = await getCategories();
-
-  // const Categories = await getCategories({
-  //   select: {
-  //     slug: true,
-  //     title: true,
-  //     desc: true,
-  //   },
-  // });
+  const Categories = await getCategories({
+    select: {
+      slug: true,
+      title: true,
+      desc: true,
+    },
+  });  
+  
 
   return (
     <HiddenWrapper>
@@ -161,13 +160,13 @@ export async function Header({lang}) {
             </div>
             Aqraaz
           </Link>
-          {/* <NavbarList lang={lang} dataCategories={Categories} /> */}
+          <NavbarList lang={lang} dataCategories={Categories} />
         </nav>
         <div className="flex items-center gap-4">
         <SearchInput lang={lang} />
 
         <UserDropdown lang={lang} />
-        {/* <Sidebar lang={lang} dataCategories={Categories} /> */}
+        <Sidebar lang={lang} dataCategories={Categories} />
         </div>
       </header>
     </HiddenWrapper>
