@@ -83,16 +83,16 @@ export default async function page({params: { locale }}) {
   //     slug: true,
   //   },
   // });
-  const posts = await getPosts({page: 1});
-  // const posts = await getPosts({
-  //   page: 1,
-  //   select: {
-  //     img: true,
-  //     title: true,
-  //     desc: true,
-  //     slug: true,
-  //   }
-  // })
+  // const posts = await getPosts({page: 1});
+  const posts = await getPosts({
+    page: 1,
+    select: {
+      img: true,
+      title: true,
+      desc: true,
+      slug: true,
+    }
+  })
   return (
     <>
     <main>
