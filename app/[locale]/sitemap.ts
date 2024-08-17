@@ -6,15 +6,20 @@ export default async function sitemap() {
     const BaseUrlEn = "https://www.aqraaz.com/en";
     const BaseUrlAr = "https://www.aqraaz.com/ar";
 
-    const posts = await getPosts();
+    const posts = await getPosts({
+        select: {
+          slug: true,
+          createdAt: true,
+        }
+    });
     
-    const categories = await getCategories();        
-    // const categories = await getCategories({
-    // select: {
-    //     slug: true,
-    //     createdAt: true,
-    // },
-    // });        
+    // const categories = await getCategories();        
+    const categories = await getCategories({
+    select: {
+        slug: true,
+        createdAt: true,
+    },
+    });        
 
     const postUrlsEnSlug = posts.posts.map((post:any) => ({
         url: `${BaseUrlEn}/post/${post.slug}`,
