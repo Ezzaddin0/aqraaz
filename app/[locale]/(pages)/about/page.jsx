@@ -1,6 +1,6 @@
 import React from 'react'
 import PrimaryImage from '../../../../assets/images/image-home.svg'
-import { getDictionary } from '../../../../lib/dictionary'
+// import { getDictionary } from '../../../../lib/dictionary'
 // import Script from 'next/script';
 import Image from 'next/image';
 import { ArrowRightIcon, TagIcon } from 'lucide-react';
@@ -74,15 +74,15 @@ const getTags = [
 
 
 export default async function page({params: { locale }}) {
-  const { page } = await getDictionary(locale);
+  // const { page } = await getDictionary(locale);
 
-  const categories = await getCategories();
-  // const categories = await getCategories({
-  //   select: {
-  //     title: true,
-  //     slug: true,
-  //   },
-  // });
+  // const categories = await getCategories();
+  const categories = await getCategories({
+    select: {
+      title: true,
+      slug: true,
+    },
+  });
   // const posts = await getPosts({page: 1});
   const posts = await getPosts({
     page: 1,
