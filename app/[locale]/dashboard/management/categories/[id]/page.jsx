@@ -266,14 +266,14 @@ export default function Page({ params }) {
   //   comments: item.comments.length,
   // })) || [];
 
-  // if (status === "loading") {
-  //   return <LoadingScreen />;
-  // }
+  if (status === "loading") {
+    return <LoadingScreen />;
+  }
 
-  // if (status === "unauthenticated") {
-  //   router.push("/");
-  //   return null;
-  // }
+  if (status === "unauthenticated") {
+    router.push("/");
+    return null;
+  }
 
   return (
     <div className="flex gap-4 min-h-screen pt-4">
