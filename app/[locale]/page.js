@@ -51,32 +51,41 @@ export default async function  Home({ params: { locale } }) {
   });
   const allNews = await getCategory('news', {
     include: {
-        posts: {
-        include: {
-            views: true,
-            comments: true
-        }
-        },
+      posts: {
+      select: {
+        createdAt: true,
+        title: true,
+        desc: true,
+        img: true,
+        slug: true,
+      }
+      },
     },
   });
   const allSports = await getCategory('sports', {
     include: {
-        posts: {
-        include: {
-            views: true,
-            comments: true
-        }
-        },
+      posts: {
+      select: {
+        createdAt: true,
+        title: true,
+        desc: true,
+        img: true,
+        slug: true,
+      }
+      },
     },
   });
   const allTech = await getCategory('technology', {
     include: {
-        posts: {
-        include: {
-            views: true,
-            comments: true
-        }
-        },
+      posts: {
+      select: {
+        createdAt: true,
+        title: true,
+        desc: true,
+        img: true,
+        slug: true,
+      }
+      },
     },
   });      
 
