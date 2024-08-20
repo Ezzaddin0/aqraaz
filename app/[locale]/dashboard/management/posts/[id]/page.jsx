@@ -64,8 +64,6 @@ export default function Page({ params }) {
   const [keywordsAr, setKeywordsAr] = useState([]);
   const [date, setDate] = useState(new Date());
   const [isFormValid, setIsFormValid] = useState(false);
-  const [suggestionsTitle, setSuggestionsTitle] = useState(false);
-  const [suggestionsDesc, setSuggestionsDesc] = useState(false);
   useEffect(() => {
     if (postData) {
       setTitle(postData?.title?.en || "");
@@ -277,6 +275,8 @@ export default function Page({ params }) {
           <TabsContent dir="rtl" className="flex flex-col gap-2" value="arabic">
             <div className="grid w-full gap-2">
               <Input type="text" value={titleAr} onChange={(e) => setTitleAr(e.target.value)} placeholder="العنوان" />
+
+              <Textarea onChange={(e) => setDescAr(e.target.value)} value={descAr} placeholder="الوصف" />
 
               <div className="border p-2 rounded w-full">
                 <div className="flex flex-wrap gap-2">
