@@ -12,9 +12,9 @@ export default function SectionCards({Posts, lang, time, title, page, cat}) {
   const banner = useRef()
 
   const atOptions = {
-      key: '8377307cb2756e90c6a11a4f1bc0b0db',
+      key: '49b964dde4b56dd495dac2955331b7e0',
       format: 'iframe',
-      height: 600,
+      height: 300,
       width: 160,
       params: {},
   }
