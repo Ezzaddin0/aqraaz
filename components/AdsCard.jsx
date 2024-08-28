@@ -13,7 +13,7 @@ export default function AdsCard() {
         /> */}
         
         {/* Adsterra Ads Script */}
-        <Script id="adsterra-ads" strategy="lazyOnload">
+        <script id="adsterra-ads" strategy="lazyOnload">
           {`
             atOptions = {
               'key' : '9c6fb7c9b8688fb4a40951b1740b6d67',
@@ -23,8 +23,8 @@ export default function AdsCard() {
               'params' : {}
             };
           `}
-        </Script>
-        <Script id="adsterra-invoke" strategy="lazyOnload" src="//www.topcreativeformat.com/9c6fb7c9b8688fb4a40951b1740b6d67/invoke.js" />
+        </script>
+        <script id="adsterra-invoke" strategy="lazyOnload" src="//www.topcreativeformat.com/9c6fb7c9b8688fb4a40951b1740b6d67/invoke.js" />
 
       </AlertDescription>
     </Alert>
