@@ -13,8 +13,8 @@ export default function SectionCards({Posts, lang, time, title, page, cat}) {
     const atOptions = {
         key: '8377307cb2756e90c6a11a4f1bc0b0db',
         format: 'iframe',
-        height: 50,
-        width: 320,
+        height: 600,
+        width: 160,
         params: {},
     }
     useEffect(() => {
