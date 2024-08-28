@@ -23,6 +23,19 @@ export default function SectionCards({Posts, lang, time, title, page, cat}) {
               <CardContent className="p-6">
               {/* <Script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8893594961186089"
      crossorigin="anonymous" /> */}
+              <Script id="show-banner" strategy="afterInteractive">
+                {`
+                atOptions = {
+                    'key' : '8377307cb2756e90c6a11a4f1bc0b0db',
+                    'format' : 'iframe',
+                    'height' : 50,
+                    'width' : 320,
+                    'params' : {}
+                };
+                document.write('<scr' + 'ipt type="text/javascript" src="http' + (location.protocol === 'https:' ? 's' : '') + '://www.topcreativeformat.com/8377307cb2756e90c6a11a4f1bc0b0db/invoke.js"></scr'+'ipt>');
+                `}
+                </Script>
+
               </CardContent>
             </Card>
           </div>

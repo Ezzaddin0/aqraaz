@@ -27,7 +27,7 @@
     ".next/types/**/*.ts",
     "**/*.ts",
     "**/*.tsx"
-, "sanity/schemas/blockContent.jsx", "sanity/schemas/category.jsx", "sanity/schemas/post.jsx", "components/data-table.jsx", "app/[locale]/sitemap.js"  ],
+, "sanity/schemas/blockContent.jsx", "sanity/schemas/category.jsx", "sanity/schemas/post.jsx", "components/data-table.jsx", "app/[locale]/sitemap.js", "components/AdsCard.jsx"  ],
   "exclude": [
     "node_modules"
   ]
