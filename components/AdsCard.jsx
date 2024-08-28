@@ -13,18 +13,18 @@ export default function AdsCard() {
         /> */}
         
         {/* Adsterra Ads Script */}
-        <script id="adsterra-ads" strategy="lazyOnload">
-          {`
-            atOptions = {
-              'key' : '9c6fb7c9b8688fb4a40951b1740b6d67',
-              'format' : 'iframe',
-              'height' : 50,
-              'width' : 320,
-              'params' : {}
-            };
-          `}
-        </script>
-        <script id="adsterra-invoke" strategy="lazyOnload" src="//www.topcreativeformat.com/9c6fb7c9b8688fb4a40951b1740b6d67/invoke.js" />
+      <Script id="adsterra-banner" strategy="afterInteractive">
+        {`
+          atOptions = {
+            'key' : '9c6fb7c9b8688fb4a40951b1740b6d67',  // استبدل XXXXXX بمفتاحك
+            'format' : 'iframe',
+            'height' : 50,
+            'width' : 320,
+            'params' : {}
+          };
+          document.write('<scr' + 'ipt type="text/javascript" src="http' + (location.protocol === 'https:' ? 's' : '') + '://www.topcreativeformat.com/9c6fb7c9b8688fb4a40951b1740b6d67/invoke.js"></scr' + 'ipt>');
+        `}
+      </Script>  
 
       </AlertDescription>
     </Alert>
