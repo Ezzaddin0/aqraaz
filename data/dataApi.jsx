@@ -1,5 +1,6 @@
 const pathName = process.env.NEXTAUTH_URL;
 
+
 const cache = "no-store"
 
 export const getPost = async (slug) => {
