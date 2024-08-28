@@ -16,6 +16,7 @@ import { format } from 'date-fns'
 import CardCustom from '../../../../../components/component/Card';
 import Image from 'next/image';
 import { getCategory, getPost } from '../../../../../data/dataApi';
+import AdsCard from '../../../../../components/AdsCard';
 // import { en, ar } from "date-fns/locale";
 
 export const revalidate = 30;
@@ -111,6 +112,7 @@ export default async function page({ params: {slug, locale} }) {
           </div>
         </header>
           {/* <PortableText value={locale == "en" ? data.body.en : data.body.ar} components={RichText} /> */}
+          <AdsCard />
           <div className='w-full singlePost' dangerouslySetInnerHTML={{ __html: locale == "en" ? data.body.en : data.body.ar }}></div>
       </div>
 

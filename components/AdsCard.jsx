@@ -9,8 +9,8 @@ export default function AdsCard() {
     const atOptions = {
         key: '9c6fb7c9b8688fb4a40951b1740b6d67',
         format: 'iframe',
-        height: 50,
-        width: 320,
+        height: 90,
+        width: 728,
         params: {},
     }
     useEffect(() => {
@@ -33,7 +33,6 @@ export default function AdsCard() {
           src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8893594961186089"
           crossOrigin="anonymous"
         /> */}
-        
 
       </AlertDescription>
     </Alert>

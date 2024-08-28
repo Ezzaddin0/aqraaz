@@ -98,29 +98,29 @@ export default async function  Home({ params: { locale } }) {
       
       <HeroSection Posts={allPosts} lang={locale} />
 
-      <AdsCard />
+      {/* <AdsCard /> */}
 
       <PopularArticles Posts={allPosts} lang={locale} />
       
-      <AdsCard />
+      {/* <AdsCard /> */}
 
       <SectionCards title={locale == "en" ? "Technology" : "تكنولوجيا"} time Posts={allTech[0]} lang={locale} />
 
-      <AdsCard />
+      {/* <AdsCard /> */}
 
       <FeaturedArticle posts={postWithHighestViews} lang={locale} />
 
-      <AdsCard />
+      {/* <AdsCard /> */}
 
       <SectionCards title={locale == "en" ? "News" : "الاخبار"} time Posts={allNews[0]} lang={locale} />
 
       <PrimarySectionCard Posts={allSports} lang={locale} />
 
-      <AdsCard />
+      {/* <AdsCard /> */}
 
       <CategoriesSection lang={locale} />
 
-      <AdsCard />
+      {/* <AdsCard /> */}
     </>
   );
 }
