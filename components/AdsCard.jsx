@@ -1,6 +1,6 @@
 "use client"
-import Script from "next/script";
-import { Alert, AlertDescription } from "../components/ui/alert";
+// import Script from "next/script";
+// import { Alert, AlertDescription } from "../components/ui/alert";
 import { useEffect, useRef } from "react";
 
 export default function AdsCard() {
@@ -18,7 +18,7 @@ export default function AdsCard() {
         const conf = document.createElement('script')
         const script = document.createElement('script')
         script.type = 'text/javascript'
-        script.src = `//www.highperformancedformats.com/${atOptions.key}/invoke.js`
+        script.src = `//www.topcreativeformat.com/${atOptions.key}/invoke.js`
         conf.innerHTML = `atOptions = ${JSON.stringify(atOptions)}`
 
         banner.current.append(conf)
@@ -26,18 +26,19 @@ export default function AdsCard() {
     }
 }, [banner])
   return (
-    <Alert className="my-4 text-center">
-      <AlertDescription ref={banner}>
-        {/* Google AdSense Script */}
-        {/* <Script
-          strategy="lazyOnload"
-          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8893594961186089"
-          crossOrigin="anonymous"
-        /> */}
+    // <Alert className="my-4 text-center">
+    //   <AlertDescription ref={banner}>
+    //     Google AdSense Script
+    //     <Script
+    //       strategy="lazyOnload"
+    //       src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8893594961186089"
+    //       crossOrigin="anonymous"
+    //     />
         
-        {/* Adsterra Ads Script */}
+    //     Adsterra Ads Script
 
-      </AlertDescription>
-    </Alert>
+    //   </AlertDescription>
+    // </Alert>
+    <div className="mx-2 my-5 border border-gray-200 justify-center items-center text-white text-center" ref={banner}></div>
   );
 }
