@@ -1,10 +1,33 @@
+"use client"
 import Script from "next/script";
 import { Alert, AlertDescription } from "../components/ui/alert";
+import { useEffect, useRef } from "react";
 
 export default function AdsCard() {
+  const banner = useRef()
+
+    const atOptions = {
+        key: '9c6fb7c9b8688fb4a40951b1740b6d67',
+        format: 'iframe',
+        height: 50,
+        width: 320,
+        params: {},
+    }
+    useEffect(() => {
+    if (banner.current && !banner.current.firstChild) {
+        const conf = document.createElement('script')
+        const script = document.createElement('script')
+        script.type = 'text/javascript'
+        script.src = `//www.topcreativeformat.com/${atOptions.key}/invoke.js`
+        conf.innerHTML = `atOptions = ${JSON.stringify(atOptions)}`
+
+        banner.current.append(conf)
+        banner.current.append(script)
+    }
+}, [banner])
   return (
     <Alert className="my-4 text-center">
-      <AlertDescription>
+      <AlertDescription ref={banner}>
         {/* Google AdSense Script */}
         {/* <Script
           strategy="lazyOnload"
@@ -13,18 +36,6 @@ export default function AdsCard() {
         /> */}
         
         {/* Adsterra Ads Script */}
-      <Script id="adsterra-banner" strategy="afterInteractive">
-        {`
-          atOptions = {
-            'key' : '9c6fb7c9b8688fb4a40951b1740b6d67',  // استبدل XXXXXX بمفتاحك
-            'format' : 'iframe',
-            'height' : 50,
-            'width' : 320,
-            'params' : {}
-          };
-          document.write('<scr' + 'ipt type="text/javascript" src="http' + (location.protocol === 'https:' ? 's' : '') + '://www.topcreativeformat.com/9c6fb7c9b8688fb4a40951b1740b6d67/invoke.js"></scr' + 'ipt>');
-        `}
-      </Script>  
 
       </AlertDescription>
     </Alert>
