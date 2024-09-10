@@ -1,83 +1,16 @@
-// 'use client'
-/**
- * v0 by Vercel.
- * @see https://v0.dev/t/pWLvRYHcTcW
- * Documentation: https://v0.dev/docs#integrating-generated-code-into-your-nextjs-app
- */
 import Link from "next/link"
-import { Card, CardHeader, CardTitle, CardContent } from "../../../components/ui/card"
-import { Avatar, AvatarFallback } from "../../../components/ui/avatar"
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
+import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { formatDistanceToNow } from "date-fns";
 import { CalendarIcon, EyeIcon, FileTextIcon, MessageCircleIcon, Users2Icon } from "lucide-react"
-import AreaChartsCard from "../../../components/component/area-charts-card"
+import AreaChartsCard from "@/components/component/area-charts-card"
 import Image from "next/image";
-import { sortPostsByDate } from "../../../helper/sorted";
-import { getPosts } from "../../../data/dataApi";
-
-const getComments = async () => {
-  const res = await fetch(
-    `${process.env.NEXTAUTH_URL}/api/comments`,
-    {
-      cache: "no-store",
-    }
-  );
-
-  if (!res.ok) {
-    throw new Error("Failed");
-  }
-
-  return res.json();
-};
-
-// const getPosts = async () => {
-//   const res = await fetch(
-//     `${process.env.NEXTAUTH_URL}/api/posts`,
-//     {
-//       cache: "no-store",
-//     }
-//   );
-
-//   if (!res.ok) {
-//     throw new Error("Failed");
-//   }
-
-//   return res.json();
-// };
-
-const getUsers = async () => {
-  const res = await fetch(
-    `${process.env.NEXTAUTH_URL}/api/users`,
-    {
-      cache: "no-store",
-    }
-  );
-
-  if (!res.ok) {
-    throw new Error("Failed");
-  }
-
-  return res.json();
-};
-
+import { fetchComments, fetchPosts, fetchUsers } from "@/data/dataApi";
 
 export default async function Dashboard() {
-  const comments = await getComments();
-
-  const posts = await getPosts();
-  // const posts = await getPosts({
-  //   select: {
-  //     views: true,
-  //     comments: true,
-  //     img: true,
-  //     title: true,
-  //     desc: true,
-  //     slug: true,
-  //     createdAt: true,
-  //   }
-  // });
-  const users = await getUsers();
-
-  const sortedPosts = sortPostsByDate(posts.posts);
+  const posts = await fetchPosts('', ['title', 'desc', 'img', 'createdAt', 'views', 'comments', 'catSlug', 'slug']);
+  const comments = await fetchComments();
+  const users = await fetchUsers();
 
   return (
     <div className="flex flex-col w-full min-h-screen bg-gray-100 dark:bg-gray-900">
@@ -91,7 +24,7 @@ export default async function Dashboard() {
                   <FileTextIcon className="w-4 h-4 text-gray-500 dark:text-gray-400" />
                 </CardHeader>
                 <CardContent>
-                  <div className="text-2xl font-bold">{posts.posts.length}</div>
+                  <div className="text-2xl font-bold">{posts.length}</div>
                   <p className="text-xs text-gray-500 dark:text-gray-400">12% from last month</p>
                 </CardContent>
               </Card>
@@ -121,7 +54,7 @@ export default async function Dashboard() {
                   <EyeIcon className="w-4 h-4 text-gray-500 dark:text-gray-400" />
                 </CardHeader>
                 <CardContent>
-                  <div className="text-2xl font-bold">{posts.posts.reduce((totalViews, post) => totalViews + post.views.length, 0)}</div>
+                  <div className="text-2xl font-bold">{posts.reduce((totalViews, post) => totalViews + post.views.length, 0)}</div>
                   <p className="text-xs text-gray-500 dark:text-gray-400">12% from last month</p>
                 </CardContent>
               </Card>
@@ -141,11 +74,11 @@ export default async function Dashboard() {
                     return (
                     <div className="flex items-start gap-4">
                       <Avatar className="w-8 h-8 border">
-                        <Image width={32} height={32} src={comment.user.image} alt="Avatar" />
-                        <AvatarFallback>{comment.user.name}</AvatarFallback>
+                        <Image width={32} height={32} src={comment.user[0].image} alt="Avatar" />
+                        <AvatarFallback>{comment.user[0].name}</AvatarFallback>
                       </Avatar>
                       <div>
-                        <div className="font-medium">{comment.user.name}</div>
+                        <div className="font-medium">{comment.user[0].name}</div>
                         <p className="text-sm text-gray-500 dark:text-gray-400">{formatDistanceToNow(new Date(comment.createdAt), { addSuffix: true })}</p>
                         <p className="text-sm text-gray-500 dark:text-gray-400">{comment.desc}</p>
                       </div>
@@ -161,7 +94,7 @@ export default async function Dashboard() {
               </CardHeader>
               <CardContent>
                 <div className="grid gap-4">
-                  {sortedPosts.slice(0, 4).map((post) => {
+                  {posts.slice(0, 4).map((post) => {
                     return (
                     <div className="flex items-start gap-4">
                       <Image src={post.img} width={64} height={64} alt={post.title.en} className="rounded-md aspect-square object-cover"/>

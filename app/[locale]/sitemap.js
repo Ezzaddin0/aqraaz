@@ -1,4 +1,6 @@
-import { getCategories, getPosts } from "../../data/dataApi";
+import { fetchCategories, fetchPosts, getCategories, getPosts } from "@/data/dataApi";
+import { client } from "@/lib/createClient";
+import { groq } from "next-sanity";
 
 export const revalidate = 30;
 
@@ -6,37 +8,53 @@ export default async function sitemap() {
     const BaseUrlEn = "https://www.aqraaz.com/en";
     const BaseUrlAr = "https://www.aqraaz.com/ar";
 
-    const posts = await getPosts({
-        select: {
-          slug: true,
-          createdAt: true,
-        }
-    });
+    // const posts = await getPosts({
+    //     select: {
+    //       slug: true,
+    //       createdAt: true,
+    //     }
+    // });
+    const query = groq`
+    *[_type == 'post']{
+        slug,
+        _createdAt,
+    } | order(_createdAt desc)`
+
+    const posts = await client.fetch(query);
+    // const posts = await fetchPosts('', ["slug", "createdAt"])
     
     // const categories = await getCategories();        
-    const categories = await getCategories({
-    select: {
-        slug: true,
-        createdAt: true,
-    },
-    });        
+    // const categories = await getCategories({
+    // select: {
+    //     slug: true,
+    //     createdAt: true,
+    // },
+    // }); 
+    // const categories = await fetchCategories('', ["slug", "createdAt"])
+    const queryCategory = groq`
+    *[_type == 'category']{
+        slug,
+        _createdAt,
+    } | order(_createdAt desc)`
 
-    const postUrlsEnSlug = posts.posts.map((post) => ({
-        url: `${BaseUrlEn}/post/${post.slug}`,
-        lastModified: post?.createdAt,
+    const categories = await client.fetch(queryCategory);
+
+    const postUrlsEnSlug = posts.map((post) => ({
+        url: `${BaseUrlEn}/post/${post.slug.current}`,
+        lastModified: post?._createdAt,
     }))
-    const postUrlsArSlug = posts.posts.map((post) => ({
-        url: `${BaseUrlAr}/post/${post.slug}`,
-        lastModified: post?.createdAt,
+    const postUrlsArSlug = posts.map((post) => ({
+        url: `${BaseUrlAr}/post/${post.slug.current}`,
+        lastModified: post?._createdAt,
     }))
 
     const CategoryUrlsEn = categories.map((post) => ({
-        url: `${BaseUrlEn}/categories/${post.slug}`,
-        lastModified: post?.createdAt,
+        url: `${BaseUrlEn}/categories/${post.slug.current}`,
+        lastModified: post?._createdAt,
     }))
     const CategoryUrlsAr = categories.map((post) => ({
-        url: `${BaseUrlAr}/categories/${post.slug}`,
-        lastModified: post?.createdAt,
+        url: `${BaseUrlAr}/categories/${post.slug.current}`,
+        lastModified: post?._createdAt,
     }))
 
 

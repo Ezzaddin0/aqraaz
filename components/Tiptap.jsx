@@ -1,6 +1,5 @@
 "use client";
-import { useState, useEffect, useCallback } from "react";
-import { BubbleMenu, EditorContent, FloatingMenu, useEditor } from "@tiptap/react";
+import { BubbleMenu, EditorContent, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Placeholder from "@tiptap/extension-placeholder";
 import Toolbar from "./Toolbar";
@@ -16,9 +15,9 @@ import TableRow from "@tiptap/extension-table-row";
 import TableHeader from "@tiptap/extension-table-header";
 import TableCell from "@tiptap/extension-table-cell";
 import Youtube from "@tiptap/extension-youtube";
-import { ToggleGroup, ToggleGroupItem } from "./ui/toggle-group";
 import { Button } from "./ui/button";
-import { BoldIcon, Heading1Icon, Heading2Icon, ItalicIcon, ListIcon, UnderlineIcon } from "lucide-react";
+import { BoldIcon, Heading1Icon, Heading2Icon, ListIcon } from "lucide-react";
+import { useEffect } from "react";
 
 const Tiptap = ({ onChange, content, dir }) => {
   const handleChange = (newContent) => {
@@ -46,6 +45,11 @@ const Tiptap = ({ onChange, content, dir }) => {
       Heading.configure({ levels: [1, 2] }),
       Youtube.configure({ controls: true, autoplay: false })
     ],
+    editorProps: {
+      attributes: {
+        class: 'w-full h-full min-h-screen',
+      }
+    },
     content: content,
     onUpdate: ({ editor }) => {
       handleChange(editor.getHTML());
@@ -54,27 +58,23 @@ const Tiptap = ({ onChange, content, dir }) => {
 
   const percentage = editor ? Math.round((100 / 1200) * editor.storage.characterCount.characters()) : 0
     
+  // Watch for changes in the content prop to update the editor content dynamically
+  useEffect(() => {
+    if (editor && content !== editor.getHTML()) {
+      editor.commands.setContent(content); // Update the editor content when props.content changes
+    }
+  }, [content, editor]);
+  
   if (!editor) {
     return null
   }
   return (
-    <div className="w-full flex flex-col pt-1 border-r">
+    <div className="w-full h-full flex flex-col pt-1 border-r pb-4">
       <div className="py-1 px-2 flex shadow items-center bg-gray-100/35">
         <Toolbar editor={editor} />
       </div>
       <div className="flex flex-col h-full">
         <BubbleMenu editor={editor} tippyOptions={{ duration: 100 }}>
-          {/* <ToggleGroup  type="multiple">
-            <ToggleGroupItem value="bold" onClick={() => editor.chain().focus().toggleBold().run()} aria-label="Toggle bold">
-              <BoldIcon className="w-5 h-5" />
-            </ToggleGroupItem>
-            <ToggleGroupItem value="italic" onClick={() => editor.chain().focus().toggleItalic().run()} aria-label="Toggle italic">
-              <ItalicIcon className="w-5 h-5" />
-            </ToggleGroupItem>
-            <ToggleGroupItem value="underline" onClick={() => editor.chain().focus().toggleUnderline().run()} aria-label="Toggle underline">
-              <UnderlineIcon className="w-5 h-5" />
-            </ToggleGroupItem>
-          </ToggleGroup> */}
           <div className="flex items-center gap-0.5">
             <Button onClick={() => editor.chain().focus().toggleBold().run()} aria-label="Toggle bold" variant="outline" size="icon">
               <BoldIcon className="w-5 h-5" />
@@ -91,20 +91,8 @@ const Tiptap = ({ onChange, content, dir }) => {
           </div>
         </BubbleMenu>
 
-        {/* <FloatingMenu editor={editor} tippyOptions={{ duration: 100 }}>
-          <Button size="icon" variant="outline" onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()}>
-            <Heading1Icon className="w-5 h-5" />
-          </Button>
-          <Button size="icon" variant="outline" onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}>
-            <Heading2Icon className="w-5 h-5" />
-          </Button>
-          <Button size="icon" variant="outline" onClick={() => editor.chain().focus().toggleBulletList().run()}>
-            <ListIcon className="w-5 h-5" />
-          </Button>
-        </FloatingMenu> */}
-        
-        <div className="flex-1 border">
-          <EditorContent dir={dir} className="h-full max-h-screen overflow-auto" editor={editor} />
+        <div className="flex-1 max-h-screen border">
+          <EditorContent dir={dir} className="h-full min-h-screen max-h-screen overflow-auto" editor={editor} />
         </div>
         <div className="character-count bg-gray-100/35 shadow">
           <div className={`items-center text-gray-400 flex text-xs gap-2 m-6 ${editor.storage.characterCount.characters() > 1200 ? 'text-red-600' : ''}`}>

@@ -1,80 +1,36 @@
-const pathName = process.env.NEXTAUTH_URL;
-
-
+const pathName = "http://localhost:3000";
 const cache = "no-store"
 
-export const getPost = async (slug) => {
-  const res = await fetch(`${pathName}/api/posts/${slug}`, {
-    cache: cache,
+export const fetchPost = async (slug) => {  
+  // جلب البيانات من الـ API
+  const res = await fetch(`http://localhost:3000/api/posts/${slug}`, {
+    cache: 'no-store', // لضمان أن البيانات لا يتم تخزينها مؤقتًا وتحديثها دائمًا
   });
 
-  if (!res.ok) {
-    throw new Error("Failed");
-  }
+  // تحويل الرد إلى JSON
+  const data = await res.json();  
+  return data;
+}
 
-  return res.json();
-};
+export const fetchPosts = async (locale = 'en', fields = [], categories = [], limit = null, page = 1) => {
+  // إعداد معلمات البحث
+  const queryParams = new URLSearchParams({
+    locale,
+    fields: fields.join(','), // تمرير الحقول كمصفوفة مفصولة بفاصلة
+    categories: categories.join(','), // تمرير الفئات كمصفوفة مفصولة بفاصلة
+    limit: String(limit), // تمرير الحد الأقصى لعدد البيانات
+    page: String(page), // تمرير الصفحة التي تريد البحث عنها
+  });
 
-export const getPosts = async ({ page, cat, searchQuery, postsPerPage } = {}) => {
-  const url = new URL(`${pathName}/api/posts`);
+  // جلب البيانات من الـ API
+  const res = await fetch(`http://localhost:3000/api/posts?${queryParams.toString()}`, {
+    cache: 'no-store', // لضمان أن البيانات لا يتم تخزينها مؤقتًا وتحديثها دائمًا
+  });
 
-  if (page !== undefined) {
-    url.searchParams.append("page", page);
-  }
-  if (cat !== undefined) {
-    url.searchParams.append("cat", cat);
-  }
-  // if (postsPerPage !== undefined) {
-  //   url.searchParams.append("postsPerPage", postsPerPage);
-  // }
-
-    const res = await fetch(
-      `${pathName}/api/posts`,
-      url.toString(),
-      {
-        cache: "no-store",
-      }
-    );
-  
-    if (!res.ok) {
-      throw new Error("Failed");
-    }
-  
-    return res.json();
-};
-
-// export const getPosts = async ({ page, cat, searchQuery, include, select } = {}) => {
-//   const url = new URL(`${pathName}/api/posts`);
-
-//   if (page !== undefined) {
-//     url.searchParams.append("page", page);
-//   }
-//   if (cat !== undefined) {
-//     url.searchParams.append("cat", cat);
-//   }
-//   if (searchQuery !== undefined) {
-//     url.searchParams.append("search", searchQuery);
-//   }
-//   if (include) {
-//     url.searchParams.append("include", JSON.stringify(include));
-//   }
-//   if (select) {
-//     url.searchParams.append("select", JSON.stringify(select));
-//   }
-
-//   const res = await fetch(
-//     url.toString(),
-//     {
-//       cache: cache,
-//     }
-//   );
-
-//   if (!res.ok) {
-//     throw new Error("Failed");
-//   }
-
-//   return res.json();
-// };
+  // تحويل الرد إلى JSON
+  const data = await res.json();
+  return data.documents;
+}
 
 export const getCategory = async (cat, options = {}) => {
   const { include, select } = options;
@@ -93,7 +49,7 @@ export const getCategory = async (cat, options = {}) => {
     {
       cache: cache,
     }
-  );
+  );  
 
   if (!res.ok) {
     throw new Error("Failed");
@@ -102,52 +58,58 @@ export const getCategory = async (cat, options = {}) => {
   return res.json();
 };
 
-// get Categories old
-// export const getCategories = async () => {
-//   const res = await fetch(
-//     `${pathName}/api/categories`,
-//     {
-//       cache: cache,
-//     }
-//   );
+export const fetchCategories = async  (locale = 'en', fields = [], categories = []) => {
+  // إعداد معلمات البحث
+  const queryParams = new URLSearchParams({
+    locale,
+    fields: fields.join(','), // تمرير الحقول كمصفوفة مفصولة بفاصلة
+    categories: categories.join(','), // تمرير الفئات كمصفوفة مفصولة بفاصلة
+  });  
 
-//   if (!res.ok) {
-//     throw new Error("Failed");
-//   }
-
-//   return res.json();
-// };
-export const getCategories = async (options = {}) => {
-  const { include, select } = options;
-
-  const query = new URLSearchParams();
-
-  if (include) {
-    query.set("include", JSON.stringify(include));
-  }
-
-  if (select) {
-    query.set("select", JSON.stringify(select));
-  }
-
-  const url = `${pathName}/api/categories?${query.toString()}`;
-  const res = await fetch(url, {
-    cache: cache,
+  // جلب البيانات من الـ API
+  const res = await fetch(`http://localhost:3000/api/categories?${queryParams.toString()}`, {
+    cache: 'no-store', // لضمان أن البيانات لا يتم تخزينها مؤقتًا وتحديثها دائمًا
   });
 
-  if (!res.ok) {
-    throw new Error("Failed");
-  }
+  // تحويل الرد إلى JSON
+  const data = await res.json();
+  return data.documents;
+}
 
-  return res.json();
-};
-
-export const getSearch = async (slug) => {
-  const res = await fetch(`${pathName}/api/posts?search=${slug}`, {
-    cache: "no-store",
+export const fetchComments = async (slug = '') => {  
+  const res = await fetch(`http://localhost:3000/api/comments?postSlug=${slug}`, {
+    cache: 'no-store',
   });
-  if (!res.ok) {
-    throw new Error("Failed");
-  }
-  return res.json();
-};
+
+  const data = await res.json();
+  return data.documents;
+}
+
+export const fetchUsers = async () => {
+  const res = await fetch(`http://localhost:3000/api/users`, {
+    cache: 'no-store',
+  });
+
+  const data = await res.json();
+  return data.documents;
+}
+
+export const fetchSearch = async (locale = 'en', fields = [], limit = null, page = 1, q = '') => {
+  // إعداد معلمات البحث
+  const queryParams = new URLSearchParams({
+    locale,
+    fields: fields.join(','), // تمرير الحقول كمصفوفة مفصولة بفاصلة
+    limit: limit ? String(limit) : '', // تمرير الحد الأقصى لعدد البيانات إذا تم تقديمه
+    page: String(page), // تمرير الصفحة التي تريد البحث عنها
+    q: q, // تمرير مصطلح البحث
+  });  
+
+  // جلب البيانات من الـ API
+  const res = await fetch(`http://localhost:3000/api/posts?${queryParams.toString()}`, {
+    cache: 'no-store', // لضمان أن البيانات لا يتم تخزينها مؤقتًا وتحديثها دائمًا
+  });
+
+  // تحويل الرد إلى JSON
+  const data = await res.json();
+  return data.documents;
+}

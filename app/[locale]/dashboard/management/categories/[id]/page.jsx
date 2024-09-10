@@ -1,26 +1,31 @@
 "use client"
-import { Button } from "../../../../../../components/ui/button";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "../../../../../../components/ui/tabs"
-import { Input } from "../../../../../../components/ui/input"
-import { Label } from "../../../../../../components/ui/label"
-import { Textarea } from "../../../../../../components/ui/textarea"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../../../../../../components/ui/select"
+import { Button } from "@/components/ui/button";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import { Textarea } from "@/components/ui/textarea"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { ChevronsUpDown, File, UploadCloudIcon, XIcon } from "lucide-react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { app } from "../../../../../firebase";
-import { Card, CardContent, CardHeader, CardTitle } from "../../../../../../components/ui/card";
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "../../../../../../components/ui/collapsible"
-import { ResponsivePie } from "@nivo/pie"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible"
+// import { ResponsivePie } from "@nivo/pie"
 import useSWR from "swr";
-import DataTable  from "../../../../../../components/data-table"
-import { CategoryColumns } from "../../../../../../helper/column-table"
-import LoadingScreen from "../../../../../../components/LoadingScreen";
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "../../../../../../components/ui/dialog";
-import { ChartContainer, ChartTooltip, ChartTooltipContent, ChartLegend, ChartLegendContent } from "../../../../../../components/ui/chart"
+import DataTable  from "@/components/data-table"
+import { CategoryColumns } from "@/helper/column-table"
+import LoadingScreen from "@/components/LoadingScreen";
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { ChartContainer, ChartTooltip, ChartTooltipContent, ChartLegend, ChartLegendContent } from "@/components/ui/chart"
 import { AreaChart, CartesianGrid, XAxis, Area } from "recharts"
+import ImagesCard from "@/components/ImagesCard";
+import { v4 as uuidv4 } from 'uuid';
+
+const languages = ["English", "Arabic"];
+
 
 const fetcher = async (url) => {
   const res = await fetch(url);
@@ -32,7 +37,7 @@ const fetcher = async (url) => {
     throw error;
   }
 
-  return data;
+  return data.documents;
 };
 
 // const fetcher = async (url) => {
@@ -93,7 +98,7 @@ export default function Page({ params }) {
   // });
 
   const { data: categoryData, isLoading } = useSWR(
-    params.id ? `/api/categories?slug=${params.id}` : null,
+    params.id != 'new' ? `/api/categories?categories=${params.id}&fields=title,desc,slug,keywords,img,posts` : null,
     fetcher
   );  
 
@@ -104,81 +109,44 @@ export default function Page({ params }) {
 
   const [file, setFile] = useState(null);
   const [media, setMedia] = useState("");
-  const [title, setTitle] = useState("");
-  const [titleAr, setTitleAr] = useState("");
+  const [mediaAlt ,setMediaAlt] = useState("")
+  const [title, setTitle] = useState({ en: "" });
+  // const [titleAr, setTitleAr] = useState("");
   const [slug, setSlug] = useState("");
-  const [desc, setDesc] = useState("");
-  const [descAr, setDescAr] = useState("");
+  const [description, setDescription] = useState({ en: "" });
+  // const [descAr, setDescAr] = useState("");
   const [inputValue, setInputValue] = useState('');
-  const [keywords, setKeywords] = useState([]);
-  const [inputValueAr, setInputValueAr] = useState('');
-  const [keywordsAr, setKeywordsAr] = useState([]);
+  const [keywords, setKeywords] = useState({ en: "" });
+  // const [inputValueAr, setInputValueAr] = useState('');
+  // // const [keywordsAr, setKeywordsAr] = useState([]);
 
   const [searchImage, setSearchImage] = useState("");
+
+  const [currentLang, setCurrentLang] = useState("en");
+
+  const handleLanguageChange = (lang) => {
+    setCurrentLang(lang);
+    if (!title[lang]) {
+      setTitle({ ...title, [lang]: "" });
+    }
+    if (!description[lang]) {
+      setDescription({ ...description, [lang]: "" });
+    }
+    if (!keywords[lang]) {
+      setKeywords({ ...keywords, [lang]: "" });
+    }
+  };
 
 
   useEffect(() => {
     if (categoryData && categoryData.length > 0) {
-      setTitle(categoryData[0].title.en || "");
-      setTitleAr(categoryData[0].title.ar || "");
+      setTitle(categoryData[0].title || { en: "" });
       setSlug(categoryData[0].slug || "");
       setMedia(categoryData[0].img || "");
-      setDesc(categoryData[0].desc.en || "");
-      setDescAr(categoryData[0].desc.ar || "");
-      setKeywords(categoryData[0].keywords.en || []);
-      setKeywordsAr(categoryData[0].keywords.ar || []);
+      setDescription(categoryData[0].desc || { en: "" });
+      setKeywords(categoryData[0].keywords || { en: "" });
     }
   }, [categoryData]);
-
-  const fetchImageAsFile = async (url) => {
-    const response = await fetch(url);
-    const blob = await response.blob();
-    const file = new File([blob], "image_from_url.jpg", { type: blob.type });
-    return file;
-  };
-
-  useEffect(() => {
-    const upload = (fileToUpload) => {
-      const name = new Date().getTime() + fileToUpload.name;
-      const storageRef = ref(storage, name);
-      const uploadTask = uploadBytesResumable(storageRef, fileToUpload);
-
-      uploadTask.on(
-        "state_changed",
-        (snapshot) => {
-          const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-          console.log("Upload is " + progress + "% done");
-          switch (snapshot.state) {
-            case "paused":
-              console.log("Upload is paused");
-              break;
-            case "running":
-              console.log("Upload is running");
-              break;
-          }
-        },
-        (error) => {
-          console.log(error);
-        },
-        () => {
-          getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-            setMedia(downloadURL);
-          });
-        }
-      );
-    };
-
-    const handleUpload = async () => {
-      if (file) {
-        upload(file);
-      } else if (searchImage) {
-        const fileFromUrl = await fetchImageAsFile(searchImage);
-        upload(fileFromUrl);
-      }
-    };
-
-    handleUpload();
-  }, [file, searchImage]);
 
   const slugify = (str) =>
     str
@@ -189,28 +157,26 @@ export default function Page({ params }) {
       .replace(/^-+|-+$/g, "");
 
   const handleCreateSlug = () => {
-    if (title) {
-      setSlug(slugify(title));
+    if (title["en"]) {
+      setSlug(slugify(title["en"]));
     }
-  }    
+  }
 
   const handleSubmit = async () => {
-    const method = categoryData && categoryData.length > 0 ? "PUT" : "POST";
+    const isUpdate = categoryData && categoryData.length > 0 ? "PUT" : "POST";    
 
     const body = {
-      title: { "en": title, "ar": titleAr },
+      ...(isUpdate === "PUT" ? { _id: categoryData[0]._id } : { _id: uuidv4()}), // Conditionally add _id if updating
+      title: title,
       slug: slug || (categoryData[0] && categoryData[0].slug),
-      desc: { "en": desc, "ar": descAr },
+      desc: description,
       img: media,
-      keywords: { "en": keywords, "ar": keywordsAr },
-    };
-  
-    if (method === "PUT" && categoryData[0]?.id) {
-      body.id = categoryData[0].id;
-    }
+      keywords: keywords,
+      createdAt: new Date().toISOString()
+    };    
 
     const res = await fetch(`/api/categories`, {
-      method,
+      method: isUpdate === "PUT" ? "PUT" : "POST", // Use PUT for updating, POST for new
       headers: {
         "Content-Type": "application/json"
       },
@@ -223,27 +189,27 @@ export default function Page({ params }) {
     }
   };
 
-  const handleKeyDown = (e) => {
-    if (e.key === 'Enter' && inputValue.trim() !== '') {
-      setKeywords([...keywords, inputValue.trim()]);
-      setInputValue('');
-    }
-  };
+  // const handleKeyDown = (e) => {
+  //   if (e.key === 'Enter' && inputValue.trim() !== '') {
+  //     setKeywords([...keywords, inputValue.trim()]);
+  //     setInputValue('');
+  //   }
+  // };
 
-  const handleRemoveBadge = (indexToRemove) => {
-    setKeywords(keywords.filter((_, index) => index !== indexToRemove));
-  };
+  // const handleRemoveBadge = (indexToRemove) => {
+  //   setKeywords(keywords.filter((_, index) => index !== indexToRemove));
+  // };
 
-  const handleKeyDownAr = (e) => {
-    if (e.key === 'Enter' && inputValueAr.trim() !== '') {
-      setKeywordsAr([...keywordsAr, inputValueAr.trim()]);
-      setInputValueAr('');
-    }
-  };
+  // const handleKeyDownAr = (e) => {
+  //   if (e.key === 'Enter' && inputValueAr.trim() !== '') {
+  //     setKeywordsAr([...keywordsAr, inputValueAr.trim()]);
+  //     setInputValueAr('');
+  //   }
+  // };
 
-  const handleRemoveBadgeAr = (indexToRemove) => {
-    setKeywordsAr(keywordsAr.filter((_, index) => index !== indexToRemove));
-  };
+  // const handleRemoveBadgeAr = (indexToRemove) => {
+  //   setKeywordsAr(keywordsAr.filter((_, index) => index !== indexToRemove));
+  // };
 
   if (isLoading) {
     return <LoadingScreen />;
@@ -266,35 +232,52 @@ export default function Page({ params }) {
   //   comments: item.comments.length,
   // })) || [];
 
-  if (status === "loading") {
-    return <LoadingScreen />;
-  }
+  // if (status === "loading") {
+  //   return <LoadingScreen />;
+  // }
 
-  if (status === "unauthenticated") {
-    router.push("/");
-    return null;
-  }
+  // if (status === "unauthenticated") {
+  //   router.push("/");
+  //   return null;
+  // }
 
   return (
     <div className="flex gap-4 min-h-screen pt-4">
       <Card className="flex-1" x-chunk="dashboard-05-chunk-3">
         <CardContent>
-          {isLoading ? <LoadingScreen /> : <DataTable data={categoryData} columns={CategoryColumns} addPost />}
+          {isLoading ? <LoadingScreen /> : <DataTable data={params.id != 'new' ? categoryData[0] : {
+            posts: []
+          }} columns={CategoryColumns} addPost />}
         </CardContent>
       </Card>
       
       {/* Right side */}
       {isLoading ? <LoadingScreen /> : <div className="w-5/12 hidden lg:block">
-      <Tabs defaultValue="english">
-        <TabsList>
-          <TabsTrigger value="english">English</TabsTrigger>
-          <TabsTrigger value="arabic">Arabic</TabsTrigger>
+      <Tabs defaultValue="content">
+        <TabsList className="grid w-full grid-cols-2">
+          <TabsTrigger value="content">Content</TabsTrigger>
+          {/* <TabsTrigger value="arabic">Arabic</TabsTrigger> */}
           <TabsTrigger value="analysis">Analysis</TabsTrigger>
         </TabsList>
-        <TabsContent className="flex flex-col gap-2" value="english">
+        <TabsContent className="flex flex-col gap-2" value="content">
+        <div className="box">
+          <Label htmlFor="language">Language</Label>
+          <Select value={currentLang} onValueChange={handleLanguageChange}>
+            <SelectTrigger>
+              <SelectValue placeholder="Select Language" />
+            </SelectTrigger>
+            <SelectContent>
+              {languages.map((lang) => (
+                <SelectItem key={lang} value={lang.toLowerCase().slice(0, 2)}>
+                  {lang}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+          </div>
           <div className="box">
             <div className="flex items-center">
-              <Input type="text" value={title || categoryData[0]?.title.en} onChange={(e) => setTitle(e.target.value)} placeholder="Title" />
+              <Input type="text" value={title[currentLang]} onChange={(e) => setTitle({ ...title, [currentLang]: e.target.value })} placeholder="Title" />
             </div>
             <Collapsible
               open={suggestionsTitle}
@@ -326,11 +309,11 @@ export default function Page({ params }) {
             </Collapsible>
           </div>
           <div className="box flex flex-col gap-2">
-            <Input type="text" value={slug || categoryData[0]?.slug} onChange={(e) => setSlug(e.target.value)} placeholder="Slug" />
+            <Input type="text" value={slug} onChange={(e) => setSlug({ ...slug, [currentLang]: e.target.value })} placeholder="Slug" />
             <Button onClick={handleCreateSlug} variant="outline">Create</Button>
           </div>
           <div className="box flex flex-col gap-2">
-            <Textarea onChange={(e) => setDesc(e.target.value)} value={desc || categoryData[0]?.desc.en} placeholder="Description" />
+            <Textarea value={description[currentLang]} onChange={(e) => setDescription({ ...description, [currentLang]: e.target.value })} placeholder="Description" />
             <Collapsible
               open={suggestionsDesc}
               onOpenChange={setSuggestionsDesc}
@@ -362,8 +345,8 @@ export default function Page({ params }) {
           </div>
 
 
-          <div className="border p-2 rounded w-full max-w-lg">
-            <div className="flex flex-wrap gap-2">
+          <div className=" rounded w-full max-w-lg">
+            {/* <div className="flex flex-wrap gap-2">
               {keywords.map((badge, index) => (
                 <div
                   key={index}
@@ -386,14 +369,15 @@ export default function Page({ params }) {
                 placeholder="Type something and press Enter"
                 className="flex-grow p-2 focus:outline-none"
               />
-            </div>
+            </div> */}
+            <Input id="keywords" value={keywords[currentLang]} onChange={(e) => setKeywords({ ...keywords, [currentLang]: e.target.value })} placeholder="Enter keywords, separated by commas" />
           </div>
 
           <div>
             <Label htmlFor="image">Main Image</Label>
             {/* <Input type="file" id="image" onChange={(e) => setFile(e.target.files[0])} /> */}
           </div>
-          <Dialog>
+          {/* <Dialog>
             <DialogTrigger asChild>
               <Button variant="outline">Open Image Dialog</Button>
             </DialogTrigger>
@@ -406,7 +390,6 @@ export default function Page({ params }) {
                 <TabsList className="grid grid-cols-3 gap-2">
                   <TabsTrigger value="upload">Upload</TabsTrigger>
                   <TabsTrigger value="link">Link</TabsTrigger>
-                  {/* <TabsTrigger value="gallery">Gallery</TabsTrigger> */}
                 </TabsList>
                 <TabsContent value="upload" className="py-2">
                 <div class="flex items-center justify-center w-full">
@@ -443,12 +426,13 @@ export default function Page({ params }) {
                 <Button>Save</Button>
               </DialogFooter>
             </DialogContent>
-          </Dialog>
+          </Dialog> */}
+          <ImagesCard altImage={mediaAlt} setAltImage={setMediaAlt} setImage={setMedia} />
 
           <Button variant="outline" onClick={handleSubmit}>Publish</Button>
         </TabsContent>
 
-        <TabsContent className="flex flex-col gap-2" value="arabic">
+        {/* <TabsContent className="flex flex-col gap-2" value="arabic">
           <div className="box">
             <div className="flex items-center">
               <Input type="text" value={titleAr || categoryData[0]?.title.ar} onChange={(e) => setTitleAr(e.target.value)} placeholder="Title" />
@@ -469,9 +453,6 @@ export default function Page({ params }) {
                   </Button>
                 </CollapsibleTrigger>
               </div>
-              {/* <div className="rounded-md border px-4 py-3 font-mono text-sm">
-                @radix-ui/primitives
-              </div> */}
               <CollapsibleContent className="space-y-2">
                 <div className="rounded-md border px-4 py-3 font-mono text-sm">
                   @radix-ui/colors
@@ -500,9 +481,6 @@ export default function Page({ params }) {
                   </Button>
                 </CollapsibleTrigger>
               </div>
-              {/* <div className="rounded-md border px-4 py-3 font-mono text-sm">
-                @radix-ui/primitives
-              </div> */}
               <CollapsibleContent className="space-y-2">
                 <div className="rounded-md border px-4 py-3 font-mono text-sm">
                   @radix-ui/colors
@@ -544,7 +522,7 @@ export default function Page({ params }) {
               />
             </div>
           </div>
-        </TabsContent>
+        </TabsContent> */}
         <TabsContent value="analysis">
           {/* <Card>
             <CardHeader className="flex items-center gap-2 space-y-0 border-b py-5 sm:flex-row">

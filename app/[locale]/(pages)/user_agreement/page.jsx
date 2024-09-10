@@ -1,5 +1,5 @@
 // import React from 'react'
-import { getDictionary } from '../../../../lib/dictionary'
+import { getDictionary } from '@/lib/dictionary'
 // import Script from 'next/script'
 
 

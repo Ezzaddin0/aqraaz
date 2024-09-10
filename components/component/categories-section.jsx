@@ -3,7 +3,7 @@ import { Label } from "../ui/label"
 import { Input } from "../ui/input"
 import { Button } from "../ui/button"
 import Link from "next/link";
-import { getCategories } from "../../data/dataApi";
+import { fetchCategories } from "../../data/dataApi";
 import { FacebookIcon, InstagramIcon, TwitterIcon, YoutubeIcon } from "lucide-react";
 
 const soicelMedia = [
@@ -35,13 +35,15 @@ const soicelMedia = [
 
 export default async function CategoriesSection({ lang }) {
   // const Categories = await getCategories();  
-  const Categories = await getCategories({
-    select: {
-      // id: true,
-      slug: true,
-      title: true,
-    },
-  });  
+  // const Categories = await getCategories({
+  //   select: {
+  //     // id: true,
+  //     slug: true,
+  //     title: true,
+  //   },
+  // });  
+  const fields = ['title', 'slug']; // يمكنك تغيير هذه الحقول حسب احتياجاتك
+  const Categories = await fetchCategories(lang, fields);  
   
   return (
     <section className="grid grid-cols-1 md:grid-cols-2 gap-6 p-4 md:p-6">
@@ -53,7 +55,7 @@ export default async function CategoriesSection({ lang }) {
             <Link href={`${lang}/categories/${category.slug}?cat=${category.slug}`} className="text-3xl font-semibold">
               <Card key={index} className="h-full">
                 <CardContent className="flex items-center justify-center p-6 h-full">
-                  {lang == 'en' ? category.title.en : category.title.ar}
+                  {category.title[lang]}
                 </CardContent>
               </Card>
             </Link>

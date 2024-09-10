@@ -15,14 +15,14 @@ export default async function FeaturedArticle({ lang, posts }) {
         </div>
         <div className="max-w-3xl">
           <Link href={`${lang}/post/${posts.slug}`} className="text-2xl font-bold tracking-tight text-white md:text-3xl lg:text-4xl">
-            {lang == 'en' ? posts.title.en : posts.title.ar}
+            {posts.title[lang]}
           </Link>
           <p className="mt-4 line-clamp-4 md:line-clamp-none text-lg leading-relaxed text-gray-300">
-            {lang == 'en' ? posts.desc.en : posts.desc.ar}
+            {posts.desc[lang]}
           </p>
         </div>
       </div>
-      <Image src={posts.img} width={1280} loading="lazy" height={720} alt={posts.title.en} className={`absolute inset-0 -z-10 h-full w-full aspect-video`} />
+      <Image src={posts.img} width={1280} loading="lazy" height={720} alt={posts.title[lang]} className={`absolute inset-0 -z-10 h-full w-full object-cover aspect-video`} />
     </section>)
   );
 }

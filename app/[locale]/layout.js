@@ -1,11 +1,10 @@
 import { Cairo, Inter } from "next/font/google";
 import "./globals.css";
-import { Footer, Header } from "../../components/LayoutComponents";
-// import Header from "../../components/component/header"
-import iconWeb from '../../assets/images/white-icon.svg'
+import { Footer, Header } from "@/components/LayoutComponents";
+import iconWeb from '@/assets/images/white-icon.svg'
 import { Analytics } from '@vercel/analytics/react'
 import { SpeedInsights } from '@vercel/speed-insights/next';
-import AuthProvider from '../../lib/AuthProvider';
+import AuthProvider from '@/lib/AuthProvider';
 import Script from "next/script";
 
 export const revalidate = 30;
@@ -33,7 +32,7 @@ export default function RootLayout({ children, params }) {
               <Footer lang={params.locale} />
             </div>
           </AuthProvider>
-        <Analytics />
+        {/* <Analytics />
         <SpeedInsights />
         <Script
           async
@@ -47,7 +46,7 @@ export default function RootLayout({ children, params }) {
             gtag('js', new Date());
             gtag('config', '${process.env.NEXT_PUBLIC_GOOGLE_ID}');
           `}
-        </Script>
+        </Script> */}
       </body>
     </html>
   );

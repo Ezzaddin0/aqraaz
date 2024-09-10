@@ -1,9 +1,9 @@
 // 'use client'
-import DataTable from "../../../../../components/data-table"
-import { CategoriesColumns } from "../../../../../helper/column-table"
+import DataTable from "@/components/data-table"
+import { CategoriesColumns } from "@/helper/column-table"
 // import useSWR from "swr"
 // import LoadingScreen from "../../../../../components/LoadingScreen"
-import { getCategories } from "../../../../../data/dataApi"
+import { fetchCategories } from "@/data/dataApi"
 // import { useEffect } from "react"
 
 // const fetcher = async (url) => {
@@ -49,8 +49,9 @@ export default async function Page({ params: { locale } }) {
   //   `/api/categories?${encodeURIComponent(includeParam)}`,
   //   fetcher
   // );
-
-  const data = await getCategories(); // استدعاء الدالة للحصول على البيانات
+  
+  const data = await fetchCategories('', ['_id', 'title', 'desc', 'img', 'keywords', 'slug', 'posts', 'createdAt','comments', 'views']);
+  // const data = await getCategories(); // استدعاء الدالة للحصول على البيانات
   // const data = await getCategories({
   //   include: {
   //     posts: {

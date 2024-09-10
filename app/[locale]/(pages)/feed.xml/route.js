@@ -1,29 +1,31 @@
 import RSS from 'rss';
 
-// import { client } from "../../../../lib/createClient";
-// import { groq } from "next-sanity";
-import { getPosts } from '../../../../data/dataApi';
+import { client } from "../../../../lib/createClient";
+import { groq } from "next-sanity";
+import { fetchPosts } from '@/data/dataApi';
 
 export async function GET() {
 
-    // const query = groq`
-    // *[_type == 'post']{
-    // ...,
-    // author->,
-    //     categories[]->,
-    // } | order(_createdAt desc)`
+    const query = groq`
+    *[_type == 'post']{
+        title,
+        slug,
+        description,
+        _createdAt,
+    } | order(_createdAt desc)`
 
-    // const posts = await client.fetch(query);
+    const posts = await client.fetch(query);
 
     // const posts = await getPosts({page: 1});
-    const posts = await getPosts({
-        select: {
-          title: true,
-          slug: true,
-          desc: true,
-          createdAt: true,
-        }
-    });
+    // const posts = await getPosts({
+    //     select: {
+    //       title: true,
+    //       slug: true,
+    //       desc: true,
+    //       createdAt: true,
+    //     }
+    // });
+    // const posts = await fetchPosts('', ['title', 'slug', 'desc', 'createdAt']);
 
     const feed = new RSS({
         title: "aqraaz",
@@ -37,24 +39,24 @@ export async function GET() {
         copyright: `All right reserved ${new Date().getFullYear()}`
     })
 
-    posts.posts.forEach(post => {
+    posts.forEach(post => {
         feed.item({
             title: post.title.en,
-            description: post.desc.en,
-            guid: `https://www.aqraaz.com/en/post/${post.slug}`,
-            url: `https://www.aqraaz.com/en/post/${post.slug}`,
-            date: new Date(post.createdAt),
+            description: post.description.en,
+            guid: `https://www.aqraaz.com/en/post/${post.slug.current}`,
+            url: `https://www.aqraaz.com/en/post/${post.slug.current}`,
+            date: new Date(post._createdAt),
             
         })
         
     });
-    posts.posts.forEach(post => {
+    posts.forEach(post => {
         feed.item({
             title: post.title.ar,
-            description: post.desc.ar,
+            description: post.description.ar,
             guid: `https://www.aqraaz.com/ar/post/${post.slug}`,
             url: `https://www.aqraaz.com/ar/post/${post.slug}`,
-            date: new Date(post.createdAt)
+            date: new Date(post._createdAt)
         })
         
     });

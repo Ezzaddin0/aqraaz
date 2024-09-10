@@ -1,12 +1,16 @@
 // import Script from "next/script";
-import HeroSection from "../../components/component/hero-section"
-import PopularArticles from "../../components/component/popular-articles"
-import SectionCards from "../../components/component/section-cards"
-import FeaturedArticle from "../../components/component/featured-article"
-import PrimarySectionCard from "../../components/component/primary-section-card"
-import CategoriesSection from "../../components/component/categories-section"
-import AdsCard from '../../components/AdsCard'
-import { getPosts, getCategory } from "../../data/dataApi"
+import HeroSection from "@/components/component/hero-section"
+import PopularArticles from "@/components/component/popular-articles"
+import SectionCards from "@/components/component/section-cards"
+import FeaturedArticle from "@/components/component/featured-article"
+import PrimarySectionCard from "@/components/component/primary-section-card"
+import CategoriesSection from "@/components/component/categories-section"
+import { fetchCategories, fetchPosts } from "@/data/dataApi"
+// import AdsCard from '../../components/AdsCard'
+// import { getPosts, getCategory } from "../../data/dataApi"
+// import { Suspense } from "react"
+import { client } from '@/lib/createClient'
+import { groq } from "next-sanity"
 
 export async function generateMetadata({ params: { locale } }) {
   
@@ -34,91 +38,66 @@ export async function generateMetadata({ params: { locale } }) {
 }
 
 export default async function  Home({ params: { locale } }) {
-  // const allPosts = await getPosts({page: 1});
-
-  // this is new code but have same problem id deployed on vercel
-  const allPosts = await getPosts({
-    page: 1,
-    select: {
-      views: true,
-      slug: true,
-      title: true,
-      desc: true,
-      img: true,
-      createdAt: true,
-      catSlug: true,
-    }
-  });
-  const allNews = await getCategory('news', {
-    include: {
-      posts: {
-      select: {
-        createdAt: true,
-        title: true,
-        desc: true,
-        img: true,
-        slug: true,
-      }
-      },
-    },
-  });
-  const allSports = await getCategory('sports', {
-    include: {
-      posts: {
-      select: {
-        createdAt: true,
-        title: true,
-        desc: true,
-        img: true,
-        slug: true,
-      }
-      },
-    },
-  });
-  const allTech = await getCategory('technology', {
-    include: {
-      posts: {
-      select: {
-        createdAt: true,
-        title: true,
-        desc: true,
-        img: true,
-        slug: true,
-      }
-      },
-    },
-  });      
-
-  const postWithHighestViews = allPosts.posts.reduce((max, post) => (post.views.length > max.views.length ? post : max), allPosts.posts[0]);
+  // const fields = ['title', 'desc', 'img', 'createdAt', 'catSlug', 'slug']; // يمكنك تغيير هذه الحقول حسب احتياجاتك
+  // const posts = await fetchPosts(locale, [...fields, 'totalPostViews']);
+  // const postsCategory = await fetchCategories(locale, [...fields, "posts"], ["sports", "news", "technology"]);  
   
+  const queryPosts = groq`*[_type == 'post']{
+    title,
+    mainImage,
+    _createdAt,
+    slug,
+    description,
+    categories[]->{
+      title,
+    },
+  } | order(_createdAt desc)[0...6]`
+  
+  const queryCategories = groq`*[_type == "category" && slug.current in ["sports", "news", "technology"]]{
+      posts[]->{
+        title,
+        slug,
+        mainImage,
+        _createdAt,
+        description,
+      } | order(_createdAt desc)[0...6]  // Order the posts from newest to oldest
+    } | order(title asc)`;
+
+  const postsSanity = await client.fetch(queryPosts);  
+  const categoriesSanity = await client.fetch(queryCategories);  
+    
+
+  // const postWithHighestViews = posts.reduce((max, post) => (post.totalPostViews > max.totalPostViews ? post : max), posts[0]);
   
   return (
     <>
-      <AdsCard />
+      {/* <AdsCard /> */}
+      {/* <HeroSection Posts={posts} lang={locale} /> */}
+      <HeroSection Posts={postsSanity} lang={locale} />
+      {/* <p>tset</p> */}
+
+      {/* <AdsCard /> */}
+
+      <PopularArticles Posts={postsSanity} lang={locale} />
       
-      <HeroSection Posts={allPosts} lang={locale} />
+      {/* <AdsCard /> */}
+
+      {/* <SectionCards title={locale == "en" ? "Technology" : "تكنولوجيا"} time Posts={postsCategory[2]} lang={locale} /> */}
+      <SectionCards title={locale == "en" ? "Technology" : "تكنولوجيا"} time Posts={categoriesSanity[2]} lang={locale} />
 
       {/* <AdsCard /> */}
 
-      <PopularArticles Posts={allPosts} lang={locale} />
-      
-      {/* <AdsCard /> */}
-
-      <SectionCards title={locale == "en" ? "Technology" : "تكنولوجيا"} time Posts={allTech[0]} lang={locale} />
+      {/* <FeaturedArticle posts={postWithHighestViews} lang={locale} /> */}
 
       {/* <AdsCard /> */}
 
-      <FeaturedArticle posts={postWithHighestViews} lang={locale} />
+      <SectionCards title={locale == "en" ? "News" : "الاخبار"} time Posts={categoriesSanity[0]} lang={locale} />
+
+      <PrimarySectionCard Posts={categoriesSanity[0]} lang={locale} />
 
       {/* <AdsCard /> */}
 
-      <SectionCards title={locale == "en" ? "News" : "الاخبار"} time Posts={allNews[0]} lang={locale} />
-
-      <PrimarySectionCard Posts={allSports} lang={locale} />
-
-      {/* <AdsCard /> */}
-
-      <CategoriesSection lang={locale} />
+      {/* <CategoriesSection lang={locale} /> */}
 
       {/* <AdsCard /> */}
     </>

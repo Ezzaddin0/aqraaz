@@ -2,14 +2,14 @@
 import React from 'react'
 // import { getDictionary } from '../../../../lib/dictionary'
 // import Script from 'next/script'
-import { Card } from '../../../../components/ui/card'
-import { CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '../../../../components/ui/card'
-import { Label } from '../../../../components/ui/label'
-import { Input } from '../../../../components/ui/input'
-import { Button } from '../../../../components/ui/button'
-import { Textarea } from '../../../../components/ui/textarea'
+import { Card } from '@/components/ui/card'
+import { CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
+import { Label } from '@/components/ui/label'
+import { Input } from '@/components/ui/input'
+import { Button } from '@/components/ui/button'
+import { Textarea } from '@/components/ui/textarea'
 import { toast } from "sonner"
-import { Toaster } from "../../../../components/ui/sonner"
+import { Toaster } from "@/components/ui/sonner"
 import { MailIcon, MapPinIcon, PhoneIcon } from 'lucide-react'
 import emailjs from '@emailjs/browser';
 
@@ -48,12 +48,12 @@ export default function page({ params: { locale }}) {
 
     emailjs.sendForm('service_r0ovvbl', 'template_ax3tz39', e.target, 'AuENYI8FwRFeHmA2b')
     .then((result) => {
-          console.log(result.text);
+          // console.log(result.text);
           toast("sent succesfully", {
             description: "sent succesfully. Think of us!",
           });
           }, (error) => {
-          console.log(error.text);
+          // console.log(error.text);
           alert('Failed to send the message, please try again.');
       });
     e.target.reset();

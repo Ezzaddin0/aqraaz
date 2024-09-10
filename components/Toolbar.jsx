@@ -1,13 +1,13 @@
 "use client";
 import classNames from "classnames";
 import { Button } from "./ui/button";
+import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "./ui/dialog";
+import { Label } from "./ui/label";
+import { Input } from "./ui/input";
 import { AlignCenterIcon, AlignLeftIcon, AlignRightIcon, BetweenHorizontalEndIcon, BoldIcon, Code2Icon, CopyIcon, Heading1Icon, Heading2Icon, Heading3Icon, Heading4Icon, Heading5Icon, Heading6Icon, HeadingIcon, ItalicIcon, LinkIcon, ListIcon, ListOrderedIcon, LucideAlignStartVertical, PlusIcon, QuoteIcon, RedoIcon, SeparatorHorizontalIcon, StrikethroughIcon, TableIcon, TypeIcon, UnderlineIcon, UndoIcon, YoutubeIcon } from "lucide-react";
 import { Menubar, MenubarContent, MenubarItem, MenubarMenu, MenubarTrigger} from "./ui/menubar"
-import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "./ui/dialog";
 import { useCallback, useEffect, useState } from "react";
-import { Input } from "./ui/input";
 import ImagesCard from "./ImagesCard";
-import { Label } from "./ui/label";
 
 const Toolbar = ({ editor, addImage }) => {
   if (!editor) {

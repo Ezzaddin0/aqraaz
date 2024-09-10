@@ -19,7 +19,7 @@ const fetcher = async (url) => {
       throw error;
     }
   
-    return data;
+    return data.documents;
 };
 
 
@@ -29,7 +29,7 @@ export default function Comments({ postSlug, avatar }) {
   const { data: dataComments, mutate, isLoading } = useSWR(
     `/api/comments?postSlug=${postSlug}`,
     fetcher
-  );
+  );  
 
   const [desc, setDesc] = useState("");
 
@@ -61,8 +61,8 @@ export default function Comments({ postSlug, avatar }) {
         {isLoading ? "loading" :
             dataComments?.map((comment) => (
           <div key={comment.id} className="flex items-start space-x-4">
-            {comment?.user?.image && (
-            <Image alt="Comment Author Avatar" className="h-12 w-12 aspect-[48/48] object-cover rounded-full" height={48} src={comment.user.image} width={48} />
+            {comment.user[0].image && (
+            <Image alt="Comment Author Avatar" className="h-12 w-12 aspect-[48/48] object-cover rounded-full" height={48} src={comment.user[0].image} width={48} />
             )}
             <div>
               <p className="text-sm font-medium text-gray-900 dark:text-gray-50">{comment.user.name}</p>

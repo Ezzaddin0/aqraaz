@@ -58,8 +58,7 @@ export default function AreaChartsCard({ data }) {
     }
     now.setDate(now.getDate() - daysToSubtract);
 
-    return data?.posts
-      ?.filter((item) => new Date(item.createdAt) >= now)
+    return data?.filter((item) => new Date(item.createdAt) >= now)
       .map((item) => {
         const views = item.views.map((view) => ({
           createdAt: new Date(view.createdAt).toLocaleDateString(),

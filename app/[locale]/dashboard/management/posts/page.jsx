@@ -1,64 +1,14 @@
 // 'use client'
-import { PostColumns } from "../../../../../helper/column-table"
+import { PostColumns } from "@/helper/column-table"
 // import useSWR from "swr"
-import DataTable from "../../../../../components/data-table"
-import { getPosts } from "../../../../../data/dataApi";
+import DataTable from "@/components/data-table"
+import { fetchPosts, getPosts } from "@/data/dataApi";
 // import LoadingScreen from "../../../../../components/LoadingScreen"
 
-// const fetcher = async (url) => {
-//   const res = await fetch(url, {
-//     include: {
-//       user: true,
-//       cat: true,
-//       comments: {
-//         include: {
-//           user: true,
-//         }
-//       },
-//       views: true,
-//     }
-//   });
-
-//   const data = await res.json();
-
-//   if (!res.ok) {
-//     const error = new Error(data.message);
-//     throw error;
-//   }
-
-//   return data;
-// };
-
 export default async function Page() {
-  // const includeParam = JSON.stringify({
-  //   include: {
-  //     user: true,
-  //     cat: true,
-  //     comments: {
-  //       include: {
-  //         user: true,
-  //       }
-  //     },
-  //     views: true,
-  //   }
-  // });
-  // const { data, isLoading } = useSWR(
-  //   `/api/posts?${encodeURIComponent(includeParam)}`,
-  //   fetcher
-  // );
-  const data = await getPosts();
-  // const data = await getPosts({
-  //   include: {
-  //     user: true,
-  //     cat: true,
-  //     comments: {
-  //       include: {
-  //         user: true,
-  //       }
-  //     },
-  //     views: true,
-  //   }
-  // })
+  const fields = ['_id', 'title', 'desc', 'img', 'slug', 'keywords', 'createdAt', 'totalPostViews', 'posts', 'comments', 'catSlug', 'slug']; // يمكنك تغيير هذه الحقول حسب احتياجاتك
 
-  return (<DataTable data={data.posts} columns={PostColumns} />);
+  const data = await fetchPosts('', fields);
+
+  return (<DataTable data={data} columns={PostColumns} />);
 }

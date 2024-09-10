@@ -7,11 +7,15 @@
 // import { getDictionary } from '../../../../lib/dictionary';
 // import Script from 'next/script';
 // import PopularArticles from '../../../../components/component/popular-articles';
-import CardCustom from '../../../../components/component/Card';
 // import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../../../../components/ui/select';
-import SelectComponent from '../../../../components/SelectComponent';
-import InfiniteCards from "../../../../components/InfiniteCards"
-import { getPostsLib } from '../../../../lib/posts';
+// import SelectComponent from '../../../../components/SelectComponent';
+// import InfiniteCards from "../../../../components/InfiniteCards"
+// import { getPostsLib } from '../../../../lib/posts';
+import CardCustom from '@/components/component/Card';
+import { Pagination, PaginationContent, PaginationEllipsis, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from '@/components/ui/pagination';
+import { fetchPosts } from '@/data/dataApi'
+import { client } from '@/lib/createClient';
+import { groq } from 'next-sanity';
 export const revalidate = 30;
 
 export async function generateMetadata({params: {locale}}) {  
@@ -41,24 +45,73 @@ export async function generateMetadata({params: {locale}}) {
 }
 
 export default async function page({ searchParams, params: {locale}}) {
-  // const allPosts = await fetchAllPosts();
+  // const page = searchParams.page ? parseInt(searchParams.page, 10) : 1; // Current page from query, default to 1
+  // const fields = ['title', 'desc', 'img', 'createdAt', 'catSlug', 'slug', 'views'];
+  // const posts = await fetchPosts(locale, fields, [], 6, page); // Fetch posts for the current page
 
-    // const { page } = await getDictionary(locale);
+  const page = searchParams.page ? parseInt(searchParams.page, 10) : 1;
 
-    // const data = await getPosts();
+  // Define posts per page and calculate total pages
+  const POST_PER_PAGE = 21;
 
-    const sort = searchParams.sort || "";
-    const posts = await getPostsLib(sort);  
+  // Fetch total post count
+  const totalPostQuery = groq`count(*[_type == "post"])`;
+  const totalPost = await client.fetch(totalPostQuery);
+  const totalPage = Math.ceil(totalPost / POST_PER_PAGE);
+
+  // Calculate the offset based on the current page
+  const offset = (page - 1) * POST_PER_PAGE;
+
+  // Fetch posts for the current page with limit and offset
+  const query = groq`*[_type == "post"]{
+    title,
+    slug,
+    description,
+    _createdAt,
+    mainImage,
+  } | order(_createdAt desc)[${offset}...${offset + POST_PER_PAGE}]`;
+
+  const posts = await client.fetch(query);
+
+  const sort = searchParams.sort || "";
     
   return (
     <div className='px-4 py-6 sm:px-4 sm:py-12 lg:px-6 '>
-    <SelectComponent defaultSort={sort} />
-    {/* <div className='mt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4'> */}
-      {/* {posts.map((post, index) => (
-        <CardCustom key={index} article={post} lang={locale} views time />
-      ))} */}
-      {/* <PopularArticles Posts={allPosts} num={9} lang={locale} /> */}
-      <InfiniteCards postsAll={posts} number={6} lang={locale} />
+    {/* <SelectComponent defaultSort={sort} /> */}
+      <div className='flex flex-col gap-8'>
+        <div className='mt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4'>
+        {posts.map(post => (
+            <CardCustom key={post.title.en} article={post} lang={locale} views time />
+        ))}
+        </div>
+      </div>
+
+      <Pagination>
+        <PaginationContent>
+          {page > 1 && (
+            <PaginationItem>
+            <PaginationPrevious href={`?page=${page - 1}`} />
+          </PaginationItem>
+          )}
+           {Array.from({ length: totalPage }, (_, i) => i + 1).map((p) => (
+            <PaginationItem key={p}>
+              <PaginationLink href={`?page=${p}`} isActive={p === page}>
+                {p}
+              </PaginationLink>
+            </PaginationItem>
+          ))}
+          <PaginationItem>
+            <PaginationEllipsis />
+          </PaginationItem>
+          {page < totalPage && (
+            <PaginationItem>
+              <PaginationNext href={`?page=${page + 1}`} />
+            </PaginationItem>
+          )}
+        </PaginationContent>
+      </Pagination>
+
+      {/* <InfiniteCards postsAll={posts} number={6} lang={locale} /> */}
     {/* </div> */}
     {/* Google tag (gtag.js) */}
     {/* <Script async strategy="afterInteractive" src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GOOGLE_ID}`}></Script>

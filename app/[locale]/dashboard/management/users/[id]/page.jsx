@@ -1,20 +1,20 @@
 "use client"
-import { Button } from "../../../../../../components/ui/button";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "../../../../../../components/ui/tabs"
-import { Input } from "../../../../../../components/ui/input"
-import { Label } from "../../../../../../components/ui/label"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue, } from "../../../../../../components/ui/select"
-import { Popover, PopoverContent, PopoverTrigger } from "../../../../../../components/ui/popover";
+import { Button } from "@/components/ui/button";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue, } from "@/components/ui/select"
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { CalendarIcon } from "lucide-react";
-import { cn } from "../../../../../../lib/utils";
+import { cn } from "@/lib/utils";
 import { useEffect, useState } from "react";
 import useSWR from "swr";
-import { Avatar, AvatarFallback, AvatarImage } from "../../../../../../components/ui/avatar";
-import { Calendar } from "../../../../../../components/ui/calendar"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Calendar } from "@/components/ui/calendar"
 import { format } from "date-fns";
-import LoadingScreen from "../../../../../../components/LoadingScreen";
-import DataTable from "../../../../../../components/data-table";
-import { CommentsColumns, PostColumns } from "../../../../../../helper/column-table";
+import LoadingScreen from "@/components/LoadingScreen";
+import DataTable from "@/components/data-table";
+import { CommentsColumns, PostColumns } from "@/helper/column-table";
 import { useRouter } from "next/navigation";
 
 const fetcher = async (url) => {

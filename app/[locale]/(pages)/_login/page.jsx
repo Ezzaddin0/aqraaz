@@ -3,7 +3,7 @@ import { BookOpenIcon } from 'lucide-react';
 import { signIn, useSession } from 'next-auth/react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import LoadingScreen from '../../../../components/LoadingScreen';
+import LoadingScreen from '@/components/LoadingScreen';
 
 export default function Page() {
   const { status } = useSession();

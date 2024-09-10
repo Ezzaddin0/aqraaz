@@ -65,7 +65,7 @@ ListItem.displayName = "ListItem";
 
 export function NavbarList({lang, dataCategories}) {
     const pathName = usePathname();
-    const hideP = pathName.split('/')[2];
+    const hideP = pathName.split('/')[2];    
   
   return (
     <div className="hidden lg:flex items-center gap-6">
@@ -104,8 +104,8 @@ export function NavbarList({lang, dataCategories}) {
                 <NavigationMenuContent>
                 <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] ">
                     {ganeral.map((page) => (
-                    <ListItem key={page.title.en} title={lang == "en" ? page.title.en : page.title.ar} href={`/${lang}/${page.href}`}>
-                        {lang == "en" ? page.description.en : page.description.ar}
+                    <ListItem key={page.title[lang]} title={page.title[lang]} href={`/${lang}/${page.href}`}>
+                        {page.description[lang]}
                     </ListItem>
                     ))}
                 </ul>
@@ -115,9 +115,9 @@ export function NavbarList({lang, dataCategories}) {
                 <NavigationMenuTrigger>{lang == "en" ? "Categories" : "الفئات"}</NavigationMenuTrigger>
                 <NavigationMenuContent>
                 <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] ">
-                    {dataCategories.slice(0, 6).map((category) => (
-                    <ListItem key={lang == 'en' ? category.title.en : category.title.ar} title={lang == 'en' ? category.title.en : category.title.ar} href={`/${lang}/categories/${category.slug}`}>
-                        {lang == "en" ? category.desc.en : category.desc.ar}
+                    {dataCategories.map((category) => (
+                    <ListItem key={category.title[lang]} title={category.title[lang]} href={`/${lang}/categories/${category.slug.current}`}>
+                        {category.description[lang]}
                     </ListItem>
                     ))}
                 </ul>
@@ -220,8 +220,8 @@ export function Sidebar({lang, dataCategories}) {
             <AccordionTrigger>{lang == "en" ? "Pages" : "صفحات"}</AccordionTrigger>
             <AccordionContent>
             {ganeral.map((page) => (
-                <Link key={page.title.en} className=" block rounded-sm bg-gray-50 hover:bg-gray-100 ps-2 py-3 no-underline outline-none focus:shadow-md text-lg font-medium" href={`/${lang}/${page.href}`}>
-                {lang == "en" ? page.title.en : page.title.ar}
+                <Link key={page.title[lang]} className=" block rounded-sm bg-gray-50 hover:bg-gray-100 ps-2 py-3 no-underline outline-none focus:shadow-md text-lg font-medium" href={`/${lang}/${page.href}`}>
+                {page.title[lang]}
             </Link>
             ))}
             </AccordionContent>
@@ -229,9 +229,9 @@ export function Sidebar({lang, dataCategories}) {
         <AccordionItem value="item-3">
             <AccordionTrigger>{lang == "en" ? "Categories" : "الفئات"}</AccordionTrigger>
             <AccordionContent>
-            {dataCategories.slice(0, 6).map((category) => (
-            <Link key={category.title.en} className=" block rounded-sm bg-gray-50 hover:bg-gray-100 ps-2 py-3 no-underline outline-none focus:shadow-md text-lg font-medium" href={`/${lang}/categories/${category.slug}`}>
-                {lang == 'en' ? category.title.en : category.title.ar}
+            {dataCategories.map((category) => (
+            <Link key={category.title[lang]} className=" block rounded-sm bg-gray-50 hover:bg-gray-100 ps-2 py-3 no-underline outline-none focus:shadow-md text-lg font-medium" href={`/${lang}/categories/${category.slug.current}`}>
+                {category.title[lang]}
             </Link>
             ))}
             </AccordionContent>

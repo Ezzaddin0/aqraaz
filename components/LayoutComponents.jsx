@@ -14,7 +14,9 @@ import LanguageDropdown from "./LanguageDropdown"
 import {NavbarList, Sidebar} from "./NavbarList"
 import SearchInput from "./SearchInput"
 import UserDropdown from "./UserDropdown"
-import { getCategories } from '../data/dataApi';
+import { fetchCategories, getCategories } from '../data/dataApi';
+import { client } from '@/lib/createClient';
+import { groq } from 'next-sanity';
 
 const ganeral = [
   {
@@ -55,17 +57,25 @@ const fetcher = async (url) => {
 };
 
 export async function Footer({lang, dataCategories}) {
+  // const fields = ['title', 'slug']; // يمكنك تغيير هذه الحقول حسب احتياجاتك
+  // const Categories = await fetchCategories(lang, fields);  
+  const query = groq`*[_type == "category"]{
+    title,
+    slug,
+  } | order(title.en desc)[0...4]`;
+
+  const Categories = await client.fetch(query); 
     // const { data: dataCategories, isLoading } = useSWR(
     //     `${process.env.NEXTAUTH_URL}/api/categories`,
     //     fetcher
     // );
   // const Categories = await getCategories();
-  const Categories = await getCategories({
-    select: {
-      slug: true,
-      title: true,
-    },
-  });
+  // const Categories = await getCategories({
+  //   select: {
+  //     slug: true,
+  //     title: true,
+  //   },
+  // });
   return (
     <HiddenWrapper>
       <header className="bg-gray-50 text-black py-4 px-4 md:px-6">
@@ -83,16 +93,20 @@ export async function Footer({lang, dataCategories}) {
           <div className="space-y-2">
             <h2 className="text-lg font-bold">{lang === 'en' ? 'Pages' : 'الصفحات'}</h2>
             <ul className="space-y-1 text-sm">
-              {[{ title: { en: "Home", ar: "الرئيسية" }, href: "", }, ...ganeral].map((data) => (
-                <li key={data.title.en}><Link className="hover:underline" href={`/${lang}/${data.href}`}>{lang === 'en' ? data.title.en : data.title.ar}</Link></li>
+              {[{ title: { en: "Home", ar: "الرئيسية" }, href: "" }, ...ganeral].map((data, index) => (
+                <li key={`${data.href}-${index}`}>
+                  <Link key={`${data.href}-${index}`} className="hover:underline" href={`/${lang}/${data.href}`}>{data.title[lang]}</Link>
+                </li>
               ))}
             </ul>
           </div>
           <div className="space-y-2">
             <h2 className="text-lg font-bold">{lang === 'en' ? 'Categories' : 'الفئات'}</h2>
             <ul className="space-y-1 text-sm">
-              {Categories.slice(0, 4).map((category) => (
-                <li key={category.slug}><Link className="hover:underline" href={`/${lang}/categories/${category.slug}`}>{lang == 'en' ? category.title.en : category.title.ar}</Link></li>
+              {Categories.map((category) => (
+                <li key={category.slug.current}>
+                  <Link className="hover:underline" href={`/${lang}/categories/${category.slug.current}`}>{category.title[lang]}</Link>
+                </li>
               ))}
             </ul>
           </div>
@@ -120,6 +134,17 @@ export async function Footer({lang, dataCategories}) {
 }
 
 export async function Header({lang}) {
+  // const fields = ['title', 'slug', 'desc']; // يمكنك تغيير هذه الحقول حسب احتياجاتك
+  // const Categories = await fetchCategories(lang, fields);    
+
+  const query = groq`*[_type == "category"]{
+    title,
+    slug,
+    description
+  } | order(title.en desc)[0...6]`;
+
+  const Categories = await client.fetch(query); 
+  
   // const { resolvedTheme, theme, setTheme } = useTheme();
   // const theme = 'sun'
 
@@ -128,13 +153,13 @@ export async function Header({lang}) {
   //   fetcher
   // );
   // const Categories = await getCategories();
-  const Categories = await getCategories({
-    select: {
-      slug: true,
-      title: true,
-      desc: true,
-    },
-  });  
+  // const Categories = await getCategories({
+  //   select: {
+  //     slug: true,
+  //     title: true,
+  //     desc: true,
+  //   },
+  // });  
   
 
   return (
@@ -165,7 +190,7 @@ export async function Header({lang}) {
         <div className="flex items-center gap-4">
         <SearchInput lang={lang} />
 
-        <UserDropdown lang={lang} />
+        {/* <UserDropdown lang={lang} /> */}
         <Sidebar lang={lang} dataCategories={Categories} />
         </div>
       </header>

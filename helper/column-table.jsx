@@ -11,7 +11,8 @@ async function deletePost(postId) {
     const response = await fetch(`/api/posts`, {
       method: 'DELETE',
       headers: {
-        'Content-Type': 'application/json',
+        'Content-Type': 'application/ejson',
+        'api-key': process.env.API_KEY,
       },
       body: JSON.stringify({ id: postId }),
     });
@@ -27,24 +28,37 @@ async function deletePost(postId) {
   }
 }
 
-async function deleteCategory(categoryId) {
-  try {
-    const response = await fetch('/api/categories/', {
-      method: 'DELETE',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ id: categoryId }),
-    });
+async function deleteCategory(categoryId) {  
+  // try {
+  //   const response = await fetch('/api/categories/', {
+  //     method: 'DELETE',
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //     },
+  //     body: JSON.stringify({ _id: categoryId }),
+  //   });
 
-    if (!response.ok) {
-      throw new Error('Failed to delete the post');
-    }
+  //   if (!response.ok) {
+  //     throw new Error('Failed to delete the post');
+  //   }
 
-    const data = await response.json();
-    console.log('Post deleted successfully:', data.message);
-  } catch (error) {
-    console.error('Error:', error);
+  //   const data = await response.json();
+  //   console.log('Post deleted successfully:', data.message);
+  // } catch (error) {
+  //   console.error('Error:', error);
+  // }
+  const response = await fetch("/api/categories", {
+    method: "DELETE", // Use PUT for updating, POST for new
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({id: categoryId}),
+  });
+
+  if (response.ok) {
+    alert("Post Delete successfully!");
+  } else {
+    alert("Failed to Delete post");
   }
 }
 
@@ -165,11 +179,11 @@ export const PostColumns = [
       )
     },
     cell: ({ row }) => (
-      <div className="capitalize line-clamp-2">{row.original.views.length}</div>
+      <div className="capitalize line-clamp-2">{row.original.totalPostViews}</div>
     ),
   },
   {
-    accessorKey: "cat.slug",
+    accessorKey: "catSlug",
     header: ({ column }) => {
       return (
         <Button
@@ -182,7 +196,7 @@ export const PostColumns = [
       )
     },
     cell: ({ row }) => (
-      <div title={row.original?.cat?.slug} className="capitalize">{(row.original?.cat?.slug || '').substring(0, 30)}</div>
+      <div title={row.original?.catSlug} className="capitalize">{(row.original?.catSlug || '').substring(0, 30)}</div>
     ),
   },
   {
@@ -237,7 +251,8 @@ export const PostColumns = [
     ),
   },
   {
-    id: "id",
+    // id: "id",
+    id: "_id",
     enableHiding: false,
     cell: ({ row }) => {
       const payment = row.original
@@ -252,14 +267,12 @@ export const PostColumns = [
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(payment.id)}
-            >
-              Copy payment ID
+            <DropdownMenuItem>
+              <Link target="_blank" href={`/en/post/${row.getValue("slug")}`} >View Post</Link>
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem>
-              <Link href={`/en/dashboard/management/posts/${row.getValue("slug")}`} >View Post</Link>
+              <Link href={`/en/dashboard/management/posts/${row.getValue("slug")}`} >Edit Post</Link>
             </DropdownMenuItem>
             {/* <DropdownMenuItem> */}
               {/* <span onClick={() => deletePost(row.original.id)} title={row.original.id} >Delete Post</span> */}
@@ -276,7 +289,7 @@ export const PostColumns = [
                   </DialogHeader>
                   <DialogFooter>
                   <DialogClose asChild>
-                    <Button onClick={() => deletePost(row.original.id)} type="submit">Yes Delete</Button>
+                    <Button onClick={() => deletePost(row.original._id)} type="submit">Yes Delete</Button>
                   </DialogClose>
                   </DialogFooter>
                 </DialogContent>
@@ -425,7 +438,7 @@ export const CategoryColumns = [
       )
     },
     cell: ({ row }) => (
-      <div className="capitalize">{new Date(row.getValue("createdAt")).toLocaleDateString('en-US', {year: 'numeric', month: 'long', day: 'numeric'})}</div>
+      <div className="capitalize">{new Date(row.original.createdAt).toLocaleDateString('en-US', {year: 'numeric', month: 'long', day: 'numeric'})}</div>
     ),
   },
   {
@@ -610,7 +623,7 @@ export const CategoriesColumns = [
       )
     },
     cell: ({ row }) => (
-        <div className="capitalize">{row.original.posts.reduce((sum, post) => sum + post.comments.length, 0)}</div>
+        <div className="capitalize">{row.original.comments.length}</div>
     ),
   },
   {
@@ -627,7 +640,7 @@ export const CategoriesColumns = [
       )
     },
     cell: ({ row }) => (
-        <div className="capitalize">{row.original.posts.reduce((sum, post) => sum + post.views.length, 0)}</div>
+        <div className="capitalize">{row.original.views.length}</div>
     ),
   },
 //   {
@@ -687,14 +700,10 @@ export const CategoriesColumns = [
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(payment.id)}
-            >
-              Copy payment ID
-            </DropdownMenuItem>
+            <DropdownMenuItem>Copy payment ID</DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem>
-              <Link href={`categories/${row.getValue("slug")}`}>View Category</Link>
+              <Link href={`categories/${row.getValue("slug")}`}>Edit Category</Link>
             </DropdownMenuItem>
             {/* <DropdownMenuItem> */}
               {/* <span onClick={() => deletePost(row.original.id)} title={row.original.id} >Delete Post</span> */}
@@ -711,7 +720,7 @@ export const CategoriesColumns = [
                   </DialogHeader>
                   <DialogFooter>
                   <DialogClose asChild>
-                    <Button onClick={() => deleteCategory(row.original.id)} type="submit">Yes Delete</Button>
+                    <Button onClick={() => deleteCategory(row.original._id)} type="submit">Yes Delete</Button>
                   </DialogClose>
                   </DialogFooter>
                 </DialogContent>
@@ -819,7 +828,7 @@ export const UsersColumns = [
       )
     },
     cell: ({ row }) => (
-      <div className="capitalize">{row.original.Comment.length}</div>
+      <div className="capitalize">{row.original.comments.length}</div>
     ),
   },
   {
@@ -920,7 +929,7 @@ export const CommentsColumns = [
     accessorKey: "user.image",
     header: "",
     cell: ({ row }) => (
-      <img src={row.original.user.image} height="64" width="64" className="aspect-square rounded-md object-cover" />
+      <img src={row.original.user[0].image} height="64" width="64" className="aspect-square rounded-md object-cover" />
     ),
   },
   {
@@ -937,7 +946,7 @@ export const CommentsColumns = [
       )
     },
     cell: ({ row }) => (
-      <div className="capitalize">{row.original.user.name}</div>
+      <div className="capitalize">{row.original.user[0].name}</div>
     ),
   },
   {

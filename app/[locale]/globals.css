@@ -79,6 +79,7 @@
   .tiptap + .ProseMirror {
   height: 100%!important;
   width: 100%!important;
+  min-height: 100vh!important;
   padding: 16px;
 }
 
@@ -96,7 +97,6 @@
   border-color: rgb(66, 71, 78);
 }
 
-/* Placeholder (at the top) */
 .tiptap .is-editor-empty:first-child::before {
   color: #adb5bd;
   content: attr(data-placeholder);
@@ -172,7 +172,6 @@
   cursor: col-resize;
 }
 
-/* ----------- */
 
 .singlePost >  h4, h5, h6 {
   all: revert;
@@ -221,12 +220,12 @@
 .singlePost blockquote {
   border-left-width: 1px;
   --tw-border-opacity: 1;
-  border-color: rgb(79 70 229 / var(--tw-border-opacity)) /* #4f46e5 */;
+  border-color: rgb(79 70 229 / var(--tw-border-opacity));
   padding-left: 2.25rem;
   margin: 1rem 0;
   font-weight: 600;
   --tw-text-opacity: 1;
-  color: rgb(17 24 39 / var(--tw-text-opacity)) /* #111827 */;
+  color: rgb(17 24 39 / var(--tw-text-opacity));
 }
 
 .singlePost > ul {
@@ -255,15 +254,12 @@
   margin: 25px 0;
   font-size: 0.9em;
   font-family: sans-serif;
-  /* min-width: 400px; */
   text-align: center;
-  /* box-shadow: 0 0 20px rgba(0, 0, 0, 0.15); */
 }
 
 .singlePost  th {
   background-color: #009879;
   color: #ffffff;
-  /* text-align: left; */
 }
 
 .singlePost tbody tr {

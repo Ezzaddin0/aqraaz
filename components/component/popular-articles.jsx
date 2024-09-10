@@ -9,7 +9,7 @@ const [filter, setFilter] = useState('weak');
 
   const filterPosts = (posts, filter) => {
     return posts.filter(post => {
-      const postDate = parseISO(post.createdAt);
+      const postDate = parseISO(post._createdAt);
       if (filter === 'today') return isToday(postDate);
       if (filter === 'weak') return isThisWeek(postDate);
       if (filter === 'month') return isThisMonth(postDate);
@@ -17,9 +17,10 @@ const [filter, setFilter] = useState('weak');
     });
   };
 
-  const sortedPosts = Posts.posts.sort((a, b) => compareDesc(parseISO(a.createdAt), parseISO(b.createdAt)));
+  // const sortedPosts = Posts.sort((a, b) => compareDesc(parseISO(a.createdAt), parseISO(b.createdAt)));
+  const sortedPosts = Posts.sort((a, b) => compareDesc(parseISO(a._createdAt), parseISO(b._createdAt)));
   const filteredPosts = filterPosts(sortedPosts, filter);
-  const sortedByViews = filteredPosts.sort((a, b) => b.views.length - a.views.length);
+  // const sortedByViews = filteredPosts.sort((a, b) => b.totalPostViews - a.totalPostViews);  
   return (
     <div className="py-12">
       <div className="flex flex-col md:flex-row justify-between mb-8">
@@ -37,9 +38,17 @@ const [filter, setFilter] = useState('weak');
         </Select>
         </div>
       </div>
-      {sortedByViews.length > 0 ? (
+      {/* {sortedByViews.length > 0 ? (
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {sortedByViews.slice(0, num || 6).map((article, index) => (
+            <CardCustom key={index} article={article} lang={lang} views time />
+        ))}
+      </div>
+      ) : <h2 className="border rounded-lg py-8 text-center text-4xl font-bold mb-4">No articles in This {filter}</h2>
+      } */}
+      {filteredPosts.length > 0 ? (
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {filteredPosts.slice(0, num || 6).map((article, index) => (
             <CardCustom key={index} article={article} lang={lang} views time />
         ))}
       </div>

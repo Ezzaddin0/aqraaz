@@ -6,30 +6,30 @@ import Script from "next/script";
 import { useEffect, useRef } from "react";
 import { Alert, AlertDescription } from "../ui/alert";
 
-export default function SectionCards({Posts, lang, time, title, page, cat}) {
-  const sortedPosts = Posts.posts.slice().sort((a, b) => compareDesc(parseISO(a.createdAt), parseISO(b.createdAt)));
+export default function SectionCards({Posts, lang, time, title, page, cat}) {  
+  // const sortedPosts = Posts.posts.slice().sort((a, b) => compareDesc(parseISO(a._createdAt), parseISO(b._createdAt)));
 
-  const banner = useRef()
+//   const banner = useRef()
 
-  const atOptions = {
-      key: '49b964dde4b56dd495dac2955331b7e0',
-      format: 'iframe',
-      height: 300,
-      width: 160,
-      params: {},
-  }
-  useEffect(() => {
-  if (banner.current && !banner.current.firstChild) {
-      const conf = document.createElement('script')
-      const script = document.createElement('script')
-      script.type = 'text/javascript'
-      script.src = `//www.topcreativeformat.com/${atOptions.key}/invoke.js`
-      conf.innerHTML = `atOptions = ${JSON.stringify(atOptions)}`
+//   const atOptions = {
+//       key: '49b964dde4b56dd495dac2955331b7e0',
+//       format: 'iframe',
+//       height: 300,
+//       width: 160,
+//       params: {},
+//   }
+//   useEffect(() => {
+//   if (banner.current && !banner.current.firstChild) {
+//       const conf = document.createElement('script')
+//       const script = document.createElement('script')
+//       script.type = 'text/javascript'
+//       script.src = `//www.topcreativeformat.com/${atOptions.key}/invoke.js`
+//       conf.innerHTML = `atOptions = ${JSON.stringify(atOptions)}`
 
-      banner.current.append(conf)
-      banner.current.append(script)
-  }
-}, [banner])
+//       banner.current.append(conf)
+//       banner.current.append(script)
+//   }
+// }, [banner])
   
   return (
     (<section className="py-8 md:py-12 lg:py-16">
@@ -38,9 +38,9 @@ export default function SectionCards({Posts, lang, time, title, page, cat}) {
         <div className="grid gap-8 lg:grid-cols-[1fr_300px]">
           <div>
             <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {sortedPosts.slice(0, 6).map((topic, index) => (
-          <CardCustom index={index} article={topic} lang={lang} time={time} />
-          ))}
+            {Posts.posts?.slice(0, 6).map((topic, index) => (
+            <CardCustom key={index} index={index} article={topic} lang={lang} time={time} />
+            ))}
             </div>
           </div>
           <div>
@@ -52,7 +52,7 @@ export default function SectionCards({Posts, lang, time, title, page, cat}) {
               </CardContent>
             </Card> */}
             <Alert className="text-center h-full">
-              <AlertDescription ref={banner}></AlertDescription>
+              {/* <AlertDescription ref={banner}></AlertDescription> */}
             </Alert>
           </div>
         </div>

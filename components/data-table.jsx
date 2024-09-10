@@ -26,7 +26,8 @@ const fetcher = async (url) => {
   return data;
 };
 
-export default function DataTable({ data, columns, addPost }) {
+export default function DataTable({ data, columns, addPost }) {  
+  
   const pathname = usePathname();
   const isAfterCategories = pathname.startsWith('/en/dashboard/management/categories/');
 
@@ -55,7 +56,7 @@ export default function DataTable({ data, columns, addPost }) {
     const method = "PUT";
 
     const body = {
-      catSlug: data[0].slug, //If not selected, choose the general category
+      catSlug: data.slug, //If not selected, choose the general category
     }
     
     if (method === "PUT" && postData.id) {
@@ -83,7 +84,7 @@ export default function DataTable({ data, columns, addPost }) {
   };
 
   const table = useReactTable({
-    data: isAfterCategories ? data.length > 0 && data[0]?.posts : data,
+    data: isAfterCategories ?  data.posts : data,
     columns,
     onSortingChange: setSorting,
     onGlobalFilterChange: setGlobalFilter, // --- new
