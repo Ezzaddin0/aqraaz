@@ -21,7 +21,7 @@ export const metadata = {
   metadataBase: new URL("https://www.aqraaz.com/"),
 };
 
-export default function RootLayout({ children, params }) {
+export default function RootLayout({ children, params }) {  
   return (
     <html lang={params.locale} dir={params.locale === "ar" ? "rtl" : "ltr"}>
       <body className={`dark:bg-gray-900 ${params.locale === "ar" ? cairo.className : inter.className}`}>
@@ -32,7 +32,7 @@ export default function RootLayout({ children, params }) {
               <Footer lang={params.locale} />
             </div>
           </AuthProvider>
-        {/* <Analytics />
+        <Analytics />
         <SpeedInsights />
         <Script
           async
@@ -46,7 +46,7 @@ export default function RootLayout({ children, params }) {
             gtag('js', new Date());
             gtag('config', '${process.env.NEXT_PUBLIC_GOOGLE_ID}');
           `}
-        </Script> */}
+        </Script>
       </body>
     </html>
   );
