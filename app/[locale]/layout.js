@@ -25,13 +25,13 @@ export default function RootLayout({ children, params }) {
   return (
     <html lang={params.locale} dir={params.locale === "ar" ? "rtl" : "ltr"}>
       <body className={`dark:bg-gray-900 ${params.locale === "ar" ? cairo.className : inter.className}`}>
-          <AuthProvider>
+          {/* <AuthProvider> */}
             <div className="md:container px-2 mx-auto ">
               <Header lang={params.locale} />
               {children}
               <Footer lang={params.locale} />
             </div>
-          </AuthProvider>
+          {/* </AuthProvider> */}
         <Analytics />
         <SpeedInsights />
         <Script

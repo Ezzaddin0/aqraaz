@@ -77,15 +77,15 @@ export default async function page({ params: {slug, locale} }) {
     _createdAt,
     body,
     author->,
-    "categories": *[_type=='category' && status == "active" && references(^._id)]{
-    "posts": *[_type=='post' && status == "active" && references(^._id)]{
+    categories[0]->{
+      "posts": *[_type == "post" && references(^._id) && status == "active"]{
       title,
       slug,
       description,
-      mainImage,
-      _createdAt
-    }[0...6]
-    }[0],
+      _createdAt,
+      mainImage
+      }[0...6]
+    }
   }`
 
   const post = await client.fetch(query, { slug });    
