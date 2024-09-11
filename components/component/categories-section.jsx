@@ -1,10 +1,12 @@
+import { fetchCategories } from "../../data/dataApi";
 import { CardContent, Card, CardTitle, CardDescription, CardHeader, CardFooter } from "../ui/card"
 import { Label } from "../ui/label"
 import { Input } from "../ui/input"
 import { Button } from "../ui/button"
 import Link from "next/link";
-import { fetchCategories } from "../../data/dataApi";
 import { FacebookIcon, InstagramIcon, TwitterIcon, YoutubeIcon } from "lucide-react";
+import { groq } from "next-sanity";
+import { client } from "@/lib/createClient";
 
 const soicelMedia = [
   {
@@ -42,8 +44,14 @@ export default async function CategoriesSection({ lang }) {
   //     title: true,
   //   },
   // });  
-  const fields = ['title', 'slug']; // يمكنك تغيير هذه الحقول حسب احتياجاتك
-  const Categories = await fetchCategories(lang, fields);  
+  // const fields = ['title', 'slug']; // يمكنك تغيير هذه الحقول حسب احتياجاتك
+  // const Categories = await fetchCategories(lang, fields);  
+  const query = groq`*[_type == "category" && status == "active"]{
+    slug,
+    title,
+  }[0...6]`;
+
+const Categories = await client.fetch(query);  
   
   return (
     <section className="grid grid-cols-1 md:grid-cols-2 gap-6 p-4 md:p-6">
@@ -52,7 +60,7 @@ export default async function CategoriesSection({ lang }) {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 h-full">
           {Categories.slice(0, 6).map((category, index) => {
             return (
-            <Link href={`${lang}/categories/${category.slug}?cat=${category.slug}`} className="text-3xl font-semibold">
+            <Link href={`${lang}/categories/${category.slug.current}`} className="text-3xl font-semibold">
               <Card key={index} className="h-full">
                 <CardContent className="flex items-center justify-center p-6 h-full">
                   {category.title[lang]}
@@ -70,7 +78,7 @@ export default async function CategoriesSection({ lang }) {
           {soicelMedia.map((soicel, index) => (
             <Link aria-label={soicel.title} href={soicel.link}> 
               <Card key={`${soicel.title}-${index}`}>
-                <CardContent className={`flex items-center rounded text-[${soicel.color}] hover:bg-[${soicel.color}] hover:text-white justify-center p-6`}>
+                <CardContent className={`flex items-center rounded hover:bg-[${soicel.color}] justify-center p-6`}>
                     {soicel.icon}
                 </CardContent>
               </Card>

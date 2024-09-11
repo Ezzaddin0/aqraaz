@@ -58,16 +58,16 @@ export default async function page({params: {locale}, searchParams}) {
   //   },
   // });
   
-  const query = groq`*[_type == "category"]{
+  const query = groq`*[_type == "category" && status == "active"]{
     title,
     slug,
-    posts[0...3]->{
+    "posts": *[_type=='post' && status == "active" && references(^._id)]{
     title,
     slug,
     description,
     _createdAt,
     mainImage,
-    },
+    }[0...3],
   }`;
 
   const categories = await client.fetch(query);  

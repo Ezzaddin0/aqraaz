@@ -17,7 +17,7 @@ export async function generateMetadata({params: {locale, slug}}) {
 
   // const post = await fetchSearch(locale, field, null, 1, slug);
 
-  const query = groq`*[_type == 'post' && (title.en match $decodedString + "*" || title.ar match $decodedString + "*")] {
+  const query = groq`*[_type == 'post' && status == "active" && (title.en match $decodedString + "*" || title.ar match $decodedString + "*")] {
     title,
     description,
     keywords,
@@ -62,7 +62,7 @@ export default async function page({ params: { slug, locale }}) {
     const decodedString = decodeURIComponent(slug);    
   // const field = ['title', 'desc', 'img', 'slug', 'createdAt']
   
-  const query = groq`*[_type == 'post' && (title.en match $decodedString + "*" || title.ar match $decodedString + "*")] {
+  const query = groq`*[_type == 'post' && status == "active" && (title.en match $decodedString + "*" || title.ar match $decodedString + "*")] {
     title,
     slug,
     description,

@@ -93,7 +93,7 @@ export default async function page({ params: { locale } }) {
 
   // const categories = await fetchCategories(locale, ['title', 'slug'])
 
-  const query = groq`*[_type == "category"]{
+  const query = groq`*[_type == "category" && status == "active"]{
     title,
     slug,
   }[0...5]`;
@@ -112,7 +112,7 @@ export default async function page({ params: { locale } }) {
   // })
   // const posts = await fetchPosts(locale, ['img', 'title', 'desc','slug'], [], 3, 1)
 
-  const queryPost = groq`*[_type == "post"]{
+  const queryPost = groq`*[_type == "post" && status == "active"]{
    title,
    description,
    slug,

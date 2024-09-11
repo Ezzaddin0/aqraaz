@@ -55,7 +55,7 @@ export default async function page({ searchParams, params: {locale}}) {
   const POST_PER_PAGE = 21;
 
   // Fetch total post count
-  const totalPostQuery = groq`count(*[_type == "post"])`;
+  const totalPostQuery = groq`count(*[_type == "post" && status == "active"])`;
   const totalPost = await client.fetch(totalPostQuery);
   const totalPage = Math.ceil(totalPost / POST_PER_PAGE);
 
@@ -63,7 +63,7 @@ export default async function page({ searchParams, params: {locale}}) {
   const offset = (page - 1) * POST_PER_PAGE;
 
   // Fetch posts for the current page with limit and offset
-  const query = groq`*[_type == "post"]{
+  const query = groq`*[_type == "post" && status == "active"]{
     title,
     slug,
     description,

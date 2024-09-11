@@ -59,7 +59,7 @@ const fetcher = async (url) => {
 export async function Footer({lang, dataCategories}) {
   // const fields = ['title', 'slug']; // يمكنك تغيير هذه الحقول حسب احتياجاتك
   // const Categories = await fetchCategories(lang, fields);  
-  const query = groq`*[_type == "category"]{
+  const query = groq`*[_type == "category" && status == "active"]{
     title,
     slug,
   } | order(title.en desc)[0...4]`;
@@ -137,7 +137,7 @@ export async function Header({lang}) {
   // const fields = ['title', 'slug', 'desc']; // يمكنك تغيير هذه الحقول حسب احتياجاتك
   // const Categories = await fetchCategories(lang, fields);    
 
-  const query = groq`*[_type == "category"]{
+  const query = groq`*[_type == "category" && status == "active"]{
     title,
     slug,
     description

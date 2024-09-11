@@ -15,7 +15,7 @@ export default async function sitemap() {
     //     }
     // });
     const query = groq`
-    *[_type == 'post']{
+    *[_type == 'post' && status == "active"]{
         slug,
         _createdAt,
     } | order(_createdAt desc)`
@@ -32,7 +32,7 @@ export default async function sitemap() {
     // }); 
     // const categories = await fetchCategories('', ["slug", "createdAt"])
     const queryCategory = groq`
-    *[_type == 'category']{
+    *[_type == 'category' && status == "active"]{
         slug,
         _createdAt,
     } | order(_createdAt desc)`

@@ -10,63 +10,15 @@ export default defineType({
     languageFilter: true,
   },
   fields: [
-    // defineField({
-    //   type: 'i18n.string',
-    //   // ...
-    //   options: {
-    //     ui?: {
-    //       type?: 'slider',
-    //       position?: 'top',
-    //       selected?: 'background'
-    //     },
-    //     locales?: [
-    //         {
-    //           code: 'en', // the code of the locale. MUST be the same as the one used in the global configuration.
-    //           // readOnly?: true,
-    //           // hidden?: ConditionalProperty,
-    //           options?: StringOptions | { rows?:number } | NumberOptions,
-    //           // visibleFor?: string[], // same as global configuration
-    //           // editableFor?: string[], // same as global configuration
-    //         },
-    //         // other locales
-    //       ]
-    //   }
-    // }),
     {
       title: "Title",
       name: "title",
-      // type: "object",
       type: "i18n.string",
-      // fields: [
-      //   {
-      //     title: "English",
-      //     name: "en",
-      //     type: "string"
-      //   },
-      //   {
-      //     title: "Arabic",
-      //     name: "ar",
-      //     type: "string"
-      //   }
-      // ]
     },
     {
       title: "Description",
       name: "description",
-      // type: "object",
       type: "i18n.text"
-      // fields: [
-      //   {
-      //     title: "English",
-      //     name: "en",
-      //     type: "text"
-      //   },
-      //   {
-      //     title: "Arabic",
-      //     name: "ar",
-      //     type: "text"
-      //   }
-      // ]
     },
     defineField({
       name: "slug",
@@ -77,13 +29,6 @@ export default defineType({
         maxLength: 96,
       },
     }),
-    // {
-    //   // Include the table as a field
-    //   // Giving it a semantic title
-    //   name: 'sizeChart',
-    //   title: 'Size Chart',
-    //   type: 'table',
-    // },
     defineField({
       name: "author",
       title: "Author",
@@ -126,15 +71,6 @@ export default defineType({
                 layout: 'tags'
               }
             },
-            // {
-            //   title: "Arabic",
-            //   name: "ar",
-            //   type: "array",
-            //   of: [{type: 'string'}],
-            //   options: {
-            //     layout: 'tags'
-            //   }
-            // }
           ]
         }
       ]
@@ -152,15 +88,23 @@ export default defineType({
               name: "body",
               type: "blockContent"
             },
-            // {
-            //   title: "Arabic",
-            //   name: "ar",
-            //   type: "blockContent"
-            // }
           ]
         }
       ]
-    }    
+    },
+    defineField({
+      name: "status",
+      title: "Status",
+      type: "string",
+      options: {
+        list: [
+          { title: "Active", value: "active" },
+          { title: "Inactive", value: "inactive" }
+        ],
+        layout: "radio"
+      },
+      initialValue: "active"
+    })
   ],
 
   preview: {

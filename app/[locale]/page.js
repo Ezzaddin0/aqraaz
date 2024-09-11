@@ -42,7 +42,7 @@ export default async function  Home({ params: { locale } }) {
   // const posts = await fetchPosts(locale, [...fields, 'totalPostViews']);
   // const postsCategory = await fetchCategories(locale, [...fields, "posts"], ["sports", "news", "technology"]);  
   
-  const queryPosts = groq`*[_type == 'post']{
+  const queryPosts = groq`*[_type == 'post' && status == "active"]{
     title,
     mainImage,
     _createdAt,
@@ -53,8 +53,8 @@ export default async function  Home({ params: { locale } }) {
     },
   } | order(_createdAt desc)[0...6]`
   
-  const queryCategories = groq`*[_type == "category" && slug.current in ["sports", "news", "technology"]]{
-      posts[]->{
+  const queryCategories = groq`*[_type == "category" && slug.current in ["sports", "news", "technology"]  && status == "active"]{
+      "posts": *[_type=='post' && status == "active" && references(^._id)]{
         title,
         slug,
         mainImage,
@@ -97,7 +97,7 @@ export default async function  Home({ params: { locale } }) {
 
       {/* <AdsCard /> */}
 
-      {/* <CategoriesSection lang={locale} /> */}
+      <CategoriesSection lang={locale} />
 
       {/* <AdsCard /> */}
     </>

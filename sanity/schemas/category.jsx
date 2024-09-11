@@ -50,6 +50,19 @@ export default defineType({
       ]
     },
     defineField({
+      name: "status",
+      title: "Status",
+      type: "string",
+      options: {
+        list: [
+          { title: "Active", value: "active" },
+          { title: "Inactive", value: "inactive" }
+        ],
+        layout: "radio"
+      },
+      initialValue: "active"
+    }),
+    defineField({
       name: "posts",
       title: "Posts",
       type: "array",
@@ -66,4 +79,16 @@ export default defineType({
     //   type: 'text',
     // }),
   ],
+
+  preview: {
+    select: {
+      title: "title.en",
+      description: "description.en",
+      // media: "mainImage",
+    },
+    prepare(selection) {
+      const { description } = selection;
+      return { ...selection, subtitle: description };
+    },
+  },
 })

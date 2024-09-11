@@ -26,7 +26,7 @@ export const revalidate = 30;
 export async function generateMetadata({params: {locale, slug}}) {
   // const post = await fetchPost(slug);
 
-  const query = groq`*[_type == 'post' && slug.current == $slug][0]{
+  const query = groq`*[_type == 'post' && status == "active" && slug.current == $slug][0]{
     title,
     description,
     keywords,
@@ -72,20 +72,20 @@ export default async function page({ params: {slug, locale} }) {
   // const posts = await fetchPosts(locale, fields, [data.catSlug]);  
 
   
-  const query = groq`*[_type == 'post' && slug.current == $slug][0]{
+  const query = groq`*[_type == 'post' && status == "active" && slug.current == $slug][0]{
     title,
     _createdAt,
     body,
     author->,
-    categories[0]->{
-    posts[0...6]->{
+    "categories": *[_type=='category' && status == "active" && references(^._id)]{
+    "posts": *[_type=='post' && status == "active" && references(^._id)]{
       title,
       slug,
       description,
       mainImage,
       _createdAt
-    }
-    },
+    }[0...6]
+    }[0],
   }`
 
   const post = await client.fetch(query, { slug });    

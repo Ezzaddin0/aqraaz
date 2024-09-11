@@ -29,7 +29,7 @@ export async function generateMetadata({params: {locale, slug}}) {
 
   // const post = await fetchCategories(locale, [...fields], [slug]);  
 
-  const query = groq`*[_type == 'category' && slug.current == $slug][0]{
+  const query = groq`*[_type == 'category' && slug.current == $slug && status == "active"][0]{
     title,
     description,
     keywords,
@@ -72,8 +72,8 @@ export default async function Page({ params: {slug, locale}, searchParams }) {
   // const fields = ['title', 'desc', 'img', 'createdAt', 'catSlug', 'keywords', 'slug']; // يمكنك تغيير هذه الحقول حسب احتياجاتك
   // const posts = await fetchCategories(params.locale, [...fields, "posts"], [params.slug]);
 
-  const query = groq`*[_type == 'category' && slug.current == $slug][0]{
-    "posts": *[_type == 'post' && references(^._id)]{
+  const query = groq`*[_type == 'category'  && status == "active" && slug.current == $slug][0]{
+    "posts": *[_type == 'post'  && status == "active" && references(^._id)]{
       title,
       slug,
       description,

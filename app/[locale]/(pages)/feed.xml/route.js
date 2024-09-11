@@ -7,7 +7,7 @@ import { fetchPosts } from '@/data/dataApi';
 export async function GET() {
 
     const query = groq`
-    *[_type == 'post']{
+    *[_type == 'post' && status == "active"]{
         title,
         slug,
         description,
