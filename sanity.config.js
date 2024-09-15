@@ -8,6 +8,7 @@ import {I18nFields} from 'sanity-plugin-i18n-fields'
 import {openaiImageAsset} from 'sanity-plugin-asset-source-openai'
 import { pexelsImageAsset } from 'sanity-plugin-asset-source-pexels';
 // import {googleTranslate} from 'sanity-plugin-google-translate'
+import { youtubeInput } from 'sanity-plugin-youtube-input'
 
 
 const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID;
@@ -42,6 +43,7 @@ export default defineConfig({
     pexelsImageAsset({
       API_KEY: 'YXOqdfbq87Bt2Y0KqdDIw6PzMwt67op3JxtJyjl1yj1cfZGbBurbScj8',
     }),
+    youtubeInput({ apiKey: 'AIzaSyAHwyVBqyvADHEfhTNlf-EZBSugSzx8yoY' })
     // googleTranslate(),
     // pexelsImageAsset({
     //   API_KEY: 'NsaORkLPknUYRkhAjONASqhT7IzTmcmTb5b601tJn9CsAbUahwJpbdwp',

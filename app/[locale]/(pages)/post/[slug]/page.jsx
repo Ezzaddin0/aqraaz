@@ -127,7 +127,7 @@ export default async function page({ params: {slug, locale} }) {
       <main className="lg:w-3/4 lg:pr-8">
         {/* Article Header */}
         <header className="mb-8">
-          {/* <h1 className="text-3xl font-bold mb-4">{post.title[locale]}</h1> */}
+          <h1 className="text-3xl font-bold mb-4">{post.title[locale]}</h1>
           <div className="flex flex-wrap items-center text-gray-600 mb-4">
             <Image 
               alt="Author Avatar" 

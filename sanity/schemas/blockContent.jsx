@@ -75,6 +75,26 @@ export default defineType({
     // You can add additional types here. Note that you can't use
     // primitive types such as 'string' and 'number' in the same array
     // as a block type.
+    defineType({
+      name: 'youtubeEmbed',
+      type: 'object',
+      fields: [
+        {
+          name: 'video',
+          type: 'youtubeVideo',
+        },
+        {
+          name: 'autoplay',
+          type: 'boolean',
+          initialValue: false,
+        },
+        {
+          name: 'controls',
+          type: 'boolean',
+          initialValue: true,
+        },
+      ]
+    }),
     defineArrayMember({
       type: 'image',
       options: {hotspot: true},

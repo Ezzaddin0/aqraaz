@@ -90,6 +90,7 @@
     "sanity-plugin-asset-source-pexels": "^3.0.2",
     "sanity-plugin-asset-source-unsplash": "^1.1.2",
     "sanity-plugin-i18n-fields": "^1.0.0",
+    "sanity-plugin-youtube-input": "^0.2.0",
     "sonner": "^1.5.0",
     "styled-components": "^5.3.11",
     "swr": "^2.2.5",
